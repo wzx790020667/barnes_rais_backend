@@ -20,6 +20,58 @@ A simple HTTP server built with Bun using a modular router structure.
 └── setup-docker.sh         # Docker deployment script
 ```
 
+## Quick Start
+
+This quick start guide helps you set up the project quickly on a Linux Ubuntu server using Docker and Supabase.
+
+### 1. Install Bun (for Linux)
+
+```bash
+# Install Bun
+curl -fsSL https://bun.sh/install | bash
+
+# Source your profile to use Bun immediately (or restart your terminal)
+source ~/.bashrc
+
+# Verify installation
+bun --version
+```
+
+### 2. Install Supabase CLI
+
+```bash
+# Install Supabase CLI using Bun
+bunx supabase --version
+```
+
+### 3. Start Supabase container locally
+
+```bash
+# Start Supabase using Bun
+bunx supabase start
+```
+
+After running these commands, you can proceed with Docker deployment:
+
+```bash
+# Build and start the Docker containers
+docker compose build
+docker compose up -d
+```
+
+This will:
+
+1. Build the application Docker image
+2. Start all services defined in docker-compose.yml
+3. Run database migrations automatically
+4. Start the application server
+
+You can check the application logs with:
+
+```bash
+docker compose logs -f
+```
+
 ## Available Endpoints
 
 - `/` - Returns a welcome message
@@ -108,57 +160,5 @@ This setup follows the same sequence as the local development workflow:
 1. The `supabase` service starts first
 2. Once Supabase is ready, the `db-migration` service runs to set up the schema
 3. Finally, the main `app` service starts
-
-## Supabase Setup on Linux Ubuntu
-
-If you're setting up this project on a Linux Ubuntu server, follow these steps to install Supabase:
-
-### 1. Install Bun
-
-```bash
-# Install Bun
-curl -fsSL https://bun.sh/install | bash
-
-# Source your profile to use Bun immediately (or restart your terminal)
-source ~/.bashrc
-
-# Verify installation
-bun --version
-```
-
-### 2. Install Supabase CLI
-
-```bash
-# Install Supabase CLI using Bun
-bunx supabase --version
-```
-
-### 3. Start Supabase container locally
-
-```bash
-# Start Supabase using Bun
-bunx supabase start
-```
-
-After running these commands, you can proceed with Docker deployment:
-
-```bash
-# Build and start the Docker containers
-docker compose build
-docker compose up -d
-```
-
-This will:
-
-1. Build the application Docker image
-2. Start all services defined in docker-compose.yml
-3. Run database migrations automatically
-4. Start the application server
-
-You can check the application logs with:
-
-```bash
-docker compose logs -f
-```
 
 This project was created using `bun init` in bun v1.2.2. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
