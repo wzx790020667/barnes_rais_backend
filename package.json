@@ -1,0 +1,35 @@
+{
+  "name": "barnes_rais_backend",
+  "module": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "bun run src/index.ts",
+    "dev": "bun --watch src/index.ts",
+    "build": "bun build src/index.ts --outdir dist",
+    "test": "bun test",
+    "supabase:start": "bunx supabase start",
+    "schema:push": "bunx drizzle-kit push"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/lodash": "^4.17.16",
+    "drizzle-kit": "^0.30.5",
+    "supabase": "^2.19.7",
+    "tsx": "^4.19.3"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.1",
+    "axios": "^1.8.3",
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.40.1",
+    "elysia": "^1.2.25",
+    "jsonwebtoken": "^9.0.2",
+    "lodash": "^4.17.21",
+    "postgres": "^3.4.5",
+    "zod": "^3.24.2"
+  }
+}
