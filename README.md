@@ -140,14 +140,25 @@ bunx supabase --version
 bunx supabase start
 ```
 
-After running these commands, you can proceed with the usual setup:
+After running these commands, you can proceed with Docker deployment:
 
 ```bash
-# Push database schema
-bun run schema:push
+# Build and start the Docker containers
+docker compose build
+docker compose up -d
+```
 
-# Start the application
-bun start
+This will:
+
+1. Build the application Docker image
+2. Start all services defined in docker-compose.yml
+3. Run database migrations automatically
+4. Start the application server
+
+You can check the application logs with:
+
+```bash
+docker compose logs -f
 ```
 
 This project was created using `bun init` in bun v1.2.2. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
