@@ -33,6 +33,10 @@ curl -fsSL https://bun.sh/install | bash
 # Source your profile to use Bun immediately (or restart your terminal)
 source ~/.bashrc
 
+# Set alias for convient access temporarily
+alias bunx=~/.bun/bin/bunx
+alias bun=~/.bun/bin/bun
+
 # Verify installation
 bun --version
 ```

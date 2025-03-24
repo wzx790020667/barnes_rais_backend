@@ -34,7 +34,7 @@ async function verifyConnection() {
     return true;
   } catch (err) {
     console.error(
-      "❌ Failed to connect to Drizzle database:",
+      `❌ Failed to connect to Drizzle database, connection string: ${process.env.DATABASE_URL}, details:`,
       err instanceof Error ? err.message : String(err)
     );
     connectionVerified = false;
