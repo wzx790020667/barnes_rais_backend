@@ -1,5 +1,5 @@
 import { serve } from "bun";
-import { db } from "./lib/db";
+import { db, drizzleClient } from "./lib/db";
 import { SERVER_CONFIG } from "./config";
 import { AuthController } from "./domains/auth/controllers/AuthController";
 import { UserController } from "./domains/users/controllers/UserController";
@@ -25,14 +25,13 @@ const PORT = SERVER_CONFIG.PORT;
 const HOST = SERVER_CONFIG.HOST;
 const APP_NAME = SERVER_CONFIG.APP_NAME;
 
-// Start verification but don't block server startup
-db.waitForConnection().then((connected) => {
-  if (connected) {
-    console.log("🚀 Server is fully operational with database connection");
-  } else {
-    console.warn(
-      "⚠️ Server running but database connection failed - some features may not work"
-    );
+// Start database connection verification but don't block server startup
+Promise.all([
+  db.waitForConnection(),
+  drizzleClient.waitForConnection()
+]).then(([supabaseConnected, drizzleConnected]) => {
+  if (supabaseConnected && drizzleConnected) {
+    console.log("🚀 Server is fully operational with all database connections");
   }
 });
 

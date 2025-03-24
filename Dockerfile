@@ -15,5 +15,8 @@ ENV NODE_ENV=production
 # Expose the port
 EXPOSE 3001
 
+# Run migrations
+RUN bun run schema:push
+
 # Start the server
-CMD ["bun", "start"] 
+CMD ["bun", "start"]

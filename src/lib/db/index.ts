@@ -2,7 +2,7 @@
 export { supabase, db } from "./supabase";
 
 // Export Drizzle client
-export { drizzleDb, closeDrizzleConnection } from "./drizzle";
+export { drizzleDb, closeDrizzleConnection, drizzleClient } from "./drizzle";
 
 // Export repositories
 export { UserRepository } from "./example-repository";
