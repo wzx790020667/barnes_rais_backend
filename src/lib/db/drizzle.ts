@@ -29,12 +29,12 @@ async function verifyConnection() {
   try {
     // Execute a simple query to check the connection
     await client`SELECT 1`;
-    console.log("✅ Successfully connected to Drizzle database");
+    console.log(`✅ Successfully connected to database from Drizzle`);
     connectionVerified = true;
     return true;
   } catch (err) {
     console.error(
-      `❌ Failed to connect to Drizzle database, connection string: ${process.env.DATABASE_URL}, details:`,
+      `❌ Failed to connect to database from Drizzle, connection string: ${process.env.DATABASE_URL}, details:`,
       err instanceof Error ? err.message : String(err)
     );
     connectionVerified = false;

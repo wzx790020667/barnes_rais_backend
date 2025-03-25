@@ -76,6 +76,10 @@ You can check the application logs with:
 docker compose logs -f
 ```
 
+## Deployment
+
+For detailed production deployment instructions, please refer to the [Deployment Guide](DEPLOYMENT.md).
+
 ## Available Endpoints
 
 - `/` - Returns a welcome message
