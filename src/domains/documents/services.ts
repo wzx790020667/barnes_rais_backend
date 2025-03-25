@@ -497,7 +497,7 @@ export class DocumentService {
 
           // Extract valid file names from bucket files
           const fileNames = bucketFiles
-            .filter(file => file.name)
+            .filter(file => file.name && file.name !== ".emptyFolderPlaceholder")
             .map(file => file.name);
 
           if (fileNames.length === 0) {

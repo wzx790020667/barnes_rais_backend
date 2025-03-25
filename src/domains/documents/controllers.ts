@@ -326,8 +326,6 @@ export class DocumentController {
           serial_number: isEmpty(item.serial_number) ? null : String(item.serial_number)
         })) || [] as Omit<DocumentItem, "id">[];
       
-      console.log("documentItems", documentItems);
-
       // Create document with items
       const updatedDocument = await this.documentService.updateDocument(
         document.id,

@@ -65,6 +65,8 @@ bunx supabase status
 
 This command will display connection information including URLs, API keys, and database connection strings that you can use to update your `.env` file.
 
+> **Important Note:** When you run `bunx supabase start` for the first time, a `supabase` folder will be generated in your current working directory. If you need to restart Supabase instances later, you must run the command from the location where this `supabase` folder exists. Always navigate to the project root directory before running Supabase commands.
+
 ### 6. Run Database Migration (First-time Deployment)
 
 ```bash
@@ -74,7 +76,7 @@ docker compose -f migrate.yml --env-file .env up
 ### 7. Start the Server
 
 ```bash
-docker compose -f start.yml --env-file .env up --build
+docker compose -f start.yml --env-file .env up --build -d
 ```
 
 ## Maintenance

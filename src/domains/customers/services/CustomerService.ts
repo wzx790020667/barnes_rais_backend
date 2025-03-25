@@ -42,6 +42,10 @@ export class CustomerService {
           .order("created_at", { ascending: false });
           
         if (error) throw error;
+
+        if (!data || data.length === 0) {
+          return { customers: [], total: 0 };
+        }
         
         // Generate customer_info_hash for each customer if not already present
         const customersWithHash = data.map(customer => {
