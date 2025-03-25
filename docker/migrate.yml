@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  db-migration:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    image: barnes-rais-backend:latest
+    command: bun run schema:push
+    env_file:
+      - .env
+    restart: on-failure
