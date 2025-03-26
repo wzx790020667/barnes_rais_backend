@@ -232,13 +232,13 @@ After the bucket is created, we need to set the policies for this bucket.
 document_files
 ```
 
-### 6. Start the Server
+### 7. Start the Server
 
 ```bash
 docker compose --env-file .env up --build -d
 ```
 
-### 7. Check for success messages
+### 8. Check for success messages
 
 ```
 # Check the backend server logs
@@ -256,7 +256,7 @@ ARD Server running at http://0.0.0.0:3001
 
 ## Maintenance
 
-For subsequent deployments (when the database schema already exists and no updates), you can skip step 5 and only run step 6.
+For subsequent deployments (when the database schema already exists and no updates), you can skip step 5 and 6, only run step 7.
 
 ## Troubleshooting
 
