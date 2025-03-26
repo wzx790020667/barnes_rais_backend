@@ -209,13 +209,13 @@ docker-db-migration-1 exited with code 0
 Open this link on the broswer, http://`<YOUR_SERVER_IP_ADDRESS>`:8000/project/default/storage/buckets. You would see the Supabase storage management console, where you can create buckets that needed for file managements by Barnes Rais Backend.
 where the YOUR_SERVER_IP_ADDRESS is your server IP.
 
-#### 1. Create a bucket named document_files as shown in the image.
+#### 6.1. Create a bucket named document_files as shown in the image.
 
 ![1742967284549](images/DEPLOYMENT/1742967284549.png)
 
 After the bucket is created, we need to set the policies for this bucket.
 
-#### 2. Create a policies to make the bucket accessible.
+#### 6.2. Create a policies to make the bucket accessible.
 
 ![1742968113020](images/DEPLOYMENT/1742968113020.png)
 
@@ -225,7 +225,7 @@ After the bucket is created, we need to set the policies for this bucket.
 
 ![1742967975062](images/DEPLOYMENT/1742967975062.png)
 
-#### 3. Repeat steps 1-2 for creating other buckets if there is.
+#### 6.3. Repeat steps 6.1-6.2 for creating other buckets if there is.
 
 ```bash
 # Buckets list that needs to be created
