@@ -1,23 +1,37 @@
 import { supabase, db } from "../../../lib/db";
-import { arc_rules, type ArcRule } from "../../../db/schema";
+import { engine_model_rules, type EngineModelRule } from "../../../db/schema";
 
-export class ArcRuleService {
-  async getArcRuleById(id: string): Promise<ArcRule | null> {
+export class EngineModelRuleService {
+  async getEngineModelRuleById(id: string): Promise<EngineModelRule | null> {
     return db
       .query(async () => {
         const { data, error } = await supabase
-          .from("arc_rules")
+          .from("engine_model_rules")
           .select("*")
           .eq("id", id)
           .single();
 
         if (error) throw error;
-        return data as ArcRule;
+        return data as EngineModelRule;
       })
       .then((result) => result.data || null);
   }
 
-  async getArcRules(page: number = 1, pageSize: number = 10): Promise<{ arcRules: ArcRule[]; total: number }> {
+  async getAllEngineModelRules(): Promise<EngineModelRule[]> {
+    return db
+      .query(async () => {
+        const { data, error } = await supabase
+          .from("engine_model_rules")
+          .select("engine_model_title, common_prefix, result_display")
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+        return data as EngineModelRule[];
+      })
+      .then((result) => result.data || []);
+  }
+
+  async getEngineModelRules(page: number = 1, pageSize: number = 10): Promise<{ engineModelRules: EngineModelRule[]; total: number }> {
     return db
       .query(async () => {
         // Calculate offset based on page and pageSize
@@ -25,14 +39,14 @@ export class ArcRuleService {
         
         // Get total count first
         const { data: countData, error: countError } = await supabase
-          .from("arc_rules")
+          .from("engine_model_rules")
           .select("count", { count: "exact" });
           
         if (countError) throw countError;
         
         // Get paginated results
         const { data, error } = await supabase
-          .from("arc_rules")
+          .from("engine_model_rules")
           .select("*")
           .range(offset, offset + pageSize - 1)
           .order("created_at", { ascending: false });
@@ -40,54 +54,54 @@ export class ArcRuleService {
         if (error) throw error;
         
         return { 
-          arcRules: data as ArcRule[], 
+          engineModelRules: data as EngineModelRule[], 
           total: countData?.[0]?.count || 0 
         };
       })
-      .then((result) => result.data || { arcRules: [], total: 0 });
+      .then((result) => result.data || { engineModelRules: [], total: 0 });
   }
 
-  async createArcRule(
-    arcRule: Omit<ArcRule, "id" | "created_at" | "updated_at">
-  ): Promise<ArcRule | null> {
+  async createEngineModelRule(
+    engineModelRule: Omit<EngineModelRule, "id" | "created_at" | "updated_at">
+  ): Promise<EngineModelRule | null> {
     return db
       .query(async () => {
         const { data, error } = await supabase
-          .from("arc_rules")
-          .insert(arcRule)
+          .from("engine_model_rules")
+          .insert(engineModelRule)
           .select()
           .single();
 
         if (error) throw error;
-        return data as ArcRule;
+        return data as EngineModelRule;
       })
       .then((result) => result.data || null);
   }
 
-  async updateArcRule(
+  async updateEngineModelRule(
     id: string,
-    arcRuleData: Partial<ArcRule>
-  ): Promise<ArcRule | null> {
+    engineModelRuleData: Partial<EngineModelRule>
+  ): Promise<EngineModelRule | null> {
     return db
       .query(async () => {
         const { data, error } = await supabase
-          .from("arc_rules")
-          .update(arcRuleData)
+          .from("engine_model_rules")
+          .update(engineModelRuleData)
           .eq("id", id)
           .select()
           .single();
 
         if (error) throw error;
-        return data as ArcRule;
+        return data as EngineModelRule;
       })
       .then((result) => result.data || null);
   }
 
-  async deleteArcRule(id: string): Promise<boolean> {
+  async deleteEngineModelRule(id: string): Promise<boolean> {
     return db
       .query(async () => {
         const { error } = await supabase
-          .from("arc_rules")
+          .from("engine_model_rules")
           .delete()
           .eq("id", id);
 

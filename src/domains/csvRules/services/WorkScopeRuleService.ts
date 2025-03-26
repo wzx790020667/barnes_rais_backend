@@ -17,6 +17,20 @@ export class WorkScopeRuleService {
       .then((result) => result.data || null);
   }
 
+  async getAllWorkScopeRules(): Promise<WorkScopeRule[]> {
+    return db
+      .query(async () => {
+        const { data, error } = await supabase
+          .from("work_scope_rules")
+          .select("overhaul_keywords, result_display")
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+        return data as WorkScopeRule[];
+      })
+      .then((result) => result.data || []);
+  }
+
   async getWorkScopeRules(page: number = 1, pageSize: number = 10): Promise<{ workScopeRules: WorkScopeRule[]; total: number }> {
     return db
       .query(async () => {

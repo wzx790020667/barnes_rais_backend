@@ -81,6 +81,14 @@ export const work_scope_rules = pgTable("work_scope_rules", {
   updated_at: timestamp("updated_at").defaultNow(),
 });
 
+export const part_number_rules = pgTable("part_number_rules", {
+  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  part_number: varchar({ length: 255 }),
+  product_code: varchar({ length: 255 }),
+  created_at: timestamp("created_at").defaultNow(),
+  updated_at: timestamp("updated_at").defaultNow(),
+});
+
 export const csv_records = pgTable("csv_records", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
   document_id: uuid("document_id").references(() => documents.id),
@@ -116,4 +124,5 @@ export type DocumentItem = typeof document_items.$inferSelect;
 export type ArcRule = typeof arc_rules.$inferSelect;
 export type EngineModelRule = typeof engine_model_rules.$inferSelect;
 export type WorkScopeRule = typeof work_scope_rules.$inferSelect;
+export type PartNumberRule = typeof part_number_rules.$inferSelect;
 export type CsvRecord = typeof csv_records.$inferSelect;

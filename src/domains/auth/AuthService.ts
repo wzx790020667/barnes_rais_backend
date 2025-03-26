@@ -1,6 +1,6 @@
-import type { User } from "../models/User";
-import { JwtUtils } from "../../../utils/jwt";
-import type { JwtPayload } from "../../../utils/jwt";
+import type { User } from "./types";
+import { JwtUtils } from "../../utils/jwt";
+import type { JwtPayload } from "../../utils/jwt";
 
 // Mock user database for demonstration
 // In a real app, this would be replaced with a database query

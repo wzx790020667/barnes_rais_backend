@@ -1,5 +1,5 @@
-import { generateCustomerInfoHash } from "../../../lib/utils";
-import { CustomerService } from "../services/CustomerService";
+import { generateCustomerInfoHash } from "../../lib/utils";
+import { CustomerService } from "./CustomerService";
 import { z } from "zod";
 
 // Customer schema validation based on the actual database schema

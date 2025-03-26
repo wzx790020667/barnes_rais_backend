@@ -46,7 +46,7 @@ async function verifyConnection() {
 connectionVerificationPromise = verifyConnection();
 
 // Export database interface with connection verification
-export const drizzleClient = {
+export const drizzleConnectionTest = {
   // Wait for connection verification to complete
   async waitForConnection(timeoutMs = 10000): Promise<boolean> {
     // If verification already completed, return result immediately

@@ -1,13 +1,14 @@
 import { serve } from "bun";
-import { db, drizzleClient } from "./lib/db";
+import { db, drizzleConnectionTest } from "./lib/db";
 import { SERVER_CONFIG } from "./config";
-import { AuthController } from "./domains/auth/controllers/AuthController";
-import { UserController } from "./domains/users/controllers/UserController";
+import { AuthController } from "./domains/auth/AuthController";
+import { UserController } from "./domains/users/UserController";
 import { DocumentController } from "./domains/documents/controllers";
-import { CustomerController } from "./domains/customers/controllers/CustomerController";
-import { ArcRuleController } from "./domains/customers/controllers/ArcRuleController";
-import { EngineModelRuleController } from "./domains/customers/controllers/EngineModelRuleController";
-import { WorkScopeRuleController } from "./domains/customers/controllers/WorkScopeRuleController";
+import { CustomerController } from "./domains/customers/CustomerController";
+import { ArcRuleController } from "./domains/csvRules/controllers/ArcRuleController";
+import { EngineModelRuleController } from "./domains/csvRules/controllers/EngineModelRuleController";
+import { WorkScopeRuleController } from "./domains/csvRules/controllers/WorkScopeRuleController";
+import { PartNumberRuleController } from "./domains/csvRules/controllers/PartNumberRuleController";
 import { CsvRecordController } from "./domains/csvRecords/controllers";
 
 // Create controller instances
@@ -18,6 +19,7 @@ const customerController = new CustomerController();
 const arcRuleController = new ArcRuleController();
 const engineModelRuleController = new EngineModelRuleController();
 const workScopeRuleController = new WorkScopeRuleController();
+const partNumberRuleController = new PartNumberRuleController();
 const csvRecordController = new CsvRecordController();
 
 // Extract server configuration
@@ -28,7 +30,7 @@ const APP_NAME = SERVER_CONFIG.APP_NAME;
 // Start database connection verification but don't block server startup
 Promise.all([
   db.waitForConnection(),
-  drizzleClient.waitForConnection()
+  drizzleConnectionTest.waitForConnection()
 ]).then(([supabaseConnected, drizzleConnected]) => {
   if (supabaseConnected && drizzleConnected) {
     console.log("🚀 Server is fully operational with all database connections");
@@ -185,6 +187,17 @@ serve({
       GET: async (req) => addCorsHeaders(await workScopeRuleController.getWorkScopeRuleById(req)),
       PUT: async (req) => addCorsHeaders(await workScopeRuleController.updateWorkScopeRule(req)),
       DELETE: async (req) => addCorsHeaders(await workScopeRuleController.deleteWorkScopeRule(req)),
+    },
+    
+    // Part Number Rule routes
+    "/api/part-number-rules": {
+      GET: async (req) => addCorsHeaders(await partNumberRuleController.getPartNumberRules(req)),
+      POST: async (req) => addCorsHeaders(await partNumberRuleController.createPartNumberRule(req)),
+    },
+    "/api/part-number-rules/:id": {
+      GET: async (req) => addCorsHeaders(await partNumberRuleController.getPartNumberRuleById(req)),
+      PUT: async (req) => addCorsHeaders(await partNumberRuleController.updatePartNumberRule(req)),
+      DELETE: async (req) => addCorsHeaders(await partNumberRuleController.deletePartNumberRule(req)),
     },
     
     // CSV Record routes

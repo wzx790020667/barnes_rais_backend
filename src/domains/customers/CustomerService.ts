@@ -1,8 +1,7 @@
-import type { Customer } from "../models/Customer";
-import { supabase, db, drizzleDb } from "../../../lib/db";
-import { customers, documents } from "../../../db/schema";
-import { countApprovedDocumentsForCustomers } from "../utils";
-import { generateCustomerInfoHash } from "../../../lib/utils";
+import type { Customer } from "./types";
+import { supabase, db, drizzleDb } from "../../lib/db";
+import { customers, documents } from "../../db/schema";
+import { generateCustomerInfoHash } from "../../lib/utils";
 import { count, eq, inArray, sql } from "drizzle-orm";
 
 export class CustomerService {

@@ -1,4 +1,4 @@
-import type { User } from "../../auth/models/User";
+import type { User } from "../auth/types";
 
 // Mock user database for demonstration
 const MOCK_USERS: User[] = [
