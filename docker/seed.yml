@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  db-seed:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    image: barnes-rais-backend:latest
+    # Seeds the database with initial data from JSON files in src/db/seeds/data
+    command: bun run db:seed
+    env_file:
+      - .env
+    restart: on-failure
