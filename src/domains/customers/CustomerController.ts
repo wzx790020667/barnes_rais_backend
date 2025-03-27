@@ -228,18 +228,36 @@ export class CustomerController {
   async searchCustomers(req: Request): Promise<Response> {
     try {
       const url = new URL(req.url);
-      const query = url.searchParams.get("query");
+      const query = url.searchParams.get("query") || "";
+      const page = parseInt(url.searchParams.get("page") || "1");
+      const pageSize = parseInt(url.searchParams.get("pageSize") || "10");
       
-      if (!query) {
+      // Validate page and pageSize
+      if (isNaN(page) || page < 1) {
         return Response.json(
-          { error: "Search query parameter 'query' is required" },
+          { error: "Invalid page parameter" },
           { status: 400 }
         );
       }
       
-      const results = await this.customerService.searchCustomers(query, 5);
+      if (isNaN(pageSize) || pageSize < 1 || pageSize > 100) {
+        return Response.json(
+          { error: "Invalid pageSize parameter. Must be between 1 and 100" },
+          { status: 400 }
+        );
+      }
       
-      return Response.json(results);
+      const result = await this.customerService.searchCustomers(query, page, pageSize);
+      
+      return Response.json({
+        data: result.customersNames,
+        pagination: {
+          total: result.total,
+          page,
+          pageSize,
+          totalPages: Math.ceil(result.total / pageSize)
+        }
+      });
     } catch (error) {
       console.error("Search customers error:", error);
       return Response.json(

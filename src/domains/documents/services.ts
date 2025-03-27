@@ -369,20 +369,45 @@ export class DocumentService {
       });
   }
 
-  async searchImportNumbers(searchQuery: string): Promise<string[]> {
+  async searchImportNumbers(searchQuery: string, page: number = 1, pageSize: number = 10): Promise<{ importNumbers: string[]; total: number }> {
     return db
       .query(async () => {
-        if (!searchQuery || searchQuery.trim() === '') {
-          return [];
-        }
-
-        // Use ilike for case-insensitive partial matching
-        const { data, error } = await supabase
+        // Build base query for counting
+        let countQuery = supabase
+          .from("documents")
+          .select("count", { count: "exact", head: true })
+          .not("import_number", "is", null);
+          
+        // Only apply filter if query is not empty
+        const filteredCountQuery = searchQuery ? 
+          countQuery.ilike("import_number", `%${searchQuery}%`) : 
+          countQuery;
+        
+        // Get total count
+        const { count: total, error: countError } = await filteredCountQuery;
+        
+        if (countError) throw countError;
+        
+        // Build base query for data
+        let dataQuery = supabase
           .from("documents")
           .select("import_number")
           .not("import_number", "is", null)
-          .ilike("import_number", `%${searchQuery}%`)
           .order("import_number", { ascending: true });
+          
+        // If query is not empty, apply filter without pagination
+        // If query is empty, apply pagination without filter
+        let filteredDataQuery;
+        if (searchQuery) {
+          filteredDataQuery = dataQuery.ilike("import_number", `%${searchQuery}%`);
+        } else {
+          // Calculate offset based on page and pageSize
+          const offset = (page - 1) * pageSize;
+          filteredDataQuery = dataQuery.range(offset, offset + pageSize - 1);
+        }
+        
+        // Get results
+        const { data, error } = await filteredDataQuery;
 
         if (error) throw error;
         
@@ -394,14 +419,14 @@ export class DocumentService {
             value && self.indexOf(value) === index
           );
         
-        return importNumbers;
+        return { importNumbers, total: total || 0 };
       })
       .then((result) => {
         if (result.error) {
           console.error("Error searching import numbers:", result.error);
-          return [];
+          return { importNumbers: [], total: 0 };
         }
-        return result.data || [];
+        return result.data || { importNumbers: [], total: 0 };
       });
   }
 
@@ -591,6 +616,29 @@ export class DocumentService {
         } catch (error) {
           console.error("Import number update failed:", error);
           return null;
+        }
+      })
+      .then((result) => result.data || null);
+  }
+
+  async uploadDocumentToBucket(file: File): Promise<{ path: string; error?: string } | null> {
+    return db
+      .query(async () => {
+        try {
+          // Upload file to the document_files bucket
+          const { data, error } = await supabase.storage
+            .from("document_files")
+            .upload(file.name, file);
+
+          if (error) throw error;
+          
+          return { path: data.path };
+        } catch (error) {
+          console.error("Error uploading document:", error);
+          return { 
+            path: "", 
+            error: error instanceof Error ? error.message : String(error) 
+          };
         }
       })
       .then((result) => result.data || null);

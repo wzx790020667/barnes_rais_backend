@@ -14,7 +14,8 @@ const documentItemSchema = z.object({
   import_price: z.number().positive().nullable().optional(), // Validate as number but convert to string before DB insert
   engine_model: z.string().optional().nullable().optional(),
   engine_number: z.string().optional().nullable().optional(),
-  serial_number: z.string().optional().nullable().optional()
+  serial_number: z.string().optional().nullable().optional(),
+  page_numbers: z.array(z.string()).optional().nullable()
 });
 
 // Document schema validation
@@ -35,7 +36,8 @@ const createDocumentSchema = z.object({
   tsn: z.string().optional().nullable(),
   csn: z.string().optional().nullable(),
   customer_info_hash: z.string().optional(),
-  document_items: z.array(documentItemSchema).optional()
+  document_items: z.array(documentItemSchema).optional(),
+  page_texts: z.array(z.string()).optional().nullable()
 });
 
 // Import number update schema validation
@@ -311,6 +313,7 @@ export class DocumentController {
         tsn: validatedData.tsn || null,
         csn: validatedData.csn || null,
         status: "approved",
+        page_texts: validatedData.page_texts || null,
         scanned_time: new Date(),
         updated_at: new Date()
       };
@@ -323,7 +326,8 @@ export class DocumentController {
           import_price: (item.import_price !== null && !isUndefined(item.import_price))? String(item.import_price) : null,
           engine_model: isEmpty(item.engine_model) ? null : String(item.engine_model),
           engine_number: isEmpty(item.engine_number) ? null : String(item.engine_number),
-          serial_number: isEmpty(item.serial_number) ? null : String(item.serial_number)
+          serial_number: isEmpty(item.serial_number) ? null : String(item.serial_number),
+          page_numbers: item.page_numbers || null
         })) || [] as Omit<DocumentItem, "id">[];
       
       // Create document with items
@@ -497,17 +501,38 @@ export class DocumentController {
     try {
       const url = new URL(req.url);
       
-      // Get search query from URL query parameter
-      const query = url.searchParams.get("query");
+      // Get search query and pagination parameters
+      const query = url.searchParams.get("query") || "";
+      const page = parseInt(url.searchParams.get("page") || "1");
+      const pageSize = parseInt(url.searchParams.get("pageSize") || "10");
       
-      if (!query) {
-        return Response.json([]);
+      // Validate pagination parameters
+      if (isNaN(page) || page < 1) {
+        return Response.json(
+          { error: "Invalid page parameter" },
+          { status: 400 }
+        );
       }
       
-      // Search for import numbers matching the query
-      const importNumbers = await this.documentService.searchImportNumbers(query);
+      if (isNaN(pageSize) || pageSize < 1 || pageSize > 100) {
+        return Response.json(
+          { error: "Invalid pageSize parameter. Must be between 1 and 100" },
+          { status: 400 }
+        );
+      }
       
-      return Response.json(importNumbers);
+      // Search for import numbers matching the query with pagination
+      const result = await this.documentService.searchImportNumbers(query, page, pageSize);
+      
+      return Response.json({
+        data: result.importNumbers,
+        pagination: {
+          total: result.total,
+          page,
+          pageSize,
+          totalPages: Math.ceil(result.total / pageSize)
+        }
+      });
     } catch (error) {
       console.error("Search import numbers error:", error);
       return Response.json(
@@ -626,6 +651,49 @@ export class DocumentController {
       console.error("Document OCR error:", error);
       return Response.json(
         { error: "Failed to perform OCR on the document" },
+        { status: 500 }
+      );
+    }
+  }
+
+  async uploadDocumentToBucket(req: BunRequest): Promise<Response> {
+    try {
+      // Check if the request has a file
+      const formData = await req.formData();
+      const file = formData.get("file") as File;
+
+      if (!file) {
+        return Response.json(
+          { error: "No file provided" },
+          { status: 400 }
+        );
+      }
+
+      // Upload the file
+      const result = await this.documentService.uploadDocumentToBucket(file);
+
+      if (!result) {
+        return Response.json(
+          { error: "Failed to upload file" },
+          { status: 500 }
+        );
+      }
+
+      if (result.error) {
+        return Response.json(
+          { error: result.error },
+          { status: 500 }
+        );
+      }
+
+      return Response.json({
+        message: "File uploaded successfully",
+        path: result.path
+      });
+    } catch (error) {
+      console.error("Upload document error:", error);
+      return Response.json(
+        { error: "Failed to upload document" },
         { status: 500 }
       );
     }

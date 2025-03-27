@@ -1,0 +1,27 @@
+[
+  {
+    "engine_model_title": "CFM56",
+    "common_prefix": "CFM56",
+    "result_display": "CFM56"
+  },
+  {
+    "engine_model_title": "LEAP-1A",
+    "common_prefix": "LEAP-1A",
+    "result_display": "LEAP-1A"
+  },
+  {
+    "engine_model_title": "LEAP-1B",
+    "common_prefix": "LEAP-1B",
+    "result_display": "LEAP-1B"
+  },
+  {
+    "engine_model_title": "PW1100G",
+    "common_prefix": "PW1100G",
+    "result_display": "PW1100G"
+  },
+  {
+    "engine_model_title": "V2500",
+    "common_prefix": "V2500",
+    "result_display": "V2500"
+  }
+]

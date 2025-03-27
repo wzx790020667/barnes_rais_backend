@@ -3,6 +3,8 @@ import { EngineModelRuleService } from "../csvRules/services/EngineModelRuleServ
 import { PartNumberRuleService } from "../csvRules/services/PartNumberRuleService";
 import { WorkScopeRuleService } from "../csvRules/services/WorkScopeRuleService";
 import { CsvRecordService } from "./services";
+import { replaceByArcRule, replaceByEngineModelRule, replaceByPartNumberRule, replaceByWorkScopeRule } from "../csvRules/utils";
+import type { CsvRecord } from "../../db/schema";
 
 export class CsvRecordController {
     private csvRecordService: CsvRecordService;
@@ -32,13 +34,38 @@ export class CsvRecordController {
             const workScopeRulesReq = this.workScopeRuleService.getWorkScopeRules();
             const partNumberRulesReq = this.partNumberRulesService.getPartNumberRules();
             
-            const [arcRules, engineModelRules, workScopeRules, partNumberRules] = await Promise.all([
+            const [arcRulesRes, engineModelRulesRes, workScopeRulesRes, partNumberRulesRes] = await Promise.all([
                 arcRulesReq,
                 engineModelRulesReq,
                 workScopeRulesReq,
                 partNumberRulesReq
             ]);
+
+            // Extract rules arrays from responses
+            const arcRules = arcRulesRes.arcRules || [];
+            const engineModelRules = engineModelRulesRes.engineModelRules || [];
+            const workScopeRules = workScopeRulesRes.workScopeRules || [];
+            const partNumberRules = partNumberRulesRes.partNumberRules || [];
             
+            // Apply all rules to each record
+            records.map(record => {
+                // Apply each type of rule
+                for (const rule of arcRules) {
+                    replaceByArcRule(rule, record);
+                }
+
+                for (const rule of engineModelRules) {
+                    replaceByEngineModelRule(rule, record);
+                }
+
+                for (const rule of workScopeRules) {
+                    replaceByWorkScopeRule(rule, record);
+                }
+
+                for (const rule of partNumberRules) {
+                    replaceByPartNumberRule(rule, record);
+                }
+            });
 
             return Response.json(records);
         } catch (error) {

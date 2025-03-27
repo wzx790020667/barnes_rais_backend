@@ -146,19 +146,43 @@ export class CustomerService {
       .then((result) => result.error ? false : true);
   }
 
-  async searchCustomers(query: string, limit: number = 5): Promise<string[]> {
+  async searchCustomers(query: string, page: number = 1, pageSize: number = 10): Promise<{ customersNames: string[]; total: number }> {
     return db
       .query(async () => {
-        const { data, error } = await supabase
+        // Get total count first
+        const countQuery = supabase.from("customers").select("*", { count: "exact", head: true });
+        // Only apply filter if query is not empty
+        const filteredCountQuery = query ? countQuery.like("customer_name", `%${query}%`) : countQuery;
+        const { count: total, error: countError } = await filteredCountQuery;
+          
+        if (countError) throw countError;
+        
+        // Build the data query
+        const dataQuery = supabase
           .from("customers")
           .select("*")
-          .ilike("customer_name", `%${query}%`)
-          .limit(limit);
+          .order("customer_name", { ascending: true });
+          
+        // If query is not empty, apply filter without pagination
+        // If query is empty, apply pagination without filter
+        let filteredDataQuery;
+        if (query) {
+          filteredDataQuery = dataQuery.like("customer_name", `%${query}%`);
+        } else {
+          // Calculate offset based on page and pageSize
+          const offset = (page - 1) * pageSize;
+          filteredDataQuery = dataQuery.range(offset, offset + pageSize - 1);
+        }
+        
+        const { data, error } = await filteredDataQuery;
 
         if (error) throw error;
-        return data.map(customer => customer.customer_name) as string[];
+
+        const customerNames = data.map(customer => customer.customer_name);
+        console.log("customerNames", customerNames);
+        return { customersNames: customerNames, total: total || 0 };
       })
-      .then((result) => result.data || []);
+      .then((result) => result.data || { customersNames: [], total: 0 });
   }
 
   async getCustomerByName(customerName: string): Promise<Customer | null> {

@@ -124,6 +124,9 @@ serve({
     "/api/documents/bucket/batch": {
       POST: async (req) => addCorsHeaders(await documentController.getDocumentsFromBucket(req)),
     },
+    "/api/documents/bucket/upload": {
+      POST: async (req) => addCorsHeaders(await documentController.uploadDocumentToBucket(req)),
+    },
     "/api/documents/:id/import-number": {
       PATCH: async (req) => addCorsHeaders(await documentController.addImportNumber(req)),
     },

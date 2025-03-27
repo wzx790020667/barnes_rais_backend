@@ -8,7 +8,8 @@
     "build": "bun build src/index.ts --outdir dist",
     "test": "bun test",
     "supabase:start": "bunx supabase start",
-    "schema:push": "bunx drizzle-kit push"
+    "schema:push": "bunx drizzle-kit push",
+    "db:seed": "bun run src/db/seeds/index.ts"
   },
   "devDependencies": {
     "@types/bun": "latest",
@@ -26,6 +27,7 @@
     "axios": "^1.8.3",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.40.1",
+    "drizzle-seed": "^0.3.1",
     "elysia": "^1.2.25",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",

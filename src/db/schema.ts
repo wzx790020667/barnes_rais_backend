@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { integer, numeric, pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import { integer, numeric, pgTable, timestamp, uuid, varchar, json } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -41,6 +41,7 @@ export const documents = pgTable("documents", {
   receive_date: timestamp("receive_date"),
   tsn: varchar({ length: 255 }),
   csn: varchar({ length: 255 }),
+  page_texts: json("page_texts"),
   created_at: timestamp("created_at").defaultNow(),
   updated_at: timestamp("updated_at").defaultNow(),
 });
@@ -54,6 +55,7 @@ export const document_items = pgTable("document_items", {
   engine_model: varchar({ length: 255 }),
   engine_number: varchar({ length: 255 }),
   serial_number: varchar({ length: 255 }),
+  page_numbers: json("page_numbers"),
 });
 
 export const arc_rules = pgTable("arc_rules", {

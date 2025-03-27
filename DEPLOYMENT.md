@@ -188,7 +188,7 @@ cp .env.example .env
 nano .env
 ```
 
-### 5. Run Database Migration (First-time Deployment)
+### 5. Run Database Migration & Seeding (First-time Deployment)
 
 This command will setup the database schema, tables that uses by Supabase.
 
@@ -204,10 +204,38 @@ docker-db-migration-1  | [✓] Changes applied
 docker-db-migration-1 exited with code 0
 ```
 
+#### 5.1 DB Data seeding
+
+You need the seeding step to pre-populate some existing data into the database. This will create default users and rule sets for the application.
+
+```bash
+# Run the database seeding process
+docker compose -f seed.yml --env-file .env up --build
+```
+
+If you see something like below logs, the database seeding completed successfully:
+
+```bash
+docker-db-seed-1  | 🌱 Starting database seeding...
+docker-db-seed-1  | Seeding users...
+docker-db-seed-1  | Users seeded successfully!
+docker-db-seed-1  | Seeding ARC rules...
+docker-db-seed-1  | ARC rules seeded successfully!
+docker-db-seed-1  | Seeding engine model rules...
+docker-db-seed-1  | ✅ Database seeding completed successfully!
+docker-db-seed-1 exited with code 0
+```
+
 ### 6. Setup Supabase buckets for external file managements
 
 Open this link on the broswer, http://`<YOUR_SERVER_IP_ADDRESS>`:8000/project/default/storage/buckets. You would see the Supabase storage management console, where you can create buckets that needed for file managements by Barnes Rais Backend.
 where the YOUR_SERVER_IP_ADDRESS is your server IP.
+
+If you enter the Supabase console at the first time, you need an account and password to login Supabase. Use below account for Supabase console login.
+
+Account: `supabase`
+
+Password: `this_password_is_insecure_and_should_be_updated`
 
 #### 6.1. Create a bucket named document_files as shown in the image.
 
@@ -230,6 +258,16 @@ After the bucket is created, we need to set the policies for this bucket.
 ```bash
 # Buckets list that needs to be created
 document_files
+```
+
+#### 6.4. Upload files to the bucket from Barnes Rais Backend (Optional)
+
+Curl example:
+
+```bash
+# Curl command of file uploading to the bucket (document_files).
+curl --location --request POST 'http://<YOUR_SERVER_IP_ADDRESS>:3001/api/documents/bucket/upload' \
+--form 'file=@"/path/to/po_forms_merged_01.pdf"'
 ```
 
 ### 7. Start the Server

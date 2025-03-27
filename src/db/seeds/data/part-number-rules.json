@@ -1,0 +1,22 @@
+[
+  {
+    "part_number": "305-123-456-0",
+    "product_code": "BLADE"
+  },
+  {
+    "part_number": "306-234-567-0",
+    "product_code": "VANE"
+  },
+  {
+    "part_number": "307-345-678-0",
+    "product_code": "DISK"
+  },
+  {
+    "part_number": "308-456-789-0",
+    "product_code": "SHAFT"
+  },
+  {
+    "part_number": "309-567-890-0",
+    "product_code": "COMBUSTOR"
+  }
+]

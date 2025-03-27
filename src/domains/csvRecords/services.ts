@@ -106,7 +106,7 @@ export class CsvRecordService {
 
         if (error) throw error;
 
-        return data;
+        return data as CsvRecord[];
     }
 
     async markAsExported(csvRecords: CsvRecord[]) {

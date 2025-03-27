@@ -1,0 +1,22 @@
+[
+  {
+    "arc_appearance": "ARC-8130",
+    "result_display": "ARC-8130"
+  },
+  {
+    "arc_appearance": "8130",
+    "result_display": "ARC-8130"
+  },
+  {
+    "arc_appearance": "FORM 8130",
+    "result_display": "ARC-8130"
+  },
+  {
+    "arc_appearance": "EASA FORM 1",
+    "result_display": "EASA-1"
+  },
+  {
+    "arc_appearance": "EASA-1",
+    "result_display": "EASA-1"
+  }
+]
