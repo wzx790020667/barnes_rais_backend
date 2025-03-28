@@ -10,8 +10,8 @@ import type { BunRequest } from "bun";
 const documentItemSchema = z.object({
   document_id: z.string(),
   part_number: z.string(),
-  quantity_ordered: z.number().int().min(0),
-  import_price: z.number().positive().nullable().optional(), // Validate as number but convert to string before DB insert
+  quantity_ordered: z.string().optional(),
+  import_price: z.string().nullable().optional(), // Validate as number but convert to string before DB insert
   engine_model: z.string().optional().nullable().optional(),
   engine_number: z.string().optional().nullable().optional(),
   serial_number: z.string().optional().nullable().optional(),
@@ -322,8 +322,8 @@ export class DocumentController {
       const documentItems = validatedData.document_items?.map(item => ({
           document_id: validatedData.id,
           part_number: item.part_number,
-          quantity_ordered: item.quantity_ordered,
-          import_price: (item.import_price !== null && !isUndefined(item.import_price))? String(item.import_price) : null,
+          quantity_ordered: item.quantity_ordered || null,
+          import_price: item.import_price || null,
           engine_model: isEmpty(item.engine_model) ? null : String(item.engine_model),
           engine_number: isEmpty(item.engine_number) ? null : String(item.engine_number),
           serial_number: isEmpty(item.serial_number) ? null : String(item.serial_number),

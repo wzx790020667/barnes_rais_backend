@@ -179,7 +179,6 @@ export class CustomerService {
         if (error) throw error;
 
         const customerNames = data.map(customer => customer.customer_name);
-        console.log("customerNames", customerNames);
         return { customersNames: customerNames, total: total || 0 };
       })
       .then((result) => result.data || { customersNames: [], total: 0 });
