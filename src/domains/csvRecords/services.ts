@@ -102,7 +102,6 @@ export class CsvRecordService {
         }
         
         const {data, error} = await query;
-        console.log("csvRecords", data);
 
         if (error) throw error;
 
