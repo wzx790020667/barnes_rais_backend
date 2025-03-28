@@ -9,15 +9,11 @@ const createCustomerSchema = z.object({
   co_code: z.string().optional(),
   document_type: z.string(),
   file_format: z.string(),
-  finished_doc: z.number().optional().default(0),
   customer_info_hash: z.string().optional()
 });
 
 // For updates, all fields are optional
 const updateCustomerSchema = createCustomerSchema.partial();
-
-type CreateCustomerInput = z.infer<typeof createCustomerSchema>;
-type UpdateCustomerInput = z.infer<typeof updateCustomerSchema>;
 
 export class CustomerController {
   private customerService: CustomerService;

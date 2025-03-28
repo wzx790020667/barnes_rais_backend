@@ -97,7 +97,7 @@ export class CustomerService {
   }
 
   async createCustomer(
-    customer: Omit<Customer, "id" | "createdAt" | "updatedAt">
+    customer: Omit<Customer, "id" | "createdAt" | "updatedAt" | "finished_doc">
   ): Promise<Customer | null> {
     return db
       .query(async () => {

@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { integer, numeric, pgTable, timestamp, uuid, varchar, json } from "drizzle-orm/pg-core";
+import { pgTable, timestamp, uuid, varchar, json } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -105,8 +105,8 @@ export const csv_records = pgTable("csv_records", {
   CUST_NAME: varchar({ length: 255 }),
   item: varchar({ length: 255 }),
   ser_num: varchar({ length: 255 }),
-  import_price: numeric("import_price", { precision: 10, scale: 2 }),
-  qty_ordered: integer("qty_ordered"),
+  import_price: varchar({ length: 255 }),
+  qty_ordered: varchar({ length: 255 }),
   engine_model: varchar({ length: 255 }),
   engine_num: varchar({ length: 255 }),
   cust_num: varchar({ length: 255 }),

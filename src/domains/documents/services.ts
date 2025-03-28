@@ -376,7 +376,8 @@ export class DocumentService {
         let countQuery = supabase
           .from("documents")
           .select("count", { count: "exact", head: true })
-          .not("import_number", "is", null);
+          .not("import_number", "is", null)
+          .eq("document_type", "import_declaration");
           
         // Only apply filter if query is not empty
         const filteredCountQuery = searchQuery ? 
@@ -393,6 +394,7 @@ export class DocumentService {
           .from("documents")
           .select("import_number")
           .not("import_number", "is", null)
+          .eq("document_type", "import_declaration")
           .order("import_number", { ascending: true });
           
         // If query is not empty, apply filter without pagination
@@ -418,6 +420,7 @@ export class DocumentService {
             // Remove duplicates
             value && self.indexOf(value) === index
           );
+
         
         return { importNumbers, total: total || 0 };
       })
