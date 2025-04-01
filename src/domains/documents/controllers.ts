@@ -5,6 +5,7 @@ import {isEmpty, isUndefined} from "lodash";
 import { CsvRecordService } from "../csvRecords/services";
 import { generateCustomerInfoHash } from "../../lib/utils";
 import type { BunRequest } from "bun";
+import { AI_SERVICE_CONFIG } from "../../config";
 
 // Document item schema validation
 const documentItemSchema = z.object({
@@ -569,9 +570,9 @@ export class DocumentController {
       const forwardFormData = new FormData();
       forwardFormData.append('pdf', pdfFile);
       forwardFormData.append('get_ocr', 'true');
-      
+            
       // Forward the request to the external endpoint
-      const response = await fetch('http://192.168.11.130:5000/api/pdf_to_images', {
+      const response = await fetch(`${AI_SERVICE_CONFIG.URL}/api/pdf_to_images`, {
         method: 'POST',
         body: forwardFormData,
       });
@@ -629,7 +630,7 @@ export class DocumentController {
       forwardFormData.append('image_file', imageFile);
       
       // Forward the request to the external OCR endpoint
-      const response = await fetch('http://192.168.11.130:5000/api/image_ocr', {
+      const response = await fetch(`${AI_SERVICE_CONFIG.URL}/api/image_ocr`, {
         method: 'POST',
         body: forwardFormData,
       });

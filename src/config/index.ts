@@ -30,3 +30,8 @@ export const DB_CONFIG = {
   SUPABASE_URL: process.env.SUPABASE_URL,
   SUPABASE_KEY: process.env.SUPABASE_KEY,
 };
+
+// AI Service configuration
+export const AI_SERVICE_CONFIG = {
+  URL: process.env.AI_SERVICE_URL || "http://localhost:5000",
+};
