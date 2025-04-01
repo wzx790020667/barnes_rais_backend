@@ -346,8 +346,10 @@ export class DocumentController {
       }
 
       // Create a csv record for the document
-      await this.csvRecordService.createCsvRecords(updatedDocument.document);
-
+      if (updatedDocument.document.document_type === "purchase_order") {
+        await this.csvRecordService.createCsvRecords(updatedDocument.document);
+      }
+      
       return Response.json(updatedDocument, { status: 200 });
     } catch (error) {
       console.error("Create document error:", error);

@@ -9,6 +9,28 @@ export class CsvRecordService {
     async createCsvRecords(document: Document) {
         const documentType = document.document_type;
 
+        const importDocumentWithItems = await db.query(async () => {
+            const {data, error} = await supabase.from("documents")
+                .select("*, document_items(*)")
+                .eq("import_number", document.import_number)
+                .eq("document_type", "import_declaration")
+                .single();
+
+            if (error) throw error;
+
+            return {
+                document: data as Document,
+                items: (data?.document_items || []) as DocumentItem[]
+            };
+        }).then(result => result.data || null);
+
+        const findImportPriceByPartNumber = (partNumber: string | null) => {
+            if (!partNumber) return null;
+            const importItems = importDocumentWithItems?.items;
+            const importItem = importItems?.find(item => item.part_number === partNumber);
+            return importItem?.import_price || null;
+        }
+
         const documentWithItems = await db.query(async () => {
             // Fetch the document with its associated items in a single query
             const { data, error } = await supabase
@@ -46,10 +68,10 @@ export class CsvRecordService {
                 CO_PREFIX: null,
                 PRODUCT_CODE: null,
                 CUST_CODE: documentWithItems.document.co_code,
-                CUST_NAME: documentWithItems.document.customer_name,
+                CUST_NAME: importDocumentWithItems?.document.customer_name || null,
                 item: item.part_number,
                 ser_num: item.serial_number,
-                import_price: item.import_price,
+                import_price: findImportPriceByPartNumber(item.part_number),
                 qty_ordered: item.quantity_ordered,
                 engine_model: item.engine_model,
                 engine_num: item.engine_number,
