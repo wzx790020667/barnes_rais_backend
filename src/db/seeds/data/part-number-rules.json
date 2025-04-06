@@ -1,22 +1,5326 @@
 [
   {
-    "part_number": "305-123-456-0",
-    "product_code": "BLADE"
+    "part_number": "1B7838-021",
+    "product_code": ""
   },
   {
-    "part_number": "306-234-567-0",
-    "product_code": "VANE"
+    "part_number": "4082994-01",
+    "product_code": "RO"
   },
   {
-    "part_number": "307-345-678-0",
-    "product_code": "DISK"
+    "part_number": 4067621,
+    "product_code": "RO"
   },
   {
-    "part_number": "308-456-789-0",
-    "product_code": "SHAFT"
+    "part_number": 4082986,
+    "product_code": "RO"
   },
   {
-    "part_number": "309-567-890-0",
-    "product_code": "COMBUSTOR"
+    "part_number": "9374M15G07",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9374M15G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9374M15G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9526M65G19",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1531M27G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1531M27G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "52H191-004",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "53H491-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "55H091-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "55H191-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "55H491-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "55H991-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "56H191-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "52H191-001",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "52H191-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "52H191-005",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "52H191-003",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "55H083-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "55H083-001",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "52H383-001",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "56H683-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "55H083-004",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "55H083-005",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "55H183-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "56H283-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "56H883-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "56H983-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "57H283-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "50J685-001",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "52J085-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "50J685",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "51J885-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "51J685-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "51J385-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "51J285-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "51J285-001",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "51J385-001",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "51J685",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "51J057-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "9379M41G05",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "6A3464",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "6A7727",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "9379M42G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1639M36G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1473M53G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1639M36G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "6A3467",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "6A7719",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "6B1156",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1473M54G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1639M37G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1639M37G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "6A1093",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "6A1427",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "6A3469",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "6A7561",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "6B1175",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1473M55G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1639M38G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1639M38G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "6A3471",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "6A7563",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "6B1158",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "52H031",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "56H855-001",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "51H986-002",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "52H131-01",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "53H555-01",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "54H646-01",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "55H255-01",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "56H855-01",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "50S055-002",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "50S055-001",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "50S055-01",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "55H255-001",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "51H931",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "58H055",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "53H485-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "53H585-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "52H185-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "51H385-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "51H385-001",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "58H375-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "58H475-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "54H385-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "54H826-01",
+    "product_code": "SG"
+  },
+  {
+    "part_number": "54H827-01",
+    "product_code": "SG"
+  },
+  {
+    "part_number": "50S743-01",
+    "product_code": "SG"
+  },
+  {
+    "part_number": "50S744-01",
+    "product_code": "SG"
+  },
+  {
+    "part_number": "1473M56G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1639M39G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1639M39G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1474M80G07",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "58H486-002",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "58H486-001",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "58H486-01",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "51H986-004",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "53H286-003",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "51H986-003",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "51H086",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "53H286-01",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "51H986-01",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "54H647-01",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "54H086-01",
+    "product_code": "OS"
+  },
+  {
+    "part_number": "51H586-001",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "58H376-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "58H476-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "51H486",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "54H286-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "54H786-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "54H386-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "53H586-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "51H586-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "54H828-01",
+    "product_code": "SG"
+  },
+  {
+    "part_number": "54H829-01",
+    "product_code": "SG"
+  },
+  {
+    "part_number": "50S694-01",
+    "product_code": "SG"
+  },
+  {
+    "part_number": "50S696-01",
+    "product_code": "SG"
+  },
+  {
+    "part_number": "51H487",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "53H487-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "53H687-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "54H387-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "52H287-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "51H387-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "51H387-001",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "58H377-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "58H477-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "54H830-01",
+    "product_code": "SG"
+  },
+  {
+    "part_number": "54H831-01",
+    "product_code": "SG"
+  },
+  {
+    "part_number": "50S697-01",
+    "product_code": "SG"
+  },
+  {
+    "part_number": "50S698-01",
+    "product_code": "SG"
+  },
+  {
+    "part_number": "54H288-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "52H288-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "53H688-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "54H898-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "54H088-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "51H488",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "56H519-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "56H499-001",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "56H489-001",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "52H689-005",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "54H389-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "54H889-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "52H489-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "54H489-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "56H499-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "55H389-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "55H789-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "56H289-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "56H489-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "9392M93G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "6A3556",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A3655",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A3390",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "5A1710",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "5A1753",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "5A1854",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "5A1750",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "5A1611",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "9374M37G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9374M37G05",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "KH21092",
+    "product_code": "RB"
+  },
+  {
+    "part_number": "KH21093",
+    "product_code": "RB"
+  },
+  {
+    "part_number": "KH21625",
+    "product_code": "RB"
+  },
+  {
+    "part_number": "KH22073",
+    "product_code": "RB"
+  },
+  {
+    "part_number": "KH22074",
+    "product_code": "RB"
+  },
+  {
+    "part_number": "KH22075",
+    "product_code": "RB"
+  },
+  {
+    "part_number": "KH22076",
+    "product_code": "RB"
+  },
+  {
+    "part_number": "KH21627",
+    "product_code": "RB"
+  },
+  {
+    "part_number": "KH21624",
+    "product_code": "RB"
+  },
+  {
+    "part_number": "KH21626",
+    "product_code": "RB"
+  },
+  {
+    "part_number": "KH21090",
+    "product_code": "RB"
+  },
+  {
+    "part_number": "KH21091",
+    "product_code": "RB"
+  },
+  {
+    "part_number": "1347M28G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1338M82G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1347M28G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1338M39G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1644M21P04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1644M21P05",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9380M26P02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9380M26P03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9380M26P05",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9380M26P06",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9380M27P03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9380M27P04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9380M27P07",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9380M27P08",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1669M96P03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1375M10P03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9380M50P05",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9380M50P02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1375M10P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1669M96P02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1370M55P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9392M52P02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9392M52P03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1292M32P02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1646M19P02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9272M21P10",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2047M10P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1663M25P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1327M73P02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1327M72G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1863M21P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9373M51P04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9373M51P06",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9373M51P03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9373M51P05",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9373M51P07",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1375M62P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1380M37P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9397M96P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9373M82G13",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9373M82G14",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9373M82G11",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1822M66G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9395M45G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1474M80G08",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1474M80G09",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1862M62G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2092M11G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1474M80G05",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9382M55G15",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1474M80G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "P244G08",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P245G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P245G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P245G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P245G04",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P264G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P264G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P264G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P264G04",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P264G05",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P264G06",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P264G07",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P264G08",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P265G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P265G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P265G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P265G04",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P265G05",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P265G06",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P265G07",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P265G08",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P244G05",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P244G06",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P244G07",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1834M94G04",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1834M94G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1834M94G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1834M94G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P256G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P256G04",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P256G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P256G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P206G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P206G04",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P206G05",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P206G06",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P206G07",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P206G08",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P246G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P246G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P246G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P246G04",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P246G09",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P256G05",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P256G06",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P256G07",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P256G08",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P207G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P207G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P207G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P248G04",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P258G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P258G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P258G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M17G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M17G04",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M18G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M18G04",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M18G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M16G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M16G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M16G04",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M17G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M17G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M18G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M16G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P207G04",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P207G05",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P206G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P207G06",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P207G07",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P207G08",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P247G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P247G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P247G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P247G04",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P247G09",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P208G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P208G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P208G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P208G04",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P208G05",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P208G06",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P248G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P248G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P248G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P206G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P257G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P257G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P257G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "P257G04",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "9978M69G40",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "9978M69G43",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "9978M69G50",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "9978M69G52",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "9978M69G41",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "9978M69G44",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "9978M69G51",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "9978M69G53",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2564M19G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2564M19G04",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1277M90G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1277M90G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "9978M69G54",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "9978M69G55",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2564M15G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2564M15G04",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M27G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M27G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M27G06",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M27G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M27G04",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2564M15G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M14G05",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M14G06",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M14G07",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M14G08",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M15G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M15G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M15G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1559M15G04",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1523M37P02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1523M37P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "338-112-704-0",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "338-112-708-0",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "338-112-706-0",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "338-112-707-0",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "338-112-709-0",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "338-112-705-0",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "338-112-803-0",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "338-112-804-0",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "338-112-805-0",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "338-121-602-0",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "KH38104",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "9385M68G10",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9385M68G06",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1669M77G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1669M77G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9385M26G07",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9385M26G08",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9385M26G10",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9385M26G11",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "340-082-501-0",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "340-084-201-0",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "340-084-302-0",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "340-116-401-0",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1347M15G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1347M16G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1347M16G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1703M40G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1703M40G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1703M40G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1509M93G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1509M93G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1509M93G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1509M93G07",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1509M93G08",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1509M93G09",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1536M41G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1536M41G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1536M41G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1536M42G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1536M42G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1536M42G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1536M43G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1536M43G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1536M43G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1347M14G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1347M14G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1347M15G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2445M58P02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2303M28P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2799M15P02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2799M13P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2303M28P02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2445M58P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2771M83P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2799M13P02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2799M15P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1694M38G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1694M38G05",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2305M49P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2209M16P02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1767M23P02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1767M23P03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2209M16P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2032M39G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1844M18G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1804M74P05",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1709M29P05",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1709M29P03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2087M29P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2081M61G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2402M48G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1893M54G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1893M54G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1893M56G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2081M62G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1893M53G06",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2402M49G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1893M56G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1893M55G05",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1893M51G06",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1893M53G05",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1893M52G06",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1893M55G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2694M62G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2702M46G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2702M46G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1893M52G05",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1963M11P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1685M31P02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1686M12P02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2139M90P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1686M24P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1686M24P02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1963M95P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1893M54G05",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1893M51G08",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1893M51G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1893M51G07",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1893M52G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1893M52G07",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1893M53G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1893M53G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1893M53G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2009M41G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2307M53G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2307M53G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2361M18G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2361M18G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2307M56G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2361M22G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2361M22G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2307M53G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2307M53G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2307M56G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2307M56G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2307M56G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2307M58G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2307M58G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2361M26G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2312M66P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "6A4177",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6B1434",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A5624",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A6550",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A5438",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A4526",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A6512",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A4164",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A7531",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A4328",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A6551",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6B1435",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A4297",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A6552",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6B1436",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A4166",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A4569",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A7019",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6B1430",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A6540",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A7577",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A5995",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A4161",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A7623",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A6548",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A7578",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A4324",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6B1432",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A7529",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A7624",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A4162",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A7625",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A5996",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A6549",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A4326",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6B1433",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A6511",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A4163",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "1668M61G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1668M61G05",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1808M15G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1808M15G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1808M15G05",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1808M15G06",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1808M15G12",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1808M15G13",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1808M15G16",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1893M96G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1893M96G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2071M27G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2071M27G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2071M28G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2071M28G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2071M28G04",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2071M28G05",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2071M28G09",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2071M28G10",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2131M81G05",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2131M81G06",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2131M82G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1668M61G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1808M15G07",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1808M15G08",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2071M28G06",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2071M28G07",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1778M67P05",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1327M35G03",
+    "product_code": ""
+  },
+  {
+    "part_number": "1646M97P02",
+    "product_code": ""
+  },
+  {
+    "part_number": "9392M90G05",
+    "product_code": ""
+  },
+  {
+    "part_number": "9392M90G06",
+    "product_code": ""
+  },
+  {
+    "part_number": "9392M90G07",
+    "product_code": ""
+  },
+  {
+    "part_number": "9392M90G08",
+    "product_code": ""
+  },
+  {
+    "part_number": "9392M90G09",
+    "product_code": ""
+  },
+  {
+    "part_number": "9392M90G10",
+    "product_code": ""
+  },
+  {
+    "part_number": "1822M65G01",
+    "product_code": ""
+  },
+  {
+    "part_number": "1822M65G02",
+    "product_code": ""
+  },
+  {
+    "part_number": "1822M65G03",
+    "product_code": ""
+  },
+  {
+    "part_number": "KH56283",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "KH56784",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "50S670-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "50S770-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "50S885-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "50S985-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "50S685-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "50S785-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "50S886-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "50S986-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "50S686-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "50S786-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "50S687-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "50S787-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "50S887-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "50S987-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1782M21P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2383M96G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "6A4348",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A7470",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A4349",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A7471",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A7573",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A4723",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A5994",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A7576",
+    "product_code": "RP"
+  },
+  {
+    "part_number": "6A4447",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1668M93G02",
+    "product_code": "HT"
+  },
+  {
+    "part_number": "1668M93G01",
+    "product_code": "HT"
+  },
+  {
+    "part_number": "2071M29G01",
+    "product_code": "HT"
+  },
+  {
+    "part_number": "2071M29G02",
+    "product_code": "HT"
+  },
+  {
+    "part_number": "2071M29G03",
+    "product_code": "HT"
+  },
+  {
+    "part_number": "KH38111",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "1865M45P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1646M73G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1646M73G05",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1647M50G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1647M50G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1647M50G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1814M10G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1814M10G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1814M10G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1815M91G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9381M61G05",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9381M61G06",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9381M61G07",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9381M61G08",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9381M61G09",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1475M30G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1475M30G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "51H470-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "51H470-001",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "51H270",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "54H870-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "54H970-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "58H470-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "58H570-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "54H774-01",
+    "product_code": "SG"
+  },
+  {
+    "part_number": "54H775-01",
+    "product_code": "SG"
+  },
+  {
+    "part_number": "50S741-01",
+    "product_code": "SG"
+  },
+  {
+    "part_number": "50S742-01",
+    "product_code": "SG"
+  },
+  {
+    "part_number": "50K601",
+    "product_code": ""
+  },
+  {
+    "part_number": "51K103",
+    "product_code": ""
+  },
+  {
+    "part_number": "KH28638",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "3091758-1",
+    "product_code": ""
+  },
+  {
+    "part_number": "9382M59P10",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "KH64009",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "338-003-106-0",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "338-003-505-0",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "338-003-509-0",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2360M69G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2360M69G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2419M65G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2419M65G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2419M65G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2419M65G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2333M91G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2333M91G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2497M95G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2497M95G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2264M85G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2264M85G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2419M63G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2419M63G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "5A0458",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "5A1864",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "5A1385",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "5A1662",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "5W2198",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "5W2196",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "5A0436",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "5A0433",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "5A1412",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "5R0168",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "5R0195",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "5R0097",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "5R0189",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "KH60875",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "KH60555",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "KH60556",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "KH60557",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "3A1907",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "2347M18G04",
+    "product_code": ""
+  },
+  {
+    "part_number": "2347M18G03",
+    "product_code": ""
+  },
+  {
+    "part_number": "2347M22G03",
+    "product_code": ""
+  },
+  {
+    "part_number": "FW72279",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "KH50340",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "KH50341",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "KH50342",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "FW55213",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "LV33711",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FW39039",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FW38556",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "1474M80G10",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9373M62P03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9373M63P03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9373M64P03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9373M64P02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1646M78P02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1646M79P02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1639M32P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9374M29G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1292M77G06",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1539M73G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1539M73G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1292M77G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1292M77G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1292M77G05",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1370M54G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "53H367",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "50H100",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1370M54G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9392M48G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9283M13P02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1322M99G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1322M99G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2322M32P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": 23065487,
+    "product_code": ""
+  },
+  {
+    "part_number": "50J997",
+    "product_code": ""
+  },
+  {
+    "part_number": "50J674",
+    "product_code": ""
+  },
+  {
+    "part_number": "52J203",
+    "product_code": ""
+  },
+  {
+    "part_number": "51J208",
+    "product_code": ""
+  },
+  {
+    "part_number": "51J301",
+    "product_code": ""
+  },
+  {
+    "part_number": "51J106",
+    "product_code": ""
+  },
+  {
+    "part_number": 23065488,
+    "product_code": ""
+  },
+  {
+    "part_number": 3007077,
+    "product_code": ""
+  },
+  {
+    "part_number": "3076823-01",
+    "product_code": ""
+  },
+  {
+    "part_number": 3010177,
+    "product_code": ""
+  },
+  {
+    "part_number": 3021763,
+    "product_code": ""
+  },
+  {
+    "part_number": 3021182,
+    "product_code": ""
+  },
+  {
+    "part_number": "3079943-01",
+    "product_code": ""
+  },
+  {
+    "part_number": 3027799,
+    "product_code": ""
+  },
+  {
+    "part_number": 3037090,
+    "product_code": ""
+  },
+  {
+    "part_number": "3041175CL",
+    "product_code": ""
+  },
+  {
+    "part_number": "3078091-01",
+    "product_code": ""
+  },
+  {
+    "part_number": 3043207,
+    "product_code": ""
+  },
+  {
+    "part_number": "3108674-01",
+    "product_code": ""
+  },
+  {
+    "part_number": "3109088-01",
+    "product_code": ""
+  },
+  {
+    "part_number": "3056932-01",
+    "product_code": ""
+  },
+  {
+    "part_number": 3024261,
+    "product_code": ""
+  },
+  {
+    "part_number": "3073652-01",
+    "product_code": ""
+  },
+  {
+    "part_number": "3101763-01",
+    "product_code": ""
+  },
+  {
+    "part_number": 3006861,
+    "product_code": ""
+  },
+  {
+    "part_number": "3076852-01",
+    "product_code": ""
+  },
+  {
+    "part_number": 3006862,
+    "product_code": ""
+  },
+  {
+    "part_number": "3076912-01",
+    "product_code": ""
+  },
+  {
+    "part_number": 3006863,
+    "product_code": ""
+  },
+  {
+    "part_number": "3079942-01",
+    "product_code": ""
+  },
+  {
+    "part_number": "3059721-01",
+    "product_code": ""
+  },
+  {
+    "part_number": "3076854-01",
+    "product_code": ""
+  },
+  {
+    "part_number": "3073661-01",
+    "product_code": ""
+  },
+  {
+    "part_number": "3077354-01",
+    "product_code": ""
+  },
+  {
+    "part_number": "3075881-01",
+    "product_code": ""
+  },
+  {
+    "part_number": "3076861-01",
+    "product_code": ""
+  },
+  {
+    "part_number": "3079944-01",
+    "product_code": ""
+  },
+  {
+    "part_number": "3076211-01",
+    "product_code": ""
+  },
+  {
+    "part_number": "3078094-01",
+    "product_code": ""
+  },
+  {
+    "part_number": "3079941-01",
+    "product_code": ""
+  },
+  {
+    "part_number": "3124311-01",
+    "product_code": ""
+  },
+  {
+    "part_number": "3124392-01",
+    "product_code": ""
+  },
+  {
+    "part_number": "3079121-01",
+    "product_code": ""
+  },
+  {
+    "part_number": "3079122-01",
+    "product_code": ""
+  },
+  {
+    "part_number": "3129051-01",
+    "product_code": ""
+  },
+  {
+    "part_number": 3010660,
+    "product_code": ""
+  },
+  {
+    "part_number": "3078092-01",
+    "product_code": ""
+  },
+  {
+    "part_number": 3134431,
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3118471-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3030661,
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3013661,
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3043831-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3108761-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3073221-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3102061-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3104361-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3056871-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3079101-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3109461-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3118161-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3024361,
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3102561-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3102761-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3106861-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3011161,
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3106961-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3011961,
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3107061-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3054881-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3121171-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3017761,
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3078311-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3013761,
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3010161,
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3014761,
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3013161,
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3043821-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3019461,
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3012461,
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3119071-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3126991-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3119991-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3118482-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3106862-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3013662,
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3043822-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3108762-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3021162,
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3079062-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3106962-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3109462-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3113462-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3010462,
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3011162,
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3011962,
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3017762,
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3102062-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3010162,
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3014762,
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3104362-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3118472-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3119072-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3119992-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3075663-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3118483-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3121253-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3107063-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3013663,
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3043833-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3017763,
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3076903-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3026563,
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3102563-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3010163,
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3106863-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3019463,
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3027563,
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3106963-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3029363,
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3107563-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3043843-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3043853-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3044795-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3113463-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3108763-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3109163-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3112563-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3119993-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3121030-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3102063-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3010463,
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3104363-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3011163,
+    "product_code": "PT"
+  },
+  {
+    "part_number": 3011963,
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3118473-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3119073-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3054969-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3078634-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3106964-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3107564-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3111564-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3113464-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3104364-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3117064-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3117364-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3057894-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3058354-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3118474-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3118484-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "3126881-01",
+    "product_code": "PT"
+  },
+  {
+    "part_number": "50K037",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "8A2602",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "8A2603",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "1A8918",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "1B4476",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1A3676",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1A3676-002",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1A3676-003",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1A8676",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1B4476-001",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1A3676-001",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1A8677",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1A8677-001",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1A3677",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1A3677-002",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1A8677-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1A3678-001",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1A3678",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1A7789",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1A8670",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1A8670-001",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1A7550-002",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1A7570",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1A7570-002",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1A7550",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1A7570-001",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1A8670-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "1B4081-003",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6381-01",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6381-021",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B8301",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B8101-01",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B2781-006",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B1681-006",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B1671-005",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A7771-005",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A7771-004",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B1681-005",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B1671-004",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B2781-005",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B4081-002",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B5881-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B4081-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B2781-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B5881",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B4081",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B2781",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B1681-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B1681",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B1671-002",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B1671",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A7771",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6652",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6652-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B7602",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B4182-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B2782-002",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B2372-003",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B5592-003",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B4182",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A5592-003",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6552-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B7772-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B7672-01",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6482-01",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B7772-01",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6382-021",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6482-021",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B7672-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A9392",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A9882",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B2772",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B2772-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6182",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6192",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6382-01",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A9392-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A9882-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B2772-002",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B2772-003",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6192-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6182-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6372-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6583-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B7603",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A5583",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B4383",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A5583-002",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B4383-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6583",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6193-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6273-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6283-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B2773-002",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6383-01",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B7283-01",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B7283-021",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B7673-01",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6483-01",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B7293-01",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B7293-021",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B7773-01",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A9883-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B2473-002",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B2773-003",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6183-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6383-021",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6483-021",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B7673-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B7773-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A9393",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A9473",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A9783",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A9883",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B2473",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B2773",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B2473-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B2773-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6183",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6193",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6273",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6283",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A9393-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A9473-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A9783-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B7604",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A5854",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B4154",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B4154-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A5854-002",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6654",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B7604-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6654-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B5854-002",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6184-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B7674-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A9394",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A9884",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B2774",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B2774-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6184",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6194",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6484-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6194-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A9884-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A9394-001",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6394-01",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6394-021",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B7284-01",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B7284-021",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B7674-01",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B2774-002",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B2774-003",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B2755",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A4595",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B6575",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A9775",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B2775",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1B8675",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "1A9775-002",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "52A079",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "53M655",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "52M561",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "51M711",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "53M421",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "53M676",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "53M709",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "51M715",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "52M565",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "53M423",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "53M654",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "51M726",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "52M566",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "53M425",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "52M251",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "51M562",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "51M565",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "51M568",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "50N344-01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "50N461-01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "50N343-01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "50N414-01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "50N462-01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "50N413-01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "50N523-01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "50N525-01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "50N345-01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "50N526-01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "50N415-01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "50N463-01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "50N527-01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "50N291-01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "50N292-01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "50N528-01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "51N067-01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "51N417-01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "51N418-01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "50K394-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "51K211-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "51K209-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "50K259-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "52K210-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "51K210-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "50K258-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "56H405",
+    "product_code": ""
+  },
+  {
+    "part_number": "1088078-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": 1088078,
+    "product_code": "ST"
+  },
+  {
+    "part_number": "1088078-1B",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "1088279-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": 1088079,
+    "product_code": "ST"
+  },
+  {
+    "part_number": "1088079-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": 1088279,
+    "product_code": "ST"
+  },
+  {
+    "part_number": "1088079-01B",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "1088279-01B",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "FW47774",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "9046M45P03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1538M56P01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "6B1412",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "5A1865",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "5A1900",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "6A5943",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "2564M19G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2564M19G02",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2564M15G01",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2A3423",
+    "product_code": ""
+  },
+  {
+    "part_number": "2A4157",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "53M863",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "4151T65G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "53M864",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "4117T88G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "4117T89G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "4117T96G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2008M73G05",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1862M61G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1474M76G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1862M61G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1862M61G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9382M51G10",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9382M51G11",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9382M51G12",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1862M61G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1474M80G11",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1862M61G07",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2083M15G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2083M15G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9992M65G08",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "9992M65G09",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "9367M62G21",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9367M62G25",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9367M62G22",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9367M62G24",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1646M93G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1646M93G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1646M93G05",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9367M62G23",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9367M62G18",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1646M93G03",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9367M62G11",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9367M62G12",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9367M62G16",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9367M62G19",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1646M93G06",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "50S080-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S180-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S170-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S580-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "56H490-001",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "59H580-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "52H890-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "56H490-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "56H500-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "59H380-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "59H380-02",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "59H380-03",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S680-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S680-02",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S680-03",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S081-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S171-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "59H381-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "58H381-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "53H391-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "56H491-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "56H501-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "58H371-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "58H371-02",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S271-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S271-02",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S082-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S182-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S172-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S272-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "58H382-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "58H392-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "52H992-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "56H492-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "56H502-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "58H372-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "58H372-02",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "58H372-03",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S372-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S372-02",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S372-03",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S083-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S173-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "52H893-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "56H493-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "56H503-01",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "58H383-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "58H373-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "58H373-02",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S283-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S283-02",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S184-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S284-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S084-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S174-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S274-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S374-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "58H394-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "58H384-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "58H374-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "58H374-02",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "58H374-03",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "58H374-04",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S474-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S474-02",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S474-03",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S474-04",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "1815M80G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9373M82G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9373M82G06",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2083M10G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2083M10G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1347M67G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9379M44G06",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9379M44G07",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9379M44G08",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9392M87G05",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9392M87G06",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "9994M18G05",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "9994M18G06",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2083M12G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2083M12G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2083M11G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2083M11G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1277M91G03",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "1277M91G04",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "2083M13G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2083M13G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "1862M64G04",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2083M14G01",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "2083M14G02",
+    "product_code": "GE"
+  },
+  {
+    "part_number": "50S078-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S178-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S478-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S578-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "59H588-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "59H578-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "58H388-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "58H388-02",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "58H388-03",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "58H388-04",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S678-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S678-02",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S678-03",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S678-04",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "59H379-02",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "59H379-03",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "59H379-04",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "59H379-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S479-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S479-02",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S479-03",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S479-04",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S279-01",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S279-02",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S279-03",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "50S279-04",
+    "product_code": "RC"
+  },
+  {
+    "part_number": "FW76761",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "KH20538",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "KH85891",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "KH85962",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FW57917",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FW47746",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FW34632",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FW83121",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "KH14645",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "KH16407",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "FW86767",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "KH18448",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "KH14649",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FW86768",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "KH18449",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "KH16408",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "KH14650",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "KH34413",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FW64949",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "KH16410",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "FW70671",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "KH30881",
+    "product_code": "RV"
+  },
+  {
+    "part_number": "KH30882",
+    "product_code": "RV"
+  },
+  {
+    "part_number": "KH30883",
+    "product_code": "RV"
+  },
+  {
+    "part_number": "KH30884",
+    "product_code": "RV"
+  },
+  {
+    "part_number": "KH30886",
+    "product_code": "RV"
+  },
+  {
+    "part_number": "KH30887",
+    "product_code": "RV"
+  },
+  {
+    "part_number": "KH30888",
+    "product_code": "RV"
+  },
+  {
+    "part_number": "KH30889",
+    "product_code": "RV"
+  },
+  {
+    "part_number": "KH88282",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FW38555",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "FK14182",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FW20028",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FK14181",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FK22539",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FK24221",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FW19744",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "UL28976",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FW22152",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FK33223",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "FW21315",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FK23146",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "FK20002",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FK23147",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "FK20003",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FK23457",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "FK20004",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FK22513",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "KH88283",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FW29015",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FW33468",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FW33469",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FW14992",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FW29474",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "KH26326",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "KH30230",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "KH19508",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "KH19509",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "KH19510",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "KH30228",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "KH19512",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FW72050",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "KH24327",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "KH24328",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "FW72053",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "FW72054",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "FW72055 (RDE)",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "FW72055",
+    "product_code": "HC (LA)"
+  },
+  {
+    "part_number": "KH42557",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "FW71064",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "KH34284",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "KH42558",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "KH25432",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "KH24902",
+    "product_code": "HC (LB)"
+  },
+  {
+    "part_number": "2A3810-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "2A3808-01",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "3A0719",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "3A2050",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "3A1916",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "3A2234",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "3A2947",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "3A0723",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "3A1918",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "3A2950",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "3A0727",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "3A1920",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "3A2953",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "3A0666",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "3A2956",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "6A4509",
+    "product_code": "IS"
+  },
+  {
+    "part_number": "6A2506",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "6A5757",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "2A1706",
+    "product_code": "DS"
+  },
+  {
+    "part_number": "2A4130",
+    "product_code": "DS"
+  },
+  {
+    "part_number": "2A1653",
+    "product_code": "DS"
+  },
+  {
+    "part_number": "2A3408",
+    "product_code": "DS"
+  },
+  {
+    "part_number": "2A1664",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "2A2703",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "2A3367",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "2A3896",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "2A4085",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "2A3328",
+    "product_code": "ST"
+  },
+  {
+    "part_number": "5W2318",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "5W2332",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "5W2268",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "5A1450",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "5A1686",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "5A1872",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "5A2225",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "6A4154",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "6A8162",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "6A5495",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "6A5682",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "6B1427",
+    "product_code": "LP"
+  },
+  {
+    "part_number": "6A5869",
+    "product_code": "RR"
+  },
+  {
+    "part_number": "340-079-604-0",
+    "product_code": "HC"
+  },
+  {
+    "part_number": "340-079-603-0",
+    "product_code": "HC"
   }
 ]

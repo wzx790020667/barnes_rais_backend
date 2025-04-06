@@ -1,22 +1,86 @@
 [
   {
+    "overhaul_keywords": "Full inspection and repair",
+    "result_display": "Overhaul"
+  },
+  {
+    "overhaul_keywords": "INSPECT AND REPAIR",
+    "result_display": "Overhaul"
+  },
+  {
+    "overhaul_keywords": "Inspect and repair",
+    "result_display": "Overhaul"
+  },
+  {
+    "overhaul_keywords": "INSPECT & REPAIR",
+    "result_display": "Overhaul"
+  },
+  {
+    "overhaul_keywords": "Inspect & Repair",
+    "result_display": "Overhaul"
+  },
+  {
+    "overhaul_keywords": "Inspection and repair",
+    "result_display": "Overhaul"
+  },
+  {
+    "overhaul_keywords": "Inspect",
+    "result_display": "Overhaul"
+  },
+  {
+    "overhaul_keywords": "O/H",
+    "result_display": "Overhaul"
+  },
+  {
+    "overhaul_keywords": "OH",
+    "result_display": "Overhaul"
+  },
+  {
+    "overhaul_keywords": "OH翻修",
+    "result_display": "Overhaul"
+  },
+  {
+    "overhaul_keywords": "overhaul",
+    "result_display": "Overhaul"
+  },
+  {
+    "overhaul_keywords": "Overhaul",
+    "result_display": "Overhaul"
+  },
+  {
     "overhaul_keywords": "OVERHAUL",
-    "result_display": "OVERHAUL"
+    "result_display": "Overhaul"
   },
   {
-    "overhaul_keywords": "REPAIR",
-    "result_display": "REPAIR"
+    "overhaul_keywords": "OVERHAULED",
+    "result_display": "Overhaul"
   },
   {
-    "overhaul_keywords": "MODIFICATION",
-    "result_display": "MODIFICATION"
+    "overhaul_keywords": "Overhauled",
+    "result_display": "Overhaul"
   },
   {
-    "overhaul_keywords": "INSPECTION",
-    "result_display": "INSPECTION"
+    "overhaul_keywords": "accordance with the above JAL Work Specification",
+    "result_display": "Overhaul"
   },
   {
-    "overhaul_keywords": "TESTING",
-    "result_display": "TESTING"
+    "overhaul_keywords": "CLEAN, INSPECT AND REPAIR",
+    "result_display": "Overhaul"
+  },
+  {
+    "overhaul_keywords": "CLEAN AND INSPECTION",
+    "result_display": "Overhaul"
+  },
+  {
+    "overhaul_keywords": "CLEAN & INSPECT",
+    "result_display": "Overhaul"
+  },
+  {
+    "overhaul_keywords": "Repair as needed",
+    "result_display": "Overhaul"
+  },
+  {
+    "overhaul_keywords": "CLN/ Visual inspect & repair",
+    "result_display": "Overhaul"
   }
 ]

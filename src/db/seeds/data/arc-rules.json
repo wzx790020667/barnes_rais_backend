@@ -1,22 +1,142 @@
 [
   {
-    "arc_appearance": "ARC-8130",
-    "result_display": "ARC-8130"
+    "arc_appearance": "CAAS",
+    "result_display": "CAAS"
   },
   {
-    "arc_appearance": "8130",
-    "result_display": "ARC-8130"
+    "arc_appearance": "SINGAPORE",
+    "result_display": "CAAS"
   },
   {
-    "arc_appearance": "FORM 8130",
-    "result_display": "ARC-8130"
+    "arc_appearance": "FORM-AW-95",
+    "result_display": "CAAS"
+  },
+  {
+    "arc_appearance": "EASA",
+    "result_display": "EASA"
   },
   {
     "arc_appearance": "EASA FORM 1",
-    "result_display": "EASA-1"
+    "result_display": "EASA"
   },
   {
-    "arc_appearance": "EASA-1",
-    "result_display": "EASA-1"
+    "arc_appearance": "FORM 1",
+    "result_display": "EASA"
+  },
+  {
+    "arc_appearance": "TCCA",
+    "result_display": "EASA"
+  },
+  {
+    "arc_appearance": "FAA-8130",
+    "result_display": "FAA"
+  },
+  {
+    "arc_appearance": "FAA 8130-3 FORM",
+    "result_display": "FAA"
+  },
+  {
+    "arc_appearance": "FAA",
+    "result_display": "FAA"
+  },
+  {
+    "arc_appearance": "8130-3",
+    "result_display": "FAA"
+  },
+  {
+    "arc_appearance": "FAA-8130-3",
+    "result_display": "FAA"
+  },
+  {
+    "arc_appearance": "HKCAD",
+    "result_display": "HKCAD"
+  },
+  {
+    "arc_appearance": "HK-CAD",
+    "result_display": "HKCAD"
+  },
+  {
+    "arc_appearance": "CADHK",
+    "result_display": "HKCAD"
+  },
+  {
+    "arc_appearance": "CAD-HK",
+    "result_display": "HKCAD"
+  },
+  {
+    "arc_appearance": "CAAC",
+    "result_display": "HKCAD"
+  },
+  {
+    "arc_appearance": "CAAC FORM AAC-038",
+    "result_display": "HKCAD"
+  },
+  {
+    "arc_appearance": "AAC-038",
+    "result_display": "HKCAD"
+  },
+  {
+    "arc_appearance": "038",
+    "result_display": "HKCAD"
+  },
+  {
+    "arc_appearance": "AAC",
+    "result_display": "HKCAD"
+  },
+  {
+    "arc_appearance": "CHINA",
+    "result_display": "HKCAD"
+  },
+  {
+    "arc_appearance": "CAD FORM ONE",
+    "result_display": "HKCAD"
+  },
+  {
+    "arc_appearance": "JCAB",
+    "result_display": "JCAB"
+  },
+  {
+    "arc_appearance": "JCAB FORM 18",
+    "result_display": "JCAB"
+  },
+  {
+    "arc_appearance": "JAPAN",
+    "result_display": "JCAB"
+  },
+  {
+    "arc_appearance": "UKCAA",
+    "result_display": "UKCAA"
+  },
+  {
+    "arc_appearance": "CAAUK",
+    "result_display": "UKCAA"
+  },
+  {
+    "arc_appearance": "UK-CAA",
+    "result_display": "UKCAA"
+  },
+  {
+    "arc_appearance": "CAA-UK",
+    "result_display": "UKCAA"
+  },
+  {
+    "arc_appearance": "CAA",
+    "result_display": "UKCAA"
+  },
+  {
+    "arc_appearance": "CAA FORM 1",
+    "result_display": "UKCAA"
+  },
+  {
+    "arc_appearance": "ANAC",
+    "result_display": "ANAC"
+  },
+  {
+    "arc_appearance": "BRAZIL",
+    "result_display": "ANAC"
+  },
+  {
+    "arc_appearance": "Dual Release",
+    "result_display": "FAA EASA"
   }
 ]

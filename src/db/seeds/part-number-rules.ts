@@ -19,6 +19,11 @@ export async function seedPartNumberRules(db: PostgresJsDatabase) {
       import.meta.url, 
       'part-number-rules.json'
     );
+
+    // Adjust part number to be a string
+    partNumberRulesData.forEach((rule) => {
+      rule.part_number = String(rule.part_number);
+    });
     
     // Insert part number rules from the JSON data
     await db.insert(part_number_rules).values(partNumberRulesData);
