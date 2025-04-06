@@ -1,4 +1,5 @@
-import { AuthService } from "../domains/auth/services/AuthService";
+import { AuthService } from "../domains/auth/AuthService";
+import type { BunRequest } from "bun";
 
 export class AuthMiddleware {
   private authService: AuthService;
@@ -7,7 +8,7 @@ export class AuthMiddleware {
     this.authService = new AuthService();
   }
 
-  async authenticate(req: Request): Promise<{ user: any } | null> {
+  async authenticate(req: BunRequest): Promise<{ user: any } | null> {
     try {
       // Extract token from Authorization header
       const authHeader = req.headers.get("Authorization");
@@ -25,9 +26,9 @@ export class AuthMiddleware {
     }
   }
 
-  async requireAuth(
-    req: Request,
-    handler: (req: Request, user: any) => Promise<Response>
+  async requireAuth<T extends BunRequest>(
+    req: T,
+    handler: (req: T, user: any) => Promise<Response>
   ): Promise<Response> {
     const auth = await this.authenticate(req);
 
@@ -38,9 +39,9 @@ export class AuthMiddleware {
     return await handler(req, auth.user);
   }
 
-  async requireAdmin(
-    req: Request,
-    handler: (req: Request, user: any) => Promise<Response>
+  async requireAdmin<T extends BunRequest>(
+    req: T,
+    handler: (req: T, user: any) => Promise<Response>
   ): Promise<Response> {
     const auth = await this.authenticate(req);
 

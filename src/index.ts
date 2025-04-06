@@ -2,7 +2,6 @@ import { serve } from "bun";
 import { db, drizzleConnectionTest } from "./lib/db";
 import { SERVER_CONFIG } from "./config";
 import { AuthController } from "./domains/auth/AuthController";
-import { UserController } from "./domains/users/UserController";
 import { DocumentController } from "./domains/documents/controllers";
 import { CustomerController } from "./domains/customers/CustomerController";
 import { ArcRuleController } from "./domains/csvRules/controllers/ArcRuleController";
@@ -11,10 +10,10 @@ import { WorkScopeRuleController } from "./domains/csvRules/controllers/WorkScop
 import { PartNumberRuleController } from "./domains/csvRules/controllers/PartNumberRuleController";
 import { CsvRecordController } from "./domains/csvRecords/controllers";
 import { AiTrainingController } from "./domains/ai_training/controllers";
+import { AuthMiddleware } from "./middlewares/authMiddleware";
 
 // Create controller instances
 const authController = new AuthController();
-const userController = new UserController();
 const documentController = new DocumentController();
 const customerController = new CustomerController();
 const arcRuleController = new ArcRuleController();
@@ -23,6 +22,9 @@ const workScopeRuleController = new WorkScopeRuleController();
 const partNumberRuleController = new PartNumberRuleController();
 const csvRecordController = new CsvRecordController();
 const aiTrainingController = new AiTrainingController();
+
+// Create auth middleware instance
+const authMiddleware = new AuthMiddleware();
 
 // Extract server configuration
 const PORT = SERVER_CONFIG.PORT;
@@ -95,166 +97,151 @@ serve({
     },
     
     // User routes
-    "/api/users": {
-      GET: async (req) => addCorsHeaders(await userController.getUsers(req)),
+    "/api/auth/users": {
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAdmin(req, (req) => authController.createUser(req))),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAdmin(req, (req) => authController.getUsers(req))),
     },
-    "/api/users/:id": {
-      GET: async (req) => addCorsHeaders(await userController.getUserById(req)),
-      PUT: async (req) => addCorsHeaders(await userController.updateUser(req)),
-      DELETE: async (req) => addCorsHeaders(await userController.deleteUser(req)),
+    "/api/auth/users/:id": {
+      PUT: async (req) => addCorsHeaders(await authMiddleware.requireAdmin(req, (req) => authController.updateUser(req.params.id, req))),
+      DELETE: async (req) => addCorsHeaders(await authMiddleware.requireAdmin(req, (req) => authController.deleteUser(req.params.id))),
     },
     
     // Document routes
     "/api/documents": {
-      GET: async (req) => addCorsHeaders(await documentController.getDocumentsWithPagination(req)),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => documentController.getDocumentsWithPagination(req))),
     },
     "/api/documents/filtered": {
-      GET: async (req) => addCorsHeaders(await documentController.getFilteredDocuments(req)),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => documentController.getFilteredDocuments(req))),
     },
     "/api/documents/search/import-numbers": {
-      GET: async (req) => addCorsHeaders(await documentController.searchImportNumbers(req)),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => documentController.searchImportNumbers(req))),
     },
     "/api/documents/refresh": {
-      POST: async (req) => addCorsHeaders(await documentController.refreshDocuments(req)),
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => documentController.refreshDocuments(req))),
     },
     "/api/documents/pdf_to_images": {
-      POST: async (req) => addCorsHeaders(await documentController.uploadPdfToExternal(req)),
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => documentController.uploadPdfToExternal(req))),
     },
     "/api/documents/ocr": {
-      POST: async (req) => addCorsHeaders(await documentController.scanDocumentOcr(req)),
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => documentController.scanDocumentOcr(req))),
     },
     "/api/documents/bucket/batch": {
-      POST: async (req) => addCorsHeaders(await documentController.getDocumentsFromBucket(req)),
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => documentController.getDocumentsFromBucket(req))),
     },
     "/api/documents/bucket/upload": {
-      POST: async (req) => addCorsHeaders(await documentController.uploadDocumentToBucket(req)),
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => documentController.uploadDocumentToBucket(req))),
     },
     "/api/documents/:id/import-number": {
-      PATCH: async (req) => addCorsHeaders(await documentController.addImportNumber(req)),
+      PATCH: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => documentController.addImportNumber(req))),
     },
     "/api/documents/:id": {
-      GET: async (req) => addCorsHeaders(await documentController.getDocumentById(req)),
-      PUT: async (req) => addCorsHeaders(await documentController.updateDocument(req)),
-      DELETE: async (req) => addCorsHeaders(await documentController.deleteDocument(req)),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => documentController.getDocumentById(req))),
+      PUT: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => documentController.updateDocument(req))),
+      DELETE: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => documentController.deleteDocument(req))),
     },
     "/api/documents/bucket/:id": {
-      GET: async (req) => addCorsHeaders(await documentController.getDocumentFromBucket(req)),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => documentController.getDocumentFromBucket(req))),
     },
     
     // Customer routes
     "/api/customers": {
-      GET: async (req) => addCorsHeaders(await customerController.getCustomers(req)),
-      POST: async (req) => addCorsHeaders(await customerController.createCustomer(req)),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => customerController.getCustomers(req))),
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => customerController.createCustomer(req))),
     },
     "/api/customers/search": {
-      GET: async (req) => addCorsHeaders(await customerController.searchCustomers(req)),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => customerController.searchCustomers(req))),
     },
     "/api/customers/byName": {
-      GET: async (req) => addCorsHeaders(await customerController.getCustomerByName(req)),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => customerController.getCustomerByName(req))),
     },
     "/api/customers/fileFormats": {
-      GET: async (req) => addCorsHeaders(await customerController.getFileFormatsByCustomerName(req)),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => customerController.getFileFormatsByCustomerName(req))),
     },
     "/api/customers/:id": {
-      GET: async (req) => addCorsHeaders(await customerController.getCustomerById(req)),
-      PUT: async (req) => addCorsHeaders(await customerController.updateCustomer(req)),
-      DELETE: async (req) => addCorsHeaders(await customerController.deleteCustomer(req)),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => customerController.getCustomerById(req))),
+      PUT: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => customerController.updateCustomer(req))),
+      DELETE: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => customerController.deleteCustomer(req))),
     },
     
     // Arc Rule routes
     "/api/arc-rules": {
-      GET: async (req) => addCorsHeaders(await arcRuleController.getArcRules(req)),
-      POST: async (req) => addCorsHeaders(await arcRuleController.createArcRule(req)),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => arcRuleController.getArcRules(req))),
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => arcRuleController.createArcRule(req))),
     },
     "/api/arc-rules/:id": {
-      GET: async (req) => addCorsHeaders(await arcRuleController.getArcRuleById(req)),
-      PUT: async (req) => addCorsHeaders(await arcRuleController.updateArcRule(req)),
-      DELETE: async (req) => addCorsHeaders(await arcRuleController.deleteArcRule(req)),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => arcRuleController.getArcRuleById(req))),
+      PUT: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => arcRuleController.updateArcRule(req))),
+      DELETE: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => arcRuleController.deleteArcRule(req))),
     },
 
     // Engine Model Rule routes
     "/api/engine-model-rules": {
-      GET: async (req) => addCorsHeaders(await engineModelRuleController.getEngineModelRules(req)),
-      POST: async (req) => addCorsHeaders(await engineModelRuleController.createEngineModelRule(req)),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => engineModelRuleController.getEngineModelRules(req))),
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => engineModelRuleController.createEngineModelRule(req))),
     },
     "/api/engine-model-rules/:id": {
-      GET: async (req) => addCorsHeaders(await engineModelRuleController.getEngineModelRuleById(req)),
-      PUT: async (req) => addCorsHeaders(await engineModelRuleController.updateEngineModelRule(req)),
-      DELETE: async (req) => addCorsHeaders(await engineModelRuleController.deleteEngineModelRule(req)),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => engineModelRuleController.getEngineModelRuleById(req))),
+      PUT: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => engineModelRuleController.updateEngineModelRule(req))),
+      DELETE: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => engineModelRuleController.deleteEngineModelRule(req))),
     },
     
     // Work Scope Rule routes
     "/api/work-scope-rules": {
-      GET: async (req) => addCorsHeaders(await workScopeRuleController.getWorkScopeRules(req)),
-      POST: async (req) => addCorsHeaders(await workScopeRuleController.createWorkScopeRule(req)),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => workScopeRuleController.getWorkScopeRules(req))),
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => workScopeRuleController.createWorkScopeRule(req))),
     },
     "/api/work-scope-rules/:id": {
-      GET: async (req) => addCorsHeaders(await workScopeRuleController.getWorkScopeRuleById(req)),
-      PUT: async (req) => addCorsHeaders(await workScopeRuleController.updateWorkScopeRule(req)),
-      DELETE: async (req) => addCorsHeaders(await workScopeRuleController.deleteWorkScopeRule(req)),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => workScopeRuleController.getWorkScopeRuleById(req))),
+      PUT: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => workScopeRuleController.updateWorkScopeRule(req))),
+      DELETE: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => workScopeRuleController.deleteWorkScopeRule(req))),
     },
     
     // Part Number Rule routes
     "/api/part-number-rules": {
-      GET: async (req) => addCorsHeaders(await partNumberRuleController.getPartNumberRules(req)),
-      POST: async (req) => addCorsHeaders(await partNumberRuleController.createPartNumberRule(req)),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => partNumberRuleController.getPartNumberRules(req))),
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => partNumberRuleController.createPartNumberRule(req))),
     },
     "/api/part-number-rules/:id": {
-      GET: async (req) => addCorsHeaders(await partNumberRuleController.getPartNumberRuleById(req)),
-      PUT: async (req) => addCorsHeaders(await partNumberRuleController.updatePartNumberRule(req)),
-      DELETE: async (req) => addCorsHeaders(await partNumberRuleController.deletePartNumberRule(req)),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => partNumberRuleController.getPartNumberRuleById(req))),
+      PUT: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => partNumberRuleController.updatePartNumberRule(req))),
+      DELETE: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => partNumberRuleController.deletePartNumberRule(req))),
     },
     
     // CSV Record routes
     "/api/csv-records/export": {
-      POST: async (req) => addCorsHeaders(await csvRecordController.exportCsvRecords(req)),
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => csvRecordController.exportCsvRecords(req))),
     },
 
     // AI Training routes
     "/api/customers/:customerId/training/datasets": {
-      POST: async (req) => addCorsHeaders(await aiTrainingController.createTrainingDataset(req.params.customerId, req)),
-      GET: async (req) => addCorsHeaders(await aiTrainingController.getTrainingDatasets(req.params.customerId)),
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => aiTrainingController.createTrainingDataset(req.params.customerId, req))),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => aiTrainingController.getTrainingDatasets(req.params.customerId))),
     },
     "/api/customers/:customerId/training/datasets/documents": {
-      GET: async (req) => addCorsHeaders(await aiTrainingController.getTrainingDocuments(req.params.customerId)),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => aiTrainingController.getTrainingDocuments(req.params.customerId))),
     },
     "/api/customers/:customerId/training/datasets/documents/:datasetId": {
-      GET: async (req) => addCorsHeaders(await aiTrainingController.getTrainingDocumentsByDatasetId(req.params.datasetId)),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => aiTrainingController.getTrainingDocumentsByDatasetId(req.params.datasetId))),
     },
     "/api/customers/:customerId/training/tasks": {
-      POST: async (req) => addCorsHeaders(await aiTrainingController.createTrainingTask(req.params.customerId, req)),
-      GET: async (req) => addCorsHeaders(await aiTrainingController.getTrainingTasks(req.params.customerId, req)),
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => aiTrainingController.createTrainingTask(req.params.customerId, req))),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => aiTrainingController.getTrainingTasks(req.params.customerId, req))),
     },
     "/api/training/check/tasks": {
-      GET: async (req) => addCorsHeaders(await aiTrainingController.checkTrainingTasks()),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => aiTrainingController.checkTrainingTasks())),
     },
     "/api/customers/:customerId/training/tasks/:taskId/start": {
-      POST: async (req) => addCorsHeaders(await aiTrainingController.startTrainingTask(req.params.customerId, req.params.taskId)),
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => aiTrainingController.startTrainingTask(req.params.customerId, req.params.taskId))),
     },
     "/api/webhook/training/tasks/:taskId/complete": {
       POST: async (req) => addCorsHeaders(await aiTrainingController.completeTrainingTask(req.params.taskId, req)),
     },
     "/api/customers/:customerId/training/tasks/:taskId/bind": {
-      POST: async (req) => addCorsHeaders(await aiTrainingController.bindModelByTaskId(req.params.customerId, req.params.taskId, req)),
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => aiTrainingController.bindModelByTaskId(req.params.customerId, req.params.taskId, req))),
     },
     "/api/customers/:customerId/training/tasks/:taskId/results": {
-      GET: async (req) => addCorsHeaders(await aiTrainingController.getTrainingTaskVerificationResults(req.params.taskId)),
+      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => aiTrainingController.getTrainingTaskVerificationResults(req.params.taskId))),
     }
-    // "/api/customers/:customerId/training/tasks/:taskId": {
-    //   GET: async (req) => addCorsHeaders(await trainingController.getTrainingTaskById(req)),
-    //   PUT: async (req) => addCorsHeaders(await trainingController.updateTrainingTask(req)),
-    //   DELETE: async (req) => addCorsHeaders(await trainingController.deleteTrainingTask(req)),
-    // },
-    // "/api/customers/:customerId/training/results": {
-    //   GET: async (req) => addCorsHeaders(await trainingController.getTrainingResults(req)),
-    // },
-    // "/api/customers/:customerId/training/results/:resultId": {
-    //   GET: async (req) => addCorsHeaders(await trainingController.getTrainingResultById(req)),
-    //   DELETE: async (req) => addCorsHeaders(await trainingController.deleteTrainingResult(req)),
-    // },
-    // "/api/customers/:customerId/training/results/:resultId/bind": {
-    //   POST: async (req) => addCorsHeaders(await trainingController.bindTrainingResult(req)),
-    // },
   },
   
   // Fallback handler for routes not defined in the routes object
@@ -265,8 +252,11 @@ serve({
       return new Response(null, { headers: corsHeaders });
     }
 
+    // Get the path from the URL
+    const path = new URL(req.url).pathname;
+
     // Output the request URL for debugging
-    console.log(`Unmatched request: ${req.method} ${new URL(req.url).pathname}`);
+    console.log(`Unmatched request: ${req.method} ${path}`);
 
     // Default 404 response if no handler matches
     return addCorsHeaders(new Response("Not Found", { status: 404 }));

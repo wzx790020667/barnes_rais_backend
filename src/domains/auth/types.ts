@@ -1,9 +1,13 @@
+export enum UserRole {
+  ADMIN = "admin",
+  OPERATOR = "operator",
+}
+
 export interface User {
   id: string;
-  email: string;
-  name: string;
+  username: string;
   password?: string; // Not returned in responses
-  role: "admin" | "user";
-  createdAt: Date;
-  updatedAt: Date;
+  role: UserRole;
+  created_at: Date;
+  updated_at: Date;
 }

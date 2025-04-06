@@ -184,7 +184,7 @@ export class CustomerService {
         // Get total count first
         const countQuery = supabase.from("customers").select("*", { count: "exact", head: true });
         // Only apply filter if query is not empty
-        const filteredCountQuery = query ? countQuery.like("customer_name", `%${query}%`) : countQuery;
+        const filteredCountQuery = query ? countQuery.ilike("customer_name", `%${query}%`) : countQuery;
         const { count: total, error: countError } = await filteredCountQuery;
           
         if (countError) throw countError;
@@ -199,7 +199,7 @@ export class CustomerService {
         // If query is empty, apply pagination without filter
         let filteredDataQuery;
         if (query) {
-          filteredDataQuery = dataQuery.like("customer_name", `%${query}%`);
+          filteredDataQuery = dataQuery.ilike("customer_name", `%${query}%`);
         } else {
           // Calculate offset based on page and pageSize
           const offset = (page - 1) * pageSize;

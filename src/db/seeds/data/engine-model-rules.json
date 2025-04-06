@@ -1,42 +1,42 @@
 [
   {
-    "engine_model_title": "ESN:",
-    "common_prefix": "V25xxxx",
+    "engine_model_title": "ESN",
+    "common_prefix": "V25",
     "result_display": "V2500-A5"
   },
   {
-    "engine_model_title": "ESN:",
-    "common_prefix": "E72xxxxx",
+    "engine_model_title": "ESN",
+    "common_prefix": "E72",
     "result_display": "PW4000-94"
   },
   {
-    "engine_model_title": "ESN:",
-    "common_prefix": "P72xxxxx",
+    "engine_model_title": "ESN",
+    "common_prefix": "P72",
     "result_display": "PW4000-94"
   },
   {
-    "engine_model_title": "ESN:",
-    "common_prefix": "72xxxxx",
+    "engine_model_title": "ESN",
+    "common_prefix": "72",
     "result_display": "PW4000-94"
   },
   {
-    "engine_model_title": "ESN:",
-    "common_prefix": "E73xxxxx",
+    "engine_model_title": "ESN",
+    "common_prefix": "E73",
     "result_display": "PW4000-100"
   },
   {
-    "engine_model_title": "ESN:",
-    "common_prefix": "P73xxxxx",
+    "engine_model_title": "ESN",
+    "common_prefix": "P73",
     "result_display": "PW4000-100"
   },
   {
-    "engine_model_title": "ESN:",
-    "common_prefix": "73xxxxx",
+    "engine_model_title": "ESN",
+    "common_prefix": "73",
     "result_display": "PW4000-100"
   },
   {
-    "engine_model_title": "ESN:",
-    "common_prefix": "2xxxxx",
+    "engine_model_title": "ESN",
+    "common_prefix": "2",
     "result_display": "PW4000-112"
   }
 ]

@@ -15,7 +15,7 @@ export const JWT_CONFIG = {
   SECRET: process.env.JWT_SECRET || "default_secret_change_in_production",
   EXPIRES_IN: process.env.JWT_EXPIRES_IN
     ? parseInt(process.env.JWT_EXPIRES_IN)
-    : 24 * 60 * 60, // 24 hours in seconds
+    : 7 * 24 * 60 * 60, // 7 days in seconds (updated from 24 hours)
 };
 
 // Database configuration

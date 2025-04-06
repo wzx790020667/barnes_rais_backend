@@ -4,7 +4,7 @@ import { PartNumberRuleService } from "../csvRules/services/PartNumberRuleServic
 import { WorkScopeRuleService } from "../csvRules/services/WorkScopeRuleService";
 import { CsvRecordService } from "./services";
 import { replaceByArcRule, replaceByEngineModelRule, replaceByPartNumberRule, replaceByWorkScopeRule } from "../csvRules/utils";
-import type { CsvRecord } from "../../db/schema";
+import type { BunRequest } from "bun";
 
 export class CsvRecordController {
     private csvRecordService: CsvRecordService;
@@ -21,7 +21,7 @@ export class CsvRecordController {
         this.partNumberRulesService = new PartNumberRuleService();
     }
 
-    async exportCsvRecords(req: Request): Promise<Response> {
+    async exportCsvRecords(req: BunRequest): Promise<Response> {
         try {
             // Parse request body for document IDs
             const body = await req.json();
