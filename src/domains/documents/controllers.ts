@@ -6,6 +6,7 @@ import { CsvRecordService } from "../csvRecords/services";
 import { generateCustomerInfoHash } from "../../lib/utils";
 import type { BunRequest } from "bun";
 import { AI_SERVICE_CONFIG } from "../../config";
+import { DOCUMENT_BUCKET_NAME } from "./constants";
 
 // Document item schema validation
 const documentItemSchema = z.object({
@@ -16,7 +17,12 @@ const documentItemSchema = z.object({
   engine_model: z.string().optional().nullable().optional(),
   engine_number: z.string().optional().nullable().optional(),
   serial_number: z.string().optional().nullable().optional(),
-  page_numbers: z.array(z.string()).optional().nullable()
+  t_part_number_page: z.number().optional().nullable(),
+  t_quantity_ordered_page: z.number().optional().nullable(),
+  t_import_price_page: z.number().optional().nullable(),
+  t_engine_model_page: z.number().optional().nullable(),
+  t_engine_number_page: z.number().optional().nullable(),
+  t_serial_number_page: z.number().optional().nullable(),
 });
 
 // Document schema validation
@@ -38,7 +44,15 @@ const createDocumentSchema = z.object({
   csn: z.string().optional().nullable(),
   customer_info_hash: z.string().optional(),
   document_items: z.array(documentItemSchema).optional(),
-  page_texts: z.array(z.string()).optional().nullable()
+  t_page_texts: z.array(z.string()).optional().nullable(),
+  t_import_number_page: z.number().optional().nullable(),
+  t_po_number_page: z.number().optional().nullable(),
+  t_end_user_customer_name_page: z.number().optional().nullable(),
+  t_end_user_customer_number_page: z.number().optional().nullable(),
+  t_work_scope_page: z.number().optional().nullable(),
+  t_arc_requirement_page: z.number().optional().nullable(),
+  t_tsn_page: z.number().optional().nullable(),
+  t_csn_page: z.number().optional().nullable(),
 });
 
 // Import number update schema validation
@@ -314,7 +328,15 @@ export class DocumentController {
         tsn: validatedData.tsn || null,
         csn: validatedData.csn || null,
         status: "approved",
-        page_texts: validatedData.page_texts || null,
+        t_page_texts: validatedData.t_page_texts !== undefined ? validatedData.t_page_texts : null,
+        t_import_number_page: validatedData.t_import_number_page !== undefined ? validatedData.t_import_number_page : null,
+        t_po_number_page: validatedData.t_po_number_page !== undefined ? validatedData.t_po_number_page : null,
+        t_end_user_customer_name_page: validatedData.t_end_user_customer_name_page !== undefined ? validatedData.t_end_user_customer_name_page : null,
+        t_end_user_customer_number_page: validatedData.t_end_user_customer_number_page !== undefined ? validatedData.t_end_user_customer_number_page : null,
+        t_work_scope_page: validatedData.t_work_scope_page !== undefined ? validatedData.t_work_scope_page : null,
+        t_arc_requirement_page: validatedData.t_arc_requirement_page !== undefined ? validatedData.t_arc_requirement_page : null,
+        t_tsn_page: validatedData.t_tsn_page !== undefined ? validatedData.t_tsn_page : null,
+        t_csn_page: validatedData.t_csn_page !== undefined ? validatedData.t_csn_page : null,
         scanned_time: new Date(),
         updated_at: new Date()
       };
@@ -328,7 +350,12 @@ export class DocumentController {
           engine_model: isEmpty(item.engine_model) ? null : String(item.engine_model),
           engine_number: isEmpty(item.engine_number) ? null : String(item.engine_number),
           serial_number: isEmpty(item.serial_number) ? null : String(item.serial_number),
-          page_numbers: item.page_numbers || null
+          t_part_number_page: item.t_part_number_page !== undefined ? item.t_part_number_page : null, 
+          t_quantity_ordered_page: item.t_quantity_ordered_page !== undefined ? item.t_quantity_ordered_page : null,
+          t_import_price_page: item.t_import_price_page !== undefined ? item.t_import_price_page : null,
+          t_engine_model_page: item.t_engine_model_page !== undefined ? item.t_engine_model_page : null,
+          t_engine_number_page: item.t_engine_number_page !== undefined ? item.t_engine_number_page : null,
+          t_serial_number_page: item.t_serial_number_page !== undefined ? item.t_serial_number_page : null,
         })) || [] as Omit<DocumentItem, "id">[];
       
       // Create document with items
@@ -433,7 +460,7 @@ export class DocumentController {
       }
       
       // Get the bucket name from query parameter or use a default
-      const bucketName = url.searchParams.get("bucket") || "document_files";
+      const bucketName = url.searchParams.get("bucket") || DOCUMENT_BUCKET_NAME;
       
       const document = await this.documentService.getDocumentFromBucket(bucketName, id);
       
@@ -478,7 +505,7 @@ export class DocumentController {
 
       // Get the bucket name from query parameter or use a default
       const url = new URL(req.url);
-      const bucketName = url.searchParams.get("bucket") || "document_files";
+      const bucketName = url.searchParams.get("bucket") || DOCUMENT_BUCKET_NAME;
       
       // Fetch multiple documents from the bucket
       const documents = await this.documentService.getDocumentsFromBucket(bucketName, ids);
@@ -568,31 +595,15 @@ export class DocumentController {
         );
       }
       
-      // Create a new FormData object with the same file
-      const forwardFormData = new FormData();
-      forwardFormData.append('pdf', pdfFile);
-      forwardFormData.append('get_ocr', 'true');
-            
-      // Forward the request to the external endpoint
-      const response = await fetch(`${AI_SERVICE_CONFIG.URL}/api/pdf_to_images`, {
-        method: 'POST',
-        body: forwardFormData,
-      });
-
-      if (!response.ok) {
-        console.error("External API error:", response.status, response.statusText);
-        return Response.json(
-          { error: "External service returned an error" },
-          { status: response.status }
-        );
-      }
+      // Use the service method to process the PDF
+      const result = await this.documentService.uploadPdfToExternal(pdfFile);
       
       // Since the response is a ZIP file, return it directly without parsing as JSON
-      return new Response(response.body, {
-        status: response.status,
+      return new Response(result.body, {
+        status: result.status,
         headers: {
-          'Content-Type': response.headers.get('Content-Type') || 'application/zip',
-          'Content-Disposition': response.headers.get('Content-Disposition') || 'attachment; filename="images.zip"'
+          'Content-Type': result.headers.get('Content-Type') || 'application/zip',
+          'Content-Disposition': result.headers.get('Content-Disposition') || 'attachment; filename="images.zip"'
         }
       });
     } catch (error) {
@@ -627,29 +638,11 @@ export class DocumentController {
         );
       }
       
-      // Create a new FormData object with the same file
-      const forwardFormData = new FormData();
-      forwardFormData.append('image_file', imageFile);
-      
-      // Forward the request to the external OCR endpoint
-      const response = await fetch(`${AI_SERVICE_CONFIG.URL}/api/image_ocr`, {
-        method: 'POST',
-        body: forwardFormData,
-      });
-      
-      if (!response.ok) {
-        console.error("External API error:", response.status, response.statusText);
-        return Response.json(
-          { error: "External service returned an error" },
-          { status: response.status }
-        );
-      }
-      
-      // Get the JSON response
-      const ocrResult = await response.json();
+      // Use the service method to perform OCR
+      const ocrResult = await this.documentService.scanDocumentOcr(imageFile);
       
       // Return the OCR result directly to the frontend
-      return Response.json(ocrResult, { status: response.status });
+      return Response.json(ocrResult);
     } catch (error) {
       console.error("Document OCR error:", error);
       return Response.json(

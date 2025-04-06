@@ -4,6 +4,8 @@ import type { DocumentItem } from "../../db/schema";
 import { drizzleDb } from "../../lib/db";
 import { eq } from "drizzle-orm";
 import { documents, document_items, csv_records } from "../../db/schema";
+import type { BucketDocument } from "./types";
+import { AI_SERVICE_CONFIG } from "../../config";
 
 export class DocumentService {
   async getDocumentById(id: string): Promise<Document | null> {
@@ -267,7 +269,7 @@ export class DocumentService {
   async getDocumentFromBucket(
     bucketName: string,
     id: string
-  ): Promise<any> {
+  ): Promise<BucketDocument | null> {
     const result = await db.query(async () => {
       // First get metadata about the file
       const { data: fileInfo, error: metadataError } = await supabase.storage
@@ -291,7 +293,7 @@ export class DocumentService {
       if (!urlData?.signedUrl) return null;
       
       // Create a Document with required fields
-      const doc = {
+      const doc: BucketDocument = {
         id,
         file_path: fileMetadata.name,
         content: urlData.signedUrl,
@@ -313,7 +315,7 @@ export class DocumentService {
   async getDocumentsFromBucket(
     bucketName: string,
     ids: string[]
-  ): Promise<any[]> {
+  ): Promise<BucketDocument[]> {
     return db
       .query(async () => {
         if (!ids || ids.length === 0) return [];
@@ -645,5 +647,68 @@ export class DocumentService {
         }
       })
       .then((result) => result.data || null);
+  }
+
+  async scanDocumentOcr(imageFile: File): Promise<any> {
+    try {
+      // Create a FormData object for the AI service request
+      const formData = new FormData();
+      formData.append('image_file', imageFile);
+      
+      // Make the request to the external OCR endpoint
+      const response = await fetch(`${AI_SERVICE_CONFIG.URL}/api/image_ocr`, {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`External API error: ${response.status} - ${errorText}`);
+      }
+      
+      // Return the OCR result
+      return await response.json();
+    } catch (error) {
+      console.error("Document OCR service error:", error);
+      throw error;
+    }
+  }
+
+  async uploadPdfToExternal(pdfFile: File, modelPath = "", isFullARD: boolean = false): Promise<{ body: ReadableStream<Uint8Array> | null; headers: Headers; status: number }> {
+    try {
+      // Create a FormData object for the AI service request
+      const formData = new FormData();
+      formData.append('pdf', pdfFile);
+      formData.append('get_ocr', 'true');
+
+      if (modelPath !== "") {
+        formData.append('model_path', modelPath); // TODO: change this to a correct name
+      }
+
+      if (isFullARD) {
+        formData.append('is_full_ard', 'true'); // TODO: change this to a correct name
+      }
+      
+      // Make the request to the external PDF to images endpoint
+      const response = await fetch(`${AI_SERVICE_CONFIG.URL}/api/pdf_to_images`, {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`External API error: ${response.status} - ${errorText}`);
+      }
+      
+      // Return the response data needed to construct the final response
+      return {
+        body: response.body,
+        headers: response.headers,
+        status: response.status
+      };
+    } catch (error) {
+      console.error("PDF to images service error:", error);
+      throw error;
+    }
   }
 }

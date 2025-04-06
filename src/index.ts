@@ -10,6 +10,7 @@ import { EngineModelRuleController } from "./domains/csvRules/controllers/Engine
 import { WorkScopeRuleController } from "./domains/csvRules/controllers/WorkScopeRuleController";
 import { PartNumberRuleController } from "./domains/csvRules/controllers/PartNumberRuleController";
 import { CsvRecordController } from "./domains/csvRecords/controllers";
+import { AiTrainingController } from "./domains/ai_training/controllers";
 
 // Create controller instances
 const authController = new AuthController();
@@ -21,6 +22,7 @@ const engineModelRuleController = new EngineModelRuleController();
 const workScopeRuleController = new WorkScopeRuleController();
 const partNumberRuleController = new PartNumberRuleController();
 const csvRecordController = new CsvRecordController();
+const aiTrainingController = new AiTrainingController();
 
 // Extract server configuration
 const PORT = SERVER_CONFIG.PORT;
@@ -207,6 +209,52 @@ serve({
     "/api/csv-records/export": {
       POST: async (req) => addCorsHeaders(await csvRecordController.exportCsvRecords(req)),
     },
+
+    // AI Training routes
+    "/api/customers/:customerId/training/datasets": {
+      POST: async (req) => addCorsHeaders(await aiTrainingController.createTrainingDataset(req.params.customerId, req)),
+      GET: async (req) => addCorsHeaders(await aiTrainingController.getTrainingDatasets(req.params.customerId)),
+    },
+    "/api/customers/:customerId/training/datasets/documents": {
+      GET: async (req) => addCorsHeaders(await aiTrainingController.getTrainingDocuments(req.params.customerId)),
+    },
+    "/api/customers/:customerId/training/datasets/documents/:datasetId": {
+      GET: async (req) => addCorsHeaders(await aiTrainingController.getTrainingDocumentsByDatasetId(req.params.datasetId)),
+    },
+    "/api/customers/:customerId/training/tasks": {
+      POST: async (req) => addCorsHeaders(await aiTrainingController.createTrainingTask(req.params.customerId, req)),
+      GET: async (req) => addCorsHeaders(await aiTrainingController.getTrainingTasks(req.params.customerId, req)),
+    },
+    "/api/training/check/tasks": {
+      GET: async (req) => addCorsHeaders(await aiTrainingController.checkTrainingTasks()),
+    },
+    "/api/customers/:customerId/training/tasks/:taskId/start": {
+      POST: async (req) => addCorsHeaders(await aiTrainingController.startTrainingTask(req.params.customerId, req.params.taskId)),
+    },
+    "/api/webhook/training/tasks/:taskId/complete": {
+      POST: async (req) => addCorsHeaders(await aiTrainingController.completeTrainingTask(req.params.taskId, req)),
+    },
+    "/api/customers/:customerId/training/tasks/:taskId/bind": {
+      POST: async (req) => addCorsHeaders(await aiTrainingController.bindModelByTaskId(req.params.customerId, req.params.taskId, req)),
+    },
+    "/api/customers/:customerId/training/tasks/:taskId/results": {
+      GET: async (req) => addCorsHeaders(await aiTrainingController.getTrainingTaskVerificationResults(req.params.taskId)),
+    }
+    // "/api/customers/:customerId/training/tasks/:taskId": {
+    //   GET: async (req) => addCorsHeaders(await trainingController.getTrainingTaskById(req)),
+    //   PUT: async (req) => addCorsHeaders(await trainingController.updateTrainingTask(req)),
+    //   DELETE: async (req) => addCorsHeaders(await trainingController.deleteTrainingTask(req)),
+    // },
+    // "/api/customers/:customerId/training/results": {
+    //   GET: async (req) => addCorsHeaders(await trainingController.getTrainingResults(req)),
+    // },
+    // "/api/customers/:customerId/training/results/:resultId": {
+    //   GET: async (req) => addCorsHeaders(await trainingController.getTrainingResultById(req)),
+    //   DELETE: async (req) => addCorsHeaders(await trainingController.deleteTrainingResult(req)),
+    // },
+    // "/api/customers/:customerId/training/results/:resultId/bind": {
+    //   POST: async (req) => addCorsHeaders(await trainingController.bindTrainingResult(req)),
+    // },
   },
   
   // Fallback handler for routes not defined in the routes object

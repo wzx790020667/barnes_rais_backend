@@ -2,7 +2,7 @@ import type { Customer } from "./types";
 import { supabase, db, drizzleDb } from "../../lib/db";
 import { customers, documents } from "../../db/schema";
 import { generateCustomerInfoHash } from "../../lib/utils";
-import { count, eq, inArray, sql } from "drizzle-orm";
+import { count, eq, inArray, sql, and } from "drizzle-orm";
 
 export class CustomerService {
   async getCustomerById(id: string): Promise<Customer | null> {
@@ -15,7 +15,39 @@ export class CustomerService {
           .single();
 
         if (error) throw error;
-        return data as Customer;
+        if (!data) return null;
+        
+        // Create a customer object from the data
+        const customer = data as Customer;
+        
+        // Generate customer_info_hash if not present in database
+        let customerInfoHash = data.customer_info_hash;
+        if (!customerInfoHash) {
+          customerInfoHash = generateCustomerInfoHash(
+            data.customer_name,
+            data.co_code,
+            data.file_format
+          );
+        }
+        
+        // Count finished documents
+        if (customerInfoHash) {
+          const documentCount = await drizzleDb
+            .select({
+              count: count()
+            })
+            .from(documents)
+            .where(and(
+              eq(documents.status, 'approved'),
+              eq(documents.customer_info_hash, customerInfoHash)
+            ));
+          
+          customer.finished_doc = Number(documentCount[0]?.count || 0);
+        } else {
+          customer.finished_doc = 0;
+        }
+        
+        return customer;
       })
       .then((result) => result.data || null);
   }

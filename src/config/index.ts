@@ -35,3 +35,8 @@ export const DB_CONFIG = {
 export const AI_SERVICE_CONFIG = {
   URL: process.env.AI_SERVICE_URL || "http://localhost:5000",
 };
+
+// Training data storage configuration
+export const TRAINING_DATA_CONFIG = {
+  BASE_PATH: process.env.TRAINING_DATA_PATH || `${process.env.HOME || '/home'}/barnes_rais_training/training_data`,
+};
