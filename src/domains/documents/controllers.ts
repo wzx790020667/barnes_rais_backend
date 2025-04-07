@@ -449,7 +449,8 @@ export class DocumentController {
   async getDocumentFromBucket(req: BunRequest): Promise<Response> {
     try {
       const url = new URL(req.url);
-      const parts = url.pathname.split("/");
+      const decodedUrl = decodeURIComponent(url.pathname);
+      const parts = decodedUrl.split("/");
       const id = parts.pop(); // Get the document ID from the path
       
       if (!id) {
