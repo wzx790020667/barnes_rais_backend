@@ -129,7 +129,7 @@ serve({
       POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => documentController.getDocumentsFromBucket(req))),
     },
     "/api/documents/bucket/upload": {
-      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => documentController.uploadDocumentToBucket(req))),
+      POST: async (req) => addCorsHeaders(await documentController.uploadDocumentToBucket(req)),
     },
     "/api/documents/:id/import-number": {
       PATCH: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => documentController.addImportNumber(req))),
