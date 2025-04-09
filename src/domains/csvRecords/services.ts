@@ -24,11 +24,28 @@ export class CsvRecordService {
             };
         }).then(result => result.data || null);
 
+        // Track how many times each part number has been searched
+        const partNumberSearchCounts: Record<string, number> = {};
+
         const findImportPriceByPartNumber = (partNumber: string | null) => {
             if (!partNumber) return null;
+            
             const importItems = importDocumentWithItems?.items;
-            const importItem = importItems?.find(item => item.part_number === partNumber);
-            return importItem?.import_price || null;
+            if (!importItems || importItems.length === 0) return null;
+            
+            // Filter all matching items for this part number
+            const matchingItems = importItems.filter(item => item.part_number === partNumber);
+            if (matchingItems.length === 0) return null;
+            
+            // Get current search count and increment for next search
+            partNumberSearchCounts[partNumber] = (partNumberSearchCounts[partNumber] || 0) + 1;
+            const currentSearchCount = partNumberSearchCounts[partNumber];
+            
+            // Get the index based on search count (1-indexed to 0-indexed)
+            const index = Math.min(currentSearchCount - 1, matchingItems.length - 1);
+            
+            // Return the import price of the selected item
+            return matchingItems[index]?.import_price || null;
         }
 
         const documentWithItems = await db.query(async () => {

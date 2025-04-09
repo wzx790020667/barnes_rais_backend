@@ -346,7 +346,7 @@ export class DocumentController {
           document_id: validatedData.id,
           part_number: item.part_number,
           quantity_ordered: item.quantity_ordered || null,
-          import_price: item.import_price || null,
+          import_price: item.import_price ? item.import_price.trim() : null,
           engine_model: isEmpty(item.engine_model) ? null : String(item.engine_model),
           engine_number: isEmpty(item.engine_number) ? null : String(item.engine_number),
           serial_number: isEmpty(item.serial_number) ? null : String(item.serial_number),
