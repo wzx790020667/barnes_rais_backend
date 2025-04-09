@@ -101,6 +101,7 @@ export class CsvRecordService {
                 CSN_NUMBER: documentWithItems.document.csn,
                 TSN_NUMBER: documentWithItems.document.tsn,
             }
+
             records.push(record);
         })
         // Use Drizzle transaction to handle both operations atomically

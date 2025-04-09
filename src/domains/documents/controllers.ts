@@ -344,7 +344,7 @@ export class DocumentController {
       // Prepare document items
       const documentItems = validatedData.document_items?.map(item => ({
           document_id: validatedData.id,
-          part_number: item.part_number,
+          part_number: item.part_number.trim(),
           quantity_ordered: item.quantity_ordered || null,
           import_price: item.import_price ? item.import_price.trim() : null,
           engine_model: isEmpty(item.engine_model) ? null : String(item.engine_model),
