@@ -4,7 +4,7 @@ import { eq, inArray, and } from "drizzle-orm";
 import { generateCustomerInfoHash } from "../../lib/utils";
 import type { BunRequest } from "bun";
 import type { ImportTrainingData, POTrainingData } from "./types";
-import { calculateAccuracy, createAnnotationsForImportDocument, createAnnotationsForPODocument } from "./util";
+import { calculateAccuracy, createAnnotationsForImportDocument, createAnnotationsForPODocument, getModelPath } from "./util";
 import { TRAINING_DATA_CONFIG } from "../../config";
 import { mkdir } from "node:fs/promises";
 import { join } from "node:path";
@@ -296,8 +296,8 @@ export class AiTrainingService {
         return tasks;
     }
     
-    async startTrainingTask(customerId: string, taskId: string): Promise<any> {
-        // Verify the task exists and belongs to the customer
+    async startTrainingTask(customerId: string, taskId: string, req?: BunRequest): Promise<any> {
+        // Get task first to get the dataset ID
         const task = await drizzleDb.select()
             .from(t_tasks)
             .where(and(
@@ -306,7 +306,7 @@ export class AiTrainingService {
             ))
             .limit(1)
             .then(results => results[0]);
-        
+            
         if (!task) {
             return {
                 success: false,
@@ -321,18 +321,60 @@ export class AiTrainingService {
             };
         }
         
+        // Now fetch customer and dataset in parallel
+        const [customer, dataset] = await Promise.all([
+            // Get customer
+            drizzleDb.select().from(customers)
+                .where(eq(customers.id, customerId))
+                .limit(1)
+                .then(results => results[0]),
+                
+            // Get dataset using task's dataset ID
+            drizzleDb.select()
+                .from(t_datasets)
+                .where(eq(t_datasets.id, task.t_dataset_id))
+                .limit(1)
+                .then(results => results[0])
+        ]);
+
+        // Validate customer
+        if (!customer) {
+            return {
+                success: false,
+                message: "Customer not found"
+            };
+        }
+        if (!dataset) {
+            return {
+                success: false,
+                message: "Dataset not found"
+            };
+        }
         
         // Dummy AI service API call
         // In a real implementation, we would make an HTTP request to the AI service
         try {
-            // Simulate API call to external AI service
-            console.log(`Calling external AI service at https://ai-training-service.example.com/api/train`);
-            console.log(`Payload: {
-                taskId: ${taskId},
-                datasetName: fake name,
-                prompt: ${task.prompt},
-                callbackUrl: "https://your-api.example.com/api/webhook/training/tasks/${taskId}/complete"
-            }`);
+            const datasetName = dataset?.name || 'unknown';
+            
+            // TODO: Enable here after AI service is ready
+            // Get the server's host and port from the request or use fallback
+            // const host = req?.headers.get('host') || `${SERVER_CONFIG.HOST}:${SERVER_CONFIG.PORT}`;
+            // const protocol = req?.headers.get('x-forwarded-proto') || 'http';
+            // const serverUrl = `${protocol}://${host}`;
+            
+            // // Make the actual API call to the external AI service
+            // await axios.post(`${AI_SERVICE_CONFIG.URL}/api/train`, {
+            //     taskId: taskId,
+            //     dataset_name: datasetName,
+            //     document_type: customer.document_type,
+            //     prompt: task.prompt,
+            //     dataset_path: `${TRAINING_DATA_CONFIG.BASE_PATH}/${datasetName}`,
+            //     callback_url: `${serverUrl}/api/webhook/training/tasks/${taskId}/complete`,
+            // }, {
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     }
+            // });
             
             // Update task status to "training"
             const updatedTask = await drizzleDb.update(t_tasks)
@@ -533,10 +575,9 @@ export class AiTrainingService {
                 type: bucketDoc.contentType || 'application/pdf'
             });
             
+            // TODO: chenge to Full-ARD method call here, 
             // Process the downloaded file using the existing uploadPdfToExternal method
-            const result = await this.documentService.uploadPdfToExternal(file);
-
-            // TODO: handling converting result to verified_doc. 
+            // const result = await this.documentService.uploadPdfToExternal(file); 
 
             const verifiedDoc = originalDoc; // TODO: verified doc should be fetched from the external AI service.
             const { accuracy, unmatchedFieldPaths } = calculateAccuracy(originalDoc, verifiedDoc);
@@ -573,8 +614,22 @@ export class AiTrainingService {
             };
         }
 
+        const customer = await drizzleDb.select()
+            .from(customers)
+            .where(eq(customers.id, customerId))
+            .limit(1)
+            .then(results => results[0]);
+
+        if (!customer || customer.document_type === "" || customer.document_type === null) {
+            return {
+                success: false,
+                message: `Customer or customer.document_type not found, customer.document_type: ${customer?.document_type}`
+            };
+        }
+
+        // TODO: comfirm the model path rule here.
         const updatedCustomer = await drizzleDb.update(customers).set({
-            t_bind_path: modelPath
+            t_bind_path: getModelPath(customer.document_type, taskId)
         }).where(eq(customers.id, customerId));
 
         return {

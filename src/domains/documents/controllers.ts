@@ -748,4 +748,22 @@ export class DocumentController {
       );
     }
   }
+
+  async pdfFullARD(req: BunRequest): Promise<Response> {
+    try {
+      const formData = await req.formData();
+      const pdfFile = formData.get('pdf') as File;
+      const modelPath = formData.get('model_path') as string;
+
+      const document = await this.documentService.pdfFullARD(pdfFile, modelPath);
+
+      return Response.json(document);
+    } catch (error) {
+      console.error("PDF Full ARD error:", error);
+      return Response.json(
+        { error: "Failed to process PDF Full ARD" },
+        { status: 500 }
+      );
+    }
+  }
 }

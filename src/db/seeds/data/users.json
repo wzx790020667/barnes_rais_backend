@@ -1,12 +1,22 @@
 [
   {
     "username": "admin",
-    "password": "Euipalkwef8mK50",
+    "password": "BARNESADMIN",
     "role": "admin"
   },
   {
-    "username": "operator",
-    "password": "XDa6AdgsPELYPj5x",
+    "username": "operator-01",
+    "password": "BARNES1",
+    "role": "operator"
+  },
+  {
+    "username": "operator-02",
+    "password": "BARNES2",
+    "role": "operator"
+  },
+  {
+    "username": "operator-03",
+    "password": "BARNES3",
     "role": "operator"
   }
 ]

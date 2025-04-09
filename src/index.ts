@@ -122,6 +122,9 @@ serve({
     "/api/documents/pdf_to_images": {
       POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => documentController.uploadPdfToExternal(req))),
     },
+    "/api/documents/full_ard_pdf": {
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => documentController.pdfFullARD(req))),
+    },
     "/api/documents/ocr": {
       POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => documentController.scanDocumentOcr(req))),
     },

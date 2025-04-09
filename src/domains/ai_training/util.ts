@@ -1,3 +1,4 @@
+import { TRAINING_DATA_CONFIG } from "../../config";
 import type { Document, DocumentItem } from "../../db/schema";
 
 interface ExtendedDocumentItem extends DocumentItem {
@@ -222,4 +223,8 @@ export const calculateAccuracy = (originalDoc: Document, verifiedDoc: Document) 
         totalFieldCount,
         matchedFieldCount
     };
+}
+
+export const getModelPath = (documentType: string, taskId: string) => {
+    return `${TRAINING_DATA_CONFIG.BASE_MODEL_PATH}/${documentType}/${taskId}.chk`;
 }

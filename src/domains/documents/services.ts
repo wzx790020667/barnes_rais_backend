@@ -6,6 +6,7 @@ import { eq } from "drizzle-orm";
 import { documents, document_items, csv_records } from "../../db/schema";
 import type { BucketDocument } from "./types";
 import { AI_SERVICE_CONFIG } from "../../config";
+import axios from "axios";
 
 export class DocumentService {
   async getDocumentById(id: string): Promise<Document | null> {
@@ -706,6 +707,26 @@ export class DocumentService {
         headers: response.headers,
         status: response.status
       };
+    } catch (error) {
+      console.error("PDF to images service error:", error);
+      throw error;
+    }
+  }
+
+  async pdfFullARD(pdfFile: File, modelPath: string): Promise<Partial<Document>> {
+    try {
+      // Create a FormData object for the AI service request
+      const formData = new FormData();
+      formData.append('pdf', pdfFile);
+      formData.append('model_path', modelPath);
+
+      // TODO: adjust the endpoint here.
+      const respose = await axios.post(`${AI_SERVICE_CONFIG.URL}/api/full_ard_pdf`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      return respose.data as Partial<Document>;
     } catch (error) {
       console.error("PDF to images service error:", error);
       throw error;
