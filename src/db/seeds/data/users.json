@@ -5,17 +5,17 @@
     "role": "admin"
   },
   {
-    "username": "operator-01",
+    "username": "operator-1",
     "password": "BARNES1",
     "role": "operator"
   },
   {
-    "username": "operator-02",
+    "username": "operator-2",
     "password": "BARNES2",
     "role": "operator"
   },
   {
-    "username": "operator-03",
+    "username": "operator-3",
     "password": "BARNES3",
     "role": "operator"
   }
