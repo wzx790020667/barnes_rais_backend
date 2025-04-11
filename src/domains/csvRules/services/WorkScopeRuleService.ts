@@ -22,8 +22,7 @@ export class WorkScopeRuleService {
       .query(async () => {
         const { data, error } = await supabase
           .from("work_scope_rules")
-          .select("overhaul_keywords, result_display")
-          .order("created_at", { ascending: false });
+          .select("overhaul_keywords, result_display");
 
         if (error) throw error;
         return data as WorkScopeRule[];
@@ -31,12 +30,9 @@ export class WorkScopeRuleService {
       .then((result) => result.data || []);
   }
 
-  async getWorkScopeRules(page: number = 1, pageSize: number = 10): Promise<{ workScopeRules: WorkScopeRule[]; total: number }> {
+  async getWorkScopeRules(page: number | null = 1, pageSize: number | null = 10): Promise<{ workScopeRules: WorkScopeRule[]; total: number }> {
     return db
       .query(async () => {
-        // Calculate offset based on page and pageSize
-        const offset = (page - 1) * pageSize;
-        
         // Get total count first
         const { data: countData, error: countError } = await supabase
           .from("work_scope_rules")
@@ -44,12 +40,29 @@ export class WorkScopeRuleService {
           
         if (countError) throw countError;
         
+        // If both page and pageSize are null, return all results
+        if (page === null && pageSize === null) {
+          const { data, error } = await supabase
+            .from("work_scope_rules")
+            .select("*");
+            
+          if (error) throw error;
+          
+          return { 
+            workScopeRules: data as WorkScopeRule[], 
+            total: countData?.[0]?.count || 0 
+          };
+        }
+        
+        // Otherwise, use pagination
+        // Calculate offset based on page and pageSize
+        const offset = ((page || 1) - 1) * (pageSize || 10);
+        
         // Get paginated results
         const { data, error } = await supabase
           .from("work_scope_rules")
           .select("*")
-          .range(offset, offset + pageSize - 1)
-          .order("created_at", { ascending: false });
+          .range(offset, offset + (pageSize || 10) - 1);
           
         if (error) throw error;
         

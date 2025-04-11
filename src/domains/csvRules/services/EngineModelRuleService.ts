@@ -22,21 +22,17 @@ export class EngineModelRuleService {
       .query(async () => {
         const { data, error } = await supabase
           .from("engine_model_rules")
-          .select("engine_model_title, common_prefix, result_display")
-          .order("created_at", { ascending: false });
-
+          .select("engine_model_title, common_prefix, result_display");
+          
         if (error) throw error;
         return data as EngineModelRule[];
       })
       .then((result) => result.data || []);
   }
 
-  async getEngineModelRules(page: number = 1, pageSize: number = 10): Promise<{ engineModelRules: EngineModelRule[]; total: number }> {
+  async getEngineModelRules(page: number | null = 1, pageSize: number | null = 10): Promise<{ engineModelRules: EngineModelRule[]; total: number }> {
     return db
       .query(async () => {
-        // Calculate offset based on page and pageSize
-        const offset = (page - 1) * pageSize;
-        
         // Get total count first
         const { data: countData, error: countError } = await supabase
           .from("engine_model_rules")
@@ -44,12 +40,18 @@ export class EngineModelRuleService {
           
         if (countError) throw countError;
         
-        // Get paginated results
-        const { data, error } = await supabase
+        let query = supabase
           .from("engine_model_rules")
-          .select("*")
-          .range(offset, offset + pageSize - 1)
-          .order("created_at", { ascending: false });
+          .select("*");
+
+        // Apply pagination only if both page and pageSize are not null
+        if (page !== null && pageSize !== null) {
+          const offset = (page - 1) * pageSize;
+          query = query.range(offset, offset + pageSize - 1);
+        }
+        
+        // Execute query
+        const { data, error } = await query;
           
         if (error) throw error;
         

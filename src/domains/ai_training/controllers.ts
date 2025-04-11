@@ -13,10 +13,7 @@ const createTrainingTaskSchema = z.object({
     name: z.string().min(1, { message: "Name is required" }),
     trainingDatasetId: z.string(),
     prompt: z.string().min(0).optional(),
-});
-
-const completeTrainingTaskSchema = z.object({
-    modelPath: z.string()
+    documentType: z.string().min(0).optional(),
 });
 
 const bindModelByTaskIdSchema = z.object({
@@ -119,7 +116,8 @@ export class AiTrainingController {
             customerId,
             data.name,
             data.trainingDatasetId,
-            data.prompt
+            data.prompt,
+            data.documentType
         );
 
         if (!task.success) {
@@ -178,7 +176,7 @@ export class AiTrainingController {
         });
     }
     
-    async completeTrainingTask(taskId: string, req: BunRequest): Promise<Response> {
+    async completeTrainingTask(taskId: string): Promise<Response> {
         if (!taskId) {
             return Response.json({
                 success: false,
@@ -186,18 +184,7 @@ export class AiTrainingController {
             }, {status: 400});
         }
 
-        const body = await req.json();
-        const { success, data, error } = completeTrainingTaskSchema.safeParse(body);
-        if (!success) {
-            return Response.json({
-                success: false,
-                message: "Invalid request body",
-                error: error
-            }, {status: 400});
-        }
-
-        const modelPath = data.modelPath;
-        const result = await this.aiTrainingService.completeTrainingTask(taskId, modelPath);
+        const result = await this.aiTrainingService.completeTrainingTask(taskId);
         
         if (!result.success) {
             return Response.json({

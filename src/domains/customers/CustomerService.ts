@@ -1,6 +1,5 @@
-import type { Customer } from "./types";
 import { supabase, db, drizzleDb } from "../../lib/db";
-import { customers, documents } from "../../db/schema";
+import { customers, documents, type Customer } from "../../db/schema";
 import { generateCustomerInfoHash } from "../../lib/utils";
 import { count, eq, inArray, sql, and } from "drizzle-orm";
 
@@ -26,7 +25,8 @@ export class CustomerService {
           customerInfoHash = generateCustomerInfoHash(
             data.customer_name,
             data.co_code,
-            data.file_format
+            data.file_format,
+            data.document_type
           );
         }
         
@@ -42,8 +42,10 @@ export class CustomerService {
               eq(documents.customer_info_hash, customerInfoHash)
             ));
           
+          // @ts-ignore
           customer.finished_doc = Number(documentCount[0]?.count || 0);
         } else {
+          // @ts-ignore
           customer.finished_doc = 0;
         }
         
@@ -69,8 +71,7 @@ export class CustomerService {
         const { data, error } = await supabase
           .from("customers")
           .select("*")
-          .range(offset, offset + pageSize - 1)
-          .order("created_at", { ascending: false });
+          .range(offset, offset + pageSize - 1);
           
         if (error) throw error;
 
@@ -84,7 +85,8 @@ export class CustomerService {
             customer.customer_info_hash = generateCustomerInfoHash(
               customer.customer_name,
               customer.co_code,
-              customer.file_format
+              customer.file_format,
+              customer.document_type
             );
           }
           return customer;
@@ -101,7 +103,10 @@ export class CustomerService {
           })
           .from(documents)
           .where(
-            eq(documents.status, 'approved')
+            and(
+              eq(documents.status, 'approved'),
+              eq(documents.from_full_ard, false)
+            )
           )
           .groupBy(documents.customer_info_hash);
         
@@ -129,7 +134,7 @@ export class CustomerService {
   }
 
   async createCustomer(
-    customer: Omit<Customer, "id" | "createdAt" | "updatedAt" | "finished_doc">
+    customer: Partial<Customer>
   ): Promise<Customer | null> {
     return db
       .query(async () => {
@@ -237,7 +242,7 @@ export class CustomerService {
       .query(async () => {
         const { data, error } = await supabase
           .from("customers")
-          .select("file_format")
+          .select("file_format, document_type")
           .ilike("customer_name", `%${customerName}%`);
 
         if (error) throw error;
@@ -248,5 +253,52 @@ export class CustomerService {
         return [...new Set(fileFormats)];
       })
       .then((result) => result.data || []);
+  }
+
+  async getCustomerByHash(customerData: {
+    customer_name: string,
+    co_code: string,
+    file_format: string,
+    document_type: string
+  }): Promise<Customer | null> {
+    const { customer_name, co_code, file_format, document_type } = customerData;
+    const customerInfoHash = generateCustomerInfoHash(customer_name, co_code, file_format, document_type);
+
+    return db
+      .query(async () => {
+        const { data, error } = await supabase
+          .from("customers")
+          .select("*")
+          .eq("customer_info_hash", customerInfoHash)
+          .single();
+
+        if (error) throw error;
+        return data as Customer;
+      })
+      .then((result) => result.data || null);
+  }
+
+  async getDocumentTypesByCustomer(customerData: {
+    customer_name: string,
+    co_code: string,
+    file_format: string
+  }): Promise<string[]> {
+    const { customer_name, co_code, file_format } = customerData;
+    
+    return db.query(async () => {
+      const {data, error} = await supabase.from("customers")
+        .select("document_type")
+        .eq("customer_name", customer_name)
+        .eq("co_code", co_code)
+        .eq("file_format", file_format);
+
+      if (error) throw error;
+
+      const types = new Set<string>();
+      data.forEach(item => types.add(item.document_type));
+
+      return Array.from(types);
+    }).then(result => result.data || []);
+
   }
 }

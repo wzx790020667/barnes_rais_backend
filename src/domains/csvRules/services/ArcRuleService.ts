@@ -22,8 +22,7 @@ export class ArcRuleService {
       .query(async () => {
         const { data, error } = await supabase
           .from("arc_rules")
-          .select("*")
-          .order("created_at", { ascending: false });
+          .select("*");
 
         if (error) throw error;
         return data as ArcRule[];
@@ -31,11 +30,29 @@ export class ArcRuleService {
       .then((result) => result.data || []);
   }
 
-  async getArcRules(page: number = 1, pageSize: number = 10): Promise<{ arcRules: ArcRule[]; total: number }> {
+  async getArcRules(page: number | null = 1, pageSize: number | null = 10): Promise<{ arcRules: ArcRule[]; total: number }> {
     return db
       .query(async () => {
+        // If both page and pageSize are null, return all results without pagination
+        if (page === null && pageSize === null) {
+          const { data, error } = await supabase
+            .from("arc_rules")
+            .select("*");
+                        
+          if (error) throw error;
+          
+          return { 
+            arcRules: data as ArcRule[], 
+            total: data.length 
+          };
+        }
+        
+        // Use default values if null is passed for only one parameter
+        const effectivePage = page ?? 1;
+        const effectivePageSize = pageSize ?? 10;
+        
         // Calculate offset based on page and pageSize
-        const offset = (page - 1) * pageSize;
+        const offset = (effectivePage - 1) * effectivePageSize;
         
         // Get total count first
         const { data: countData, error: countError } = await supabase
@@ -48,8 +65,7 @@ export class ArcRuleService {
         const { data, error } = await supabase
           .from("arc_rules")
           .select("*")
-          .range(offset, offset + pageSize - 1)
-          .order("created_at", { ascending: false });
+          .range(offset, offset + effectivePageSize - 1);
           
         if (error) throw error;
         

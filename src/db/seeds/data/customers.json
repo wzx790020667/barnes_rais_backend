@@ -3,930 +3,930 @@
     "customer_name": "AAR AIRCRAFT TURBINE CENTER",
     "customer_code": "CN00001",
     "co_code": "AAR",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "AERO JET, INC",
     "customer_code": "CN00003",
     "co_code": "AJE",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "AERODIRECT, INC.",
     "customer_code": "CN00004",
     "co_code": "ADI",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "AEROTURBINE INC.",
     "customer_code": "CN00005",
     "co_code": "ATI",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "AERSALE, INC",
     "customer_code": "CN00006",
     "co_code": "AEI",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "AMECO BEIJING",
     "customer_code": "CN00008",
     "co_code": "AMB",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "ALL NIPPON AIRWAYS CO.,LTD.",
     "customer_code": "CN00009",
     "co_code": "ANA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "ANA TRADING CO., LTD- JAL",
     "customer_code": "CN00010",
     "co_code": "ANA-JAL",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "AVIOSERV SAN DIEGO, INC.",
     "customer_code": "CN00011",
     "co_code": "AVI",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "CHINA AIRLINES, LTD.",
     "customer_code": "CN00012",
     "co_code": "CAL",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "CONTRAIL AVIATION SUPPORT,INC.",
     "customer_code": "CN00013",
     "co_code": "CTA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "DELTA AIRLINES, INC.",
     "customer_code": "CN00014",
     "co_code": "DAL",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "DELTA MATERIAL SERVICES LLC",
     "customer_code": "CN00015",
     "co_code": "DMS",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "EVERGREEN AVIATION TECH CORP",
     "customer_code": "CN00016",
     "co_code": "EGA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "FLIGHT POWER REPAIR GROUP",
     "customer_code": "CN00017",
     "co_code": "FPR",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "FOURWINDS AVIATION, LLC",
     "customer_code": "CN00018",
     "co_code": "FWA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "GA TELESIS, LLC",
     "customer_code": "CN00019",
     "co_code": "GAT",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "GE ENGINE SERVICES MALAYSIA",
     "customer_code": "CN00020",
     "co_code": "MH",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "AERCAP Materials ( former GECAS AMS)",
     "customer_code": "CN00021",
     "co_code": "ACM",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "IHI Corporation",
     "customer_code": "CN00023",
     "co_code": "IHI",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "INTERNATIONAL AIRCRAFT ASSOC., INC.",
     "customer_code": "CN00024",
     "co_code": "IAA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "INVENTORY NAVIGATORS LLC",
     "customer_code": "CN00025",
     "co_code": "INL",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "ISRAEL AEROSPACE INDUSTRIES LTD",
     "customer_code": "CN00026",
     "co_code": "IAI",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "JALUX INC / MHI",
     "customer_code": "CN00028",
     "co_code": "JAX",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "JAPAN AIRLINES CO LTD",
     "customer_code": "CN00029",
     "co_code": "JAL",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "KOREAN AIRLINES",
     "customer_code": "CN00030",
     "co_code": "KAL",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "LUFTHANSA TECHNIK AG",
     "customer_code": "CN00031",
     "co_code": "LHT",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "MTU MAINTENANCE HANNOVER GMBH",
     "customer_code": "CN00033",
     "co_code": "MTU",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "SR TECHNICS SWITZERLAND LTD.",
     "customer_code": "CN00034",
     "co_code": "SRT",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "ST AEROSPACE ENGINES PTE LTD.",
     "customer_code": "CN00035",
     "co_code": "STE",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "TES AVIATION GROUP",
     "customer_code": "CN00036",
     "co_code": "TES",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "THAI AIRWAYS INTL PUBLIC CO., LTD",
     "customer_code": "CN00037",
     "co_code": "TGA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "TRADEWINDS ENGINE SVCS, INC.",
     "customer_code": "CN00038",
     "co_code": "TWE",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "TURBINE SERVICES & SOLUTION AEROSPACE",
     "customer_code": "CN00040",
     "co_code": "TSS",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "UNICAL AVIATION INC",
     "customer_code": "CN00041",
     "co_code": "UNI",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "UNITED AIRLINES",
     "customer_code": "CN00042",
     "co_code": "UAL",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "VAS AERO SERVICES LLC",
     "customer_code": "CN00043",
     "co_code": "VAS",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "WILLIS AERONAUTICAL SERVICES, INC. (Origna from JT Power)",
     "customer_code": "CN00044",
     "co_code": "WAS",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "COMPONENT AEROSPACE SINGAPORE",
     "customer_code": "CN00045",
     "co_code": "CAS",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "ITS INFINITY TRADING",
     "customer_code": "CN00046",
     "co_code": "",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "TRUEAERO LLC",
     "customer_code": "CN00047",
     "co_code": "TAL",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "MAGELLAN AVIATION SERVICES LTD",
     "customer_code": "CN00048",
     "co_code": "MAS",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "ROLLS ROYCE PLC",
     "customer_code": "CN00049",
     "co_code": "RRP",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "MTU MAINTENANCE ZHUHAI CO. LTD.",
     "customer_code": "CN00051",
     "co_code": "MTZ",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "MTU MAINTENANCE CANADA LTD.",
     "customer_code": "CN00053",
     "co_code": "MTV",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "JET MIDWEST, INC",
     "customer_code": "CN00054",
     "co_code": "JET",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "<EMPTY>",
     "customer_code": "CN00055",
     "co_code": "SAL",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "CTS Engines",
     "customer_code": "CN00056",
     "co_code": "CTS",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "CHROMALLOY MATERIAL SOLUTIONS",
     "customer_code": "CN00057",
     "co_code": "CMS",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "IBERIA LINEAS AEREAS DE ESPANA",
     "customer_code": "CN00059",
     "co_code": "IBM",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "AERO ENGINE SOLUTIONS",
     "customer_code": "CN00060",
     "co_code": "AES",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "METAL TECHNOLOGY CO. LTD.",
     "customer_code": "CN00062",
     "co_code": "MTC",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "JET INTERNATIONAL CO. L.L.C.",
     "customer_code": "CN00063",
     "co_code": "JEN",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "KILLICK AEROSPACE LIMITED.",
     "customer_code": "CN00064",
     "co_code": "KIL",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "A&E AEROGROUP",
     "customer_code": "CN00065",
     "co_code": "ANE",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "INTERNATIONAL AEROSPACE TECHNICAL SERVICES",
     "customer_code": "CN00066",
     "co_code": "IAT",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Vaayu Group",
     "customer_code": "CN00067",
     "co_code": "VAA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Royal Aero GmbH",
     "customer_code": "CN00068",
     "co_code": "RYA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Kellstrom Aerospace",
     "customer_code": "CN00069",
     "co_code": "KEL",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "EirTrade Aviation Ireland Ltd",
     "customer_code": "CN00070",
     "co_code": "EIR",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "AERFIN Ltd",
     "customer_code": "CN00071",
     "co_code": "AER",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "KALITTA AIR",
     "customer_code": "CN00072",
     "co_code": "KLT",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "ITS Aero",
     "customer_code": "CN00073",
     "co_code": "ITS",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Aeronautical Support International LLC",
     "customer_code": "CN00074",
     "co_code": "ASI",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "GE AVIATION ENGINE SERVICES SINGAPORE PTE LTD",
     "customer_code": "CN00075",
     "co_code": "GEA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Mitsubishi Power Aero LLC (used to be PWPS)",
     "customer_code": "CN00076",
     "co_code": "PWP",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Aeras Aviation",
     "customer_code": "CN00077",
     "co_code": "AAV",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Chromalloy Connecticut",
     "customer_code": "CN00078",
     "co_code": "CMC",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "AMP Aero Services, LLC",
     "customer_code": "CN00079",
     "co_code": "AMP",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Aeroengine Industries DWC LLC",
     "customer_code": "CN00080",
     "co_code": "AID",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Chromalloy (Thailand) Ltd. & Turbine Services (Thailand) Ltd.",
     "customer_code": "CN00081",
     "co_code": "CMT",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Four Corners Aviation",
     "customer_code": "CN00082",
     "co_code": "FCA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Hartford Aviation Group, Inc.",
     "customer_code": "CN00083",
     "co_code": "HAG",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "APOC Aviation",
     "customer_code": "CN00084",
     "co_code": "APO",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Aviation Asset Trading, LLC",
     "customer_code": "CN00085",
     "co_code": "AAT",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Euram Air Leases Ireland Ltd",
     "customer_code": "CN00086",
     "co_code": "EAL",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Chromalloy Georgia",
     "customer_code": "CN00087",
     "co_code": "CMG",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Aerospace Asset Trading, LLC’s",
     "customer_code": "CN00088",
     "co_code": "ASA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Genova Aerospace, Inc",
     "customer_code": "CN00089",
     "co_code": "GAI",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "AERO ENGINE SERVICES",
     "customer_code": "CN00090",
     "co_code": "AEC",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "IAG Engine Center",
     "customer_code": "CN00091",
     "co_code": "IAG",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Hong Kong Aero Engine Services Limited",
     "customer_code": "CN00092",
     "co_code": "HAE",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "MTU Maintenance Berlin-Brandenburg GmbH",
     "customer_code": "CN00093",
     "co_code": "MTB",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "N3 Engine Overhaul Services GmbH & Co. KG",
     "customer_code": "CN00094",
     "co_code": "N3E",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Singapore Aero Engine Services Pte Ltd",
     "customer_code": "CN00095",
     "co_code": "SAE",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Setna iO LLc",
     "customer_code": "CN00096",
     "co_code": "SET",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "StandardAero (PEI)",
     "customer_code": "CN00097",
     "co_code": "STA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Superior Aviation Solutions",
     "customer_code": "CN00098",
     "co_code": "SAS",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Jalux Americas INC",
     "customer_code": "CN00099",
     "co_code": "JAI",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "AvAir LLC",
     "customer_code": "CN00100",
     "co_code": "AVA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Brickell Turbine Materials, LLC.",
     "customer_code": "CN00101",
     "co_code": "BTM",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "V1 AERO LLC",
     "customer_code": "CN00102",
     "co_code": "V1A",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "GV Aerospace LLC",
     "customer_code": "CN00103",
     "co_code": "GVA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "NTE Aviation, LLC",
     "customer_code": "CN00104",
     "co_code": "NTE",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Aero Norway AS",
     "customer_code": "CN00105",
     "co_code": "AEN",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "StandardAero (DFW)",
     "customer_code": "CN00106",
     "co_code": "STD",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "TK Aviation, Inc",
     "customer_code": "CN00107",
     "co_code": "TKA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "YES TECHNIK FZC",
     "customer_code": "CN00108",
     "co_code": "YES",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "BET SHEMESH Engine",
     "customer_code": "CN00109",
     "co_code": "BET",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "BIAero Pte Ltd",
     "customer_code": "CN00110",
     "co_code": "BIA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "INAV LLC",
     "customer_code": "CN00111",
     "co_code": "INA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "StandardAero (Australia)",
     "customer_code": "CN00112",
     "co_code": "STB",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Rolls-Royce plc Derby",
     "customer_code": "CN00113",
     "co_code": "DBY",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "FL Technics, UAB",
     "customer_code": "CN00114",
     "co_code": "FLT",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Aviation Turbine Materials",
     "customer_code": "CN00115",
     "co_code": "ATM",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Aerospace Industrial Development Corporation",
     "customer_code": "CN00116",
     "co_code": "AIDC",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "AJW Group",
     "customer_code": "CN00117",
     "co_code": "AJW",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "EURAVIA ENGINEERING & SUPPLY CO",
     "customer_code": "CN00118",
     "co_code": "EUR",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Next Level Aviation",
     "customer_code": "CN00119",
     "co_code": "NEX",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Pilatus Aircraft Limited",
     "customer_code": "CN00120",
     "co_code": "PAL",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Galaxy Aviation Corp",
     "customer_code": "CN00121",
     "co_code": "GAC",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Aermach Ltd",
     "customer_code": "CN00122",
     "co_code": "AML",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "EAGLE SERVICES ASIA PTE LTD",
     "customer_code": "CP00002",
     "co_code": "ESA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "P&W COLUMBUS ENGINE CENTER, LLC",
     "customer_code": "CP00003",
     "co_code": "CEC",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "CHRISTCHURCH ENGINE CENTRE",
     "customer_code": "CP00006",
     "co_code": "CHC",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "PRATT & WHITNEY THY TEKNIK UCAK",
     "customer_code": "CP00009",
     "co_code": "TEC",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "PWA C/O UNITED AIR LINES BLDG 84",
     "customer_code": "CP00010",
     "co_code": "SFO",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "PRATT & WHITNEY F117 INVENTORY",
     "customer_code": "CP00011",
     "co_code": "OKC",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "SHANGHAI P&W AIRCRAFT ENG MAINT CO",
     "customer_code": "CP00012",
     "co_code": "SEC",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "P&W AFTERMARKET JAPAN",
     "customer_code": "CP00013",
     "co_code": "MLP",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "P&W SFO UAL MMP",
     "customer_code": "CP00014",
     "co_code": "MMP",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "PRATT & WHITNEY - CSA",
     "customer_code": "CP00016",
     "co_code": "CSA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "CHENGDU AEROTECH MFG CO LTD",
     "customer_code": "CP00017",
     "co_code": "AMC",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Pratt & Whitney Canada",
     "customer_code": "CP00018",
     "co_code": "PWC",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Pratt & Whitney Component Solution",
     "customer_code": "CP00019",
     "co_code": "PWS",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Pratt & Whitney Repair Solution Logistics",
     "customer_code": "CP00020",
     "co_code": "RSL",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "ASIAN COMPRESSOR TECH SVCS CO",
     "customer_code": "IN00001",
     "co_code": "ACTS",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "GEEVES Guanyin",
     "customer_code": "CN00126",
     "co_code": "GEA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "GE AVIATION SYSTEMS NORTH AMERICA LLC-DUBAI MAINLAND",
     "customer_code": "CN00075",
     "co_code": "GEA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "UNICAL AVIATION",
     "customer_code": "CN00075",
     "co_code": "GEA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "STANDARDAERO",
     "customer_code": "CN00075",
     "co_code": "GEA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "MTU MAINTENANCE CANADA",
     "customer_code": "CN00075",
     "co_code": "GEA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "JAPAN AIRLINES CO., LTD.",
     "customer_code": "CN00075",
     "co_code": "GEA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "AIR FRANCE DA.AR",
     "customer_code": "CN00075",
     "co_code": "GEA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "GA TELESIS ENGINE SERVICES",
     "customer_code": "CN00075",
     "co_code": "GEA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "MTU MAINTENANCE HANNOVER",
     "customer_code": "CN00075",
     "co_code": "GEA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "JAL GENX MBTH",
     "customer_code": "CN00075",
     "co_code": "GEA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "TAIKOO ENGINE SERVICES(XIAMEN)CO. LTD.",
     "customer_code": "CN00075",
     "co_code": "GEA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "GE CALEDONIAN LTD",
     "customer_code": "CN00075",
     "co_code": "GEA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "GEES MALAYSIA SDN. BHD.",
     "customer_code": "CN00075",
     "co_code": "GEA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "KLM ENGINEERING & MAINTENANCE",
     "customer_code": "CN00075",
     "co_code": "GEA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "GE AVIATION MATERIALS,INC.",
     "customer_code": "CN00075",
     "co_code": "GEA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "GE AVIATION ENGINE SERVICES SINGAPORE PTE LTD",
     "customer_code": "CN00075",
     "co_code": "GEA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "ROYAL AERO GMBH MIESBACH",
     "customer_code": "CN00075",
     "co_code": "GEA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "CTS ENGINES, LLC",
     "customer_code": "CN00075",
     "co_code": "GEA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "JET MIDWEST, INC.",
     "customer_code": "CN00075",
     "co_code": "GEA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "KELLSTROM COMMERCIAL AEROSPACE, INC",
     "customer_code": "CN00075",
     "co_code": "GEA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "LUFTHANSA TECHNIK",
     "customer_code": "CN00075",
     "co_code": "GEA",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "Rolls-Royce plc Derby",
     "customer_code": "CN00113",
     "co_code": "DBY",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "P&W COLUMBUS ENGINE CENTER, LLC FMP",
     "customer_code": "CP00004",
     "co_code": "CEC",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "AMECO BEIJING",
     "customer_code": "CN00007",
     "co_code": "AMB",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "ST Engineering Aerospace Technologies (Xiamen) Co Ltd",
     "customer_code": "CN00123",
     "co_code": "STX",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "IHI CORPORATION",
     "customer_code": "CN00022",
     "co_code": "IHI",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "UNIVERSAL TURBINE PARTS",
     "customer_code": "CN00128",
     "co_code": "UTP",
-    "file_format": "default"
+    "file_format": null
   },
   {
     "customer_name": "KP Aviation",
     "customer_code": "CN00127",
     "co_code": "KPA",
-    "file_format": "default"
+    "file_format": null
   }
 ]

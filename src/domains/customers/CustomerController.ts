@@ -1,3 +1,4 @@
+import type { BunRequest } from "bun";
 import { generateCustomerInfoHash } from "../../lib/utils";
 import { CustomerService } from "./CustomerService";
 import { z } from "zod";
@@ -14,6 +15,19 @@ const createCustomerSchema = z.object({
 
 // For updates, all fields are optional
 const updateCustomerSchema = createCustomerSchema.partial();
+
+const getCustomerByHashSchema = z.object({
+  customer_name: z.string(),
+  co_code: z.string(),
+  file_format: z.string(),
+  document_type: z.string()
+});
+
+const getDocumentTypesByCustomerSchema = z.object({
+  customer_name: z.string(),
+  co_code: z.string(),
+  file_format: z.string(),
+});
 
 export class CustomerController {
   private customerService: CustomerService;
@@ -110,7 +124,8 @@ export class CustomerController {
       const customerInfoHash = generateCustomerInfoHash(
         validatedData.customer_name,
         validatedData.co_code,
-        validatedData.file_format
+        validatedData.file_format,
+        validatedData.document_type
       );
 
       validatedData.customer_info_hash = customerInfoHash;
@@ -164,7 +179,8 @@ export class CustomerController {
       const customerInfoHash = generateCustomerInfoHash(
         validatedData.customer_name || "",
         validatedData.co_code || null,
-        validatedData.file_format || ""
+        validatedData.file_format || "",
+        validatedData.document_type || ""
       );
 
       validatedData.customer_info_hash = customerInfoHash;
@@ -303,13 +319,68 @@ export class CustomerController {
         );
       }
 
-      const fileFormats = await this.customerService.getFileFormatsByCustomerName(customerName);
-      
-      return Response.json(fileFormats);
+      const formats = await this.customerService.getFileFormatsByCustomerName(customerName);
+
+      return Response.json(formats);
     } catch (error) {
       console.error("Get file formats error:", error);
       return Response.json(
         { error: "Failed to get file formats" },
+        { status: 500 }
+      );
+    }
+  }
+
+  async getCustomerByHash(req: Request): Promise<Response> {
+    try {
+      const customerData = await req.json();
+
+      // Validate with Zod schema
+      const result = getCustomerByHashSchema.safeParse(customerData);
+
+      if (!result.success) {
+        return Response.json(
+          { error: "Invalid customer data", details: result.error.format() },
+          { status: 400 }
+        );
+      }
+
+      const customer = await this.customerService.getCustomerByHash(result.data);
+
+      if (!customer) {
+        return Response.json({ error: "Customer not found" }, { status: 404 });
+      }
+
+      return Response.json(customer);
+    } catch (error) {
+      console.error("Get customer by hash error:", error);
+      return Response.json(
+        { error: "Failed to get customer by hash" },
+        { status: 500 }
+      );
+    }
+  }
+
+  async getDocumentTypesByCustomer(req: BunRequest): Promise<any> {
+    try {
+      const customerData = await req.json();
+
+      const result = getDocumentTypesByCustomerSchema.safeParse(customerData);
+      
+      if (!result.success) {
+        return Response.json(
+          { error: "Invalid customer data", details: result.error.format() },
+          { status: 400 }
+        );
+      }
+      
+      const documentTypes = await this.customerService.getDocumentTypesByCustomer(result.data);
+
+      return Response.json(documentTypes);
+    } catch (error) {
+      console.error("Get document types by customer error:", error);
+      return Response.json(
+        { error: "Failed to get document types by customer" },
         { status: 500 }
       );
     }

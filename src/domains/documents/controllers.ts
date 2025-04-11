@@ -1,12 +1,14 @@
 import { DocumentService } from "./services";
 import type { Document, DocumentItem } from "../../db/schema";
 import { z } from "zod";
-import {isEmpty, isUndefined} from "lodash";
+import {isEmpty} from "lodash";
 import { CsvRecordService } from "../csvRecords/services";
 import { generateCustomerInfoHash } from "../../lib/utils";
 import type { BunRequest } from "bun";
-import { AI_SERVICE_CONFIG } from "../../config";
 import { DOCUMENT_BUCKET_NAME } from "./constants";
+import moment from "moment-timezone";
+import { CustomerService } from "../customers/CustomerService";
+import { AiTrainingService } from "../ai_training/services";
 
 // Document item schema validation
 const documentItemSchema = z.object({
@@ -44,6 +46,7 @@ const createDocumentSchema = z.object({
   csn: z.string().optional().nullable(),
   customer_info_hash: z.string().optional(),
   document_items: z.array(documentItemSchema).optional(),
+  from_full_ard: z.boolean().optional().nullable(),
   t_page_texts: z.array(z.string()).optional().nullable(),
   t_import_number_page: z.number().optional().nullable(),
   t_po_number_page: z.number().optional().nullable(),
@@ -65,10 +68,14 @@ type CreateDocumentInput = z.infer<typeof createDocumentSchema>;
 export class DocumentController {
   private documentService: DocumentService;
   private csvRecordService: CsvRecordService;
+  private customerService: CustomerService;
+  private aiTrainingService: AiTrainingService;
 
   constructor() {
     this.documentService = new DocumentService();
     this.csvRecordService = new CsvRecordService();
+    this.customerService = new CustomerService();
+    this.aiTrainingService = new AiTrainingService();
   }
 
   async getDocumentById(req: BunRequest): Promise<Response> {
@@ -306,7 +313,8 @@ export class DocumentController {
       const customerInfoHash = generateCustomerInfoHash(
         validatedData.customer_name,
         validatedData.co_code,
-        validatedData.file_format
+        validatedData.file_format,
+        validatedData.document_type
       );
       
       // Prepare document data
@@ -324,10 +332,11 @@ export class DocumentController {
         end_user_customer_number: validatedData.end_user_customer_number || null,
         work_scope: validatedData.work_scope || null,
         arc_requirement: validatedData.arc_requirement || null,
-        receive_date: validatedData.receive_date ? new Date(validatedData.receive_date) : null,
+        receive_date: validatedData.receive_date ? moment(validatedData.receive_date).toDate() : null,
         tsn: validatedData.tsn || null,
         csn: validatedData.csn || null,
         status: "approved",
+        from_full_ard: validatedData.from_full_ard || false,
         t_page_texts: validatedData.t_page_texts !== undefined ? validatedData.t_page_texts : null,
         t_import_number_page: validatedData.t_import_number_page !== undefined ? validatedData.t_import_number_page : null,
         t_po_number_page: validatedData.t_po_number_page !== undefined ? validatedData.t_po_number_page : null,
@@ -337,8 +346,8 @@ export class DocumentController {
         t_arc_requirement_page: validatedData.t_arc_requirement_page !== undefined ? validatedData.t_arc_requirement_page : null,
         t_tsn_page: validatedData.t_tsn_page !== undefined ? validatedData.t_tsn_page : null,
         t_csn_page: validatedData.t_csn_page !== undefined ? validatedData.t_csn_page : null,
-        scanned_time: new Date(),
-        updated_at: new Date()
+        scanned_time: moment().toDate(),
+        updated_at: moment().toDate()
       };
       
       // Prepare document items
@@ -753,9 +762,41 @@ export class DocumentController {
     try {
       const formData = await req.formData();
       const pdfFile = formData.get('pdf') as File;
-      const modelPath = formData.get('model_path') as string;
 
-      const document = await this.documentService.pdfFullARD(pdfFile, modelPath);
+      const customerName = formData.get('customer_name') as string;
+      const coCode = formData.get('co_code') as string;
+      const fileFormat = formData.get('file_format') as string;
+      const documentType = formData.get('document_type') as string;
+
+      if (!customerName || !coCode || !fileFormat || !documentType) {
+        return Response.json(
+          { error: `Missing required fields customer_name: ${customerName}, co_code: ${coCode}, file_format: ${fileFormat}, document_type: ${documentType}` },
+          { status: 400 }
+        );
+      }
+      
+      const customer = await this.customerService.getCustomerByHash({
+        customer_name: customerName,
+        co_code: coCode,
+        file_format: fileFormat,
+        document_type: documentType,
+      });
+
+      if (!customer) {
+        return Response.json({ error: "Customer not found" }, { status: 404 });
+      }
+
+      const task = await this.aiTrainingService.getTrainingTaskByPath(customer.t_bind_path || "");
+      if (!task) {
+        return Response.json({ error: "Training task not found" }, { status: 404 });
+      }
+  
+      const document = await this.documentService.pdfFullARD(
+          pdfFile,
+          customer.t_bind_path || "", 
+          documentType,
+          task.prompt || ""
+      );
 
       return Response.json(document);
     } catch (error) {

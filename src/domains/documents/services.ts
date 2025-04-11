@@ -6,7 +6,6 @@ import { eq } from "drizzle-orm";
 import { documents, document_items, csv_records } from "../../db/schema";
 import type { BucketDocument } from "./types";
 import { AI_SERVICE_CONFIG } from "../../config";
-import axios from "axios";
 
 export class DocumentService {
   async getDocumentById(id: string): Promise<Document | null> {
@@ -713,20 +712,32 @@ export class DocumentService {
     }
   }
 
-  async pdfFullARD(pdfFile: File, modelPath: string): Promise<Partial<Document>> {
+  async pdfFullARD(pdfFile: File, modelPath: string, documentType: string, prompt: string): Promise<Document> {
     try {
       // Create a FormData object for the AI service request
       const formData = new FormData();
       formData.append('pdf', pdfFile);
       formData.append('model_path', modelPath);
+      formData.append("document_type", documentType);
+      formData.append("prompt", prompt);
+      console.log("formData", formData);
 
-      // TODO: adjust the endpoint here.
-      const respose = await axios.post(`${AI_SERVICE_CONFIG.URL}/api/full_ard_pdf`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      return respose.data as Partial<Document>;
+      // TODO: Enable this later.
+      // const respose = await axios.post(`${AI_SERVICE_CONFIG.URL}/api/full_ard_pdf`, formData, {
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data'
+      //   }
+      // });
+
+      // TODO: Remove this later. Dummy data
+      let document: Document | null;
+      if (documentType === "purchase_order") {
+        document = await this.getDocumentById("34ab009f-192c-4a97-b0cd-00ea4b29b25b");
+      } else {
+        document = await this.getDocumentById("002516ba-6075-49dc-be93-e9848eddc356");
+      }
+
+      return document as Document;
     } catch (error) {
       console.error("PDF to images service error:", error);
       throw error;

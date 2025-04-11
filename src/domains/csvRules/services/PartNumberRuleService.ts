@@ -22,8 +22,7 @@ export class PartNumberRuleService {
       .query(async () => {
         const { data, error } = await supabase
           .from("part_number_rules")
-          .select("part_number, product_code")
-          .order("created_at", { ascending: false });
+          .select("part_number, product_code");
 
         if (error) throw error;
         return data as PartNumberRule[];
@@ -32,14 +31,11 @@ export class PartNumberRuleService {
   }
 
   async getPartNumberRules(
-    page: number = 1,
-    pageSize: number = 10
+    page: number | null = 1,
+    pageSize: number | null = 10
   ): Promise<{ partNumberRules: PartNumberRule[]; total: number }> {
     return db
       .query(async () => {
-        // Calculate offset based on page and pageSize
-        const offset = (page - 1) * pageSize;
-        
         // Get total count first
         const { data: countData, error: countError } = await supabase
           .from("part_number_rules")
@@ -47,12 +43,29 @@ export class PartNumberRuleService {
           
         if (countError) throw countError;
         
+        // If both page and pageSize are null, return all results without pagination
+        if (page === null && pageSize === null) {
+          const { data, error } = await supabase
+            .from("part_number_rules")
+            .select("*");
+            
+          if (error) throw error;
+          
+          return { 
+            partNumberRules: data as PartNumberRule[], 
+            total: countData?.[0]?.count || 0 
+          };
+        }
+        
+        // Otherwise, apply pagination
+        // Calculate offset based on page and pageSize
+        const offset = (page! - 1) * pageSize!;
+        
         // Get paginated results
         const { data, error } = await supabase
           .from("part_number_rules")
           .select("*")
-          .range(offset, offset + pageSize - 1)
-          .order("created_at", { ascending: false });
+          .range(offset, offset + pageSize! - 1);
           
         if (error) throw error;
         

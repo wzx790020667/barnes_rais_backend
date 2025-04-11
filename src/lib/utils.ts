@@ -10,10 +10,11 @@ import crypto from 'crypto';
 export function generateCustomerInfoHash(
   customerName: string,
   coCode: string | null | undefined,
-  fileFormat: string
+  fileFormat: string,
+  documentType: string
 ): string {
   // Create a string by concatenating the values, using empty string for null/undefined
-  const dataString = `${customerName}|${coCode || ''}|${fileFormat}`;
+  const dataString = `${customerName}|${coCode || ''}|${fileFormat}| ${documentType}`;
   
   // Generate an MD5 hash of the combined string
   return crypto.createHash('md5').update(dataString).digest('hex');

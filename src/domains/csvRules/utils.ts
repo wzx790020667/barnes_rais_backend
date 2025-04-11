@@ -19,7 +19,8 @@ export const replaceByEngineModelRule = (engineModelRule: EngineModelRule, csvRe
     if (!engineModelTitle || !engineModelCommonPrefix || !resultDisplay) return csvRecord;
 
     if (csvRecord.engine_model && csvRecord.engine_model.includes(engineModelTitle)) {
-        const pattern = `${engineModelTitle}: ${engineModelCommonPrefix}`;
+        // const pattern = `${engineModelTitle}: ${engineModelCommonPrefix}`;
+        const pattern = `${engineModelCommonPrefix}`;
         if (csvRecord.engine_model.startsWith(pattern)) {
             csvRecord.engine_model = resultDisplay;
         }
@@ -44,6 +45,6 @@ export const replaceByPartNumberRule = (partNumberRule: PartNumberRule, csvRecor
     if (!partNumberKeywords || !resultDisplay) return csvRecord;
 
     if (csvRecord.item && csvRecord.item.includes(partNumberKeywords)) {
-        csvRecord.item = resultDisplay;
+        csvRecord.PRODUCT_CODE = resultDisplay;
     }
 }

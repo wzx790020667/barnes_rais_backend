@@ -1,5 +1,5 @@
 import { drizzleDb } from "../../lib";
-import { customers, document_items, documents, t_datasets, t_tasks, ttv_results, type Document, type TrainingDataset, type TrainingTask, type TrainingTaskStatus, type TrainingTaskVerificationResult } from "../../db/schema";
+import { customers, document_items, documents, t_datasets, t_tasks, ttv_results, type Customer, type Document, type TrainingDataset, type TrainingTask, type TrainingTaskStatus, type TrainingTaskVerificationResult } from "../../db/schema";
 import { eq, inArray, and } from "drizzle-orm";
 import { generateCustomerInfoHash } from "../../lib/utils";
 import type { BunRequest } from "bun";
@@ -36,14 +36,18 @@ export class AiTrainingService {
         const customerInfoHash = generateCustomerInfoHash(
             customer.customer_name, 
             customer.co_code, 
-            customer.file_format
+            customer.file_format,
+            customer.document_type || ""
         );
         
         // Get all documents with matching customer_info_hash
         const matchingDocuments = await drizzleDb
             .select()
             .from(documents)
-            .where(eq(documents.customer_info_hash, customerInfoHash));
+            .where(and(
+                eq(documents.customer_info_hash, customerInfoHash),
+                eq(documents.from_full_ard, false)
+            ));
         
         // Return the file paths
         return matchingDocuments;
@@ -210,7 +214,7 @@ export class AiTrainingService {
         };
     }
 
-    async createTrainingTask(customerId: string, name: string, trainingDatasetId: string, prompt?: string): Promise<any> {
+    async createTrainingTask(customerId: string, name: string, trainingDatasetId: string, prompt?: string, documentType?: string): Promise<any> {
         // Check if a task with the same name already exists for this customer
         const existingTask = await drizzleDb.select()
             .from(t_tasks)
@@ -249,6 +253,7 @@ export class AiTrainingService {
             t_dataset_id: trainingDatasetId,
             customer_id: customerId,
             prompt: prompt || "",
+            document_type: documentType || "",
             status: "pending",
             created_at: new Date(),
             updated_at: new Date()
@@ -291,9 +296,25 @@ export class AiTrainingService {
     }
 
     async getRunningTrainingTasks(): Promise<TrainingTask[]> {
-        const tasks = await drizzleDb.select().from(t_tasks)
-            .where(eq(t_tasks.status, "training"));
-        return tasks;
+        try {
+            // Get tasks from database
+            const tasks = await drizzleDb.select().from(t_tasks)
+                .where(eq(t_tasks.status, "training"));
+            
+            // TODO: Enable API call here later.
+            // const response = await axios.get(`${AI_SERVICE_CONFIG.URL}/api/training/tasks/running`);
+            
+            // Update all tasks with new target_time
+            const updatedTasks = tasks.map(task => ({
+                ...task,
+                // target_time: response.data.target_time // TODO: Enable API call here later.
+            }));
+            
+            return updatedTasks;
+        } catch (error) {
+            console.error("Error fetching running training tasks:", error);
+            return [];
+        }
     }
     
     async startTrainingTask(customerId: string, taskId: string, req?: BunRequest): Promise<any> {
@@ -407,7 +428,7 @@ export class AiTrainingService {
         }
     }
     
-    async completeTrainingTask(taskId: string, modelPath: string): Promise<any> {
+    async completeTrainingTask(taskId: string): Promise<any> {
         // Verify the task exists
         const task = await drizzleDb.select()
             .from(t_tasks)
@@ -428,10 +449,12 @@ export class AiTrainingService {
                 message: "Training task is already completed"
             };
         }
-        
+
+        const modelPath = getModelPath(task.document_type || "", task.id);
+
         try {
             // First run the document verification in parallel (outside transaction)
-            const ttvResult = await this._createTtvResult(task);
+            const ttvResult = await this._createTtvResult(task, modelPath);
             if (!ttvResult.success) {
                 return {
                     success: false,
@@ -472,7 +495,7 @@ export class AiTrainingService {
         }
     }
 
-    async _createTtvResult(trainingTask: TrainingTask, tx?: any) {
+    async _createTtvResult(trainingTask: TrainingTask, modelPath: string, tx?: any) {
         const queryExecutor = tx || drizzleDb;
         
         const trainingDataset = await queryExecutor.select().from(t_datasets)
@@ -505,7 +528,7 @@ export class AiTrainingService {
         // TODO: A question to ask Seven about if the AI service is able to handle the large number of documents concurrently.
         // TODO: Maybe the customer's machine does not support this amount of concurrency.
         const verificationResults = await Promise.all(
-            verificationDocs.map(doc => this._verifyDocument(doc))
+            verificationDocs.map(doc => this._verifyDocument(doc, modelPath, trainingTask))
         );
 
         const accuracyList = verificationResults.map(result => result.data?.accuracy || 0);
@@ -538,7 +561,7 @@ export class AiTrainingService {
         };
     }
 
-    async _verifyDocument(doc: Document) {
+    async _verifyDocument(doc: Document, modelPath: string, task: TrainingTask) {
         const originalDoc = doc;
         
         try {
@@ -575,11 +598,11 @@ export class AiTrainingService {
                 type: bucketDoc.contentType || 'application/pdf'
             });
             
-            // TODO: chenge to Full-ARD method call here, 
+            // TODO: chenge to Full-ARD method call here
             // Process the downloaded file using the existing uploadPdfToExternal method
-            // const result = await this.documentService.uploadPdfToExternal(file); 
+            const result = await this.documentService.pdfFullARD(file, modelPath, task.document_type || "", task.prompt || "");
 
-            const verifiedDoc = originalDoc; // TODO: verified doc should be fetched from the external AI service.
+            const verifiedDoc = result;
             const { accuracy, unmatchedFieldPaths } = calculateAccuracy(originalDoc, verifiedDoc);
             
             return {
@@ -637,6 +660,16 @@ export class AiTrainingService {
             message: "Model bound to customer",
             customer: updatedCustomer
         };
+    }
+
+    async getTrainingTaskByPath(bindPath: string) {
+        const task = await drizzleDb.select()
+            .from(t_tasks)
+            .where(eq(t_tasks.model_path, bindPath))
+            .limit(1)
+            .then(results => results[0]);
+
+        return task;
     }
     
 }

@@ -5,6 +5,7 @@ import { WorkScopeRuleService } from "../csvRules/services/WorkScopeRuleService"
 import { CsvRecordService } from "./services";
 import { replaceByArcRule, replaceByEngineModelRule, replaceByPartNumberRule, replaceByWorkScopeRule } from "../csvRules/utils";
 import type { BunRequest } from "bun";
+import moment from "moment-timezone";
 
 export class CsvRecordController {
     private csvRecordService: CsvRecordService;
@@ -29,44 +30,50 @@ export class CsvRecordController {
             
             const records = await this.csvRecordService.getCsvRecordsOfNoBatchNumber(documentIds);
             
-            // TODO: Enable here after next version
-            // const arcRulesReq = this.arcRuleService.getArcRules();
-            // const engineModelRulesReq = this.engineModelRuleService.getEngineModelRules();
-            // const workScopeRulesReq = this.workScopeRuleService.getWorkScopeRules();
-            // const partNumberRulesReq = this.partNumberRulesService.getPartNumberRules();
+            // Enable here after next version
+            const arcRulesReq = this.arcRuleService.getArcRules(null, null);
+            const engineModelRulesReq = this.engineModelRuleService.getEngineModelRules(null, null);
+            const workScopeRulesReq = this.workScopeRuleService.getWorkScopeRules(null, null);
+            const partNumberRulesReq = this.partNumberRulesService.getPartNumberRules(null, null);
             
-            // const [arcRulesRes, engineModelRulesRes, workScopeRulesRes, partNumberRulesRes] = await Promise.all([
-            //     arcRulesReq,
-            //     engineModelRulesReq,
-            //     workScopeRulesReq,
-            //     partNumberRulesReq
-            // ]);
+            const [arcRulesRes, engineModelRulesRes, workScopeRulesRes, partNumberRulesRes] = await Promise.all([
+                arcRulesReq,
+                engineModelRulesReq,
+                workScopeRulesReq,
+                partNumberRulesReq
+            ]);
 
-            // // Extract rules arrays from responses
-            // const arcRules = arcRulesRes.arcRules || [];
-            // const engineModelRules = engineModelRulesRes.engineModelRules || [];
-            // const workScopeRules = workScopeRulesRes.workScopeRules || [];
-            // const partNumberRules = partNumberRulesRes.partNumberRules || [];
+            // Extract rules arrays from responses
+            const arcRules = arcRulesRes.arcRules || [];
+            const engineModelRules = engineModelRulesRes.engineModelRules || [];
+            const workScopeRules = workScopeRulesRes.workScopeRules || [];
+            const partNumberRules = partNumberRulesRes.partNumberRules || [];
             
-            // // Apply all rules to each record
-            // records.map(record => {
-            //     // Apply each type of rule
-            //     for (const rule of arcRules) {
-            //         replaceByArcRule(rule, record);
-            //     }
+            // Apply all rules to each record
+            records.map(record => {
+                // Apply each type of rule
+                for (const rule of arcRules) {
+                    replaceByArcRule(rule, record);
+                }
 
-            //     for (const rule of engineModelRules) {
-            //         replaceByEngineModelRule(rule, record);
-            //     }
+                for (const rule of engineModelRules) {
+                    replaceByEngineModelRule(rule, record);
+                }
 
-            //     for (const rule of workScopeRules) {
-            //         replaceByWorkScopeRule(rule, record);
-            //     }
+                for (const rule of workScopeRules) {
+                    replaceByWorkScopeRule(rule, record);
+                }
 
-            //     for (const rule of partNumberRules) {
-            //         replaceByPartNumberRule(rule, record);
-            //     }
-            // });
+                for (const rule of partNumberRules) {
+                    replaceByPartNumberRule(rule, record);
+                }
+
+                record.CO_PREFIX = `${record.PRODUCT_CODE}-${record.CUST_CODE}`;
+                // @ts-ignore
+                record.part_rcvd_date = moment(record.part_rcvd_date).tz("Asia/Taipei").format("DDMMYYYY");
+                // @ts-ignore
+                record.order_date = moment(record.order_date).tz("Asia/Taipei").format("DDMMYYYY");
+            });
 
             return Response.json(records);
         } catch (error) {

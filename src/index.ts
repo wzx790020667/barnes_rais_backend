@@ -1,4 +1,9 @@
 import { serve } from "bun";
+import moment from "moment-timezone";
+
+// Set default timezone to Taipei globally
+moment.tz.setDefault("Asia/Taipei");
+
 import { db, drizzleConnectionTest } from "./lib/db";
 import { SERVER_CONFIG } from "./config";
 import { AuthController } from "./domains/auth/AuthController";
@@ -122,7 +127,7 @@ serve({
     "/api/documents/pdf_to_images": {
       POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => documentController.uploadPdfToExternal(req))),
     },
-    "/api/documents/full_ard_pdf": {
+    "/api/documents/pdf_full_ard": {
       POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => documentController.pdfFullARD(req))),
     },
     "/api/documents/ocr": {
@@ -157,8 +162,14 @@ serve({
     "/api/customers/byName": {
       GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => customerController.getCustomerByName(req))),
     },
+    "/api/customers/byHash": {
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => customerController.getCustomerByHash(req))),
+    },
     "/api/customers/fileFormats": {
       GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => customerController.getFileFormatsByCustomerName(req))),
+    },
+    "/api/customers/documentTypes": {
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => customerController.getDocumentTypesByCustomer(req))),
     },
     "/api/customers/:id": {
       GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => customerController.getCustomerById(req))),
@@ -237,14 +248,14 @@ serve({
       POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => aiTrainingController.startTrainingTask(req.params.customerId, req.params.taskId))),
     },
     "/api/webhook/training/tasks/:taskId/complete": {
-      POST: async (req) => addCorsHeaders(await aiTrainingController.completeTrainingTask(req.params.taskId, req)),
+      POST: async (req) => addCorsHeaders(await aiTrainingController.completeTrainingTask(req.params.taskId)),
     },
     "/api/customers/:customerId/training/tasks/:taskId/bind": {
       POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => aiTrainingController.bindModelByTaskId(req.params.customerId, req.params.taskId, req))),
     },
     "/api/customers/:customerId/training/tasks/:taskId/results": {
       GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => aiTrainingController.getTrainingTaskVerificationResults(req.params.taskId))),
-    }
+    },
   },
   
   // Fallback handler for routes not defined in the routes object

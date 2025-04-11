@@ -14,6 +14,8 @@
         "elysia": "^1.2.25",
         "jsonwebtoken": "^9.0.2",
         "lodash": "^4.17.21",
+        "moment": "^2.30.1",
+        "moment-timezone": "^0.5.48",
         "postgres": "^3.4.5",
         "zod": "^3.24.2",
       },
@@ -318,6 +320,10 @@
     "minizlib": ["minizlib@3.0.1", "", { "dependencies": { "minipass": "^7.0.4", "rimraf": "^5.0.5" } }, "sha512-umcy022ILvb5/3Djuu8LWeqUa8D68JaBzlttKeMWen48SjabqS3iY5w/vzeMzMUNhLDifyhbOwKDSznB1vvrwg=="],
 
     "mkdirp": ["mkdirp@3.0.1", "", { "bin": { "mkdirp": "dist/cjs/src/bin.js" } }, "sha512-+NsyUUAZDmo6YVHzL/stxSu3t9YS1iljliy3BSDrXJ/dkn1KYdmtZODGGjLcc9XLgVVpH4KshHB8XmZgMhaBXg=="],
+
+    "moment": ["moment@2.30.1", "", {}, "sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how=="],
+
+    "moment-timezone": ["moment-timezone@0.5.48", "", { "dependencies": { "moment": "^2.29.4" } }, "sha512-f22b8LV1gbTO2ms2j2z13MuPogNoh5UzxL3nzNAYKGraILnbGc9NEE6dyiiiLv46DGRb8A4kg8UKWLjPthxBHw=="],
 
     "ms": ["ms@2.1.3", "", {}, "sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA=="],
 

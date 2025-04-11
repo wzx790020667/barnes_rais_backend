@@ -39,5 +39,5 @@ export const AI_SERVICE_CONFIG = {
 // Training data storage configuration
 export const TRAINING_DATA_CONFIG = {
   BASE_PATH: process.env.TRAINING_DATA_PATH || `${process.env.HOME || '/home'}/barnes_rais_training/training_data`,
-  BASE_MODEL_PATH: process.env.BASE_MODEL_PATH || `${process.env.HOME || '/home'}/barnes_rais_training/models`,
+  BASE_MODEL_PATH: `/barnes_rais_training/models`,
 };
