@@ -9,6 +9,8 @@ import { DOCUMENT_BUCKET_NAME } from "./constants";
 import moment from "moment-timezone";
 import { CustomerService } from "../customers/CustomerService";
 import { AiTrainingService } from "../ai_training/services";
+import { EngineModelRuleService } from "../csvRules/services/EngineModelRuleService";
+import { replaceEngineModelTitleByRules } from "../csvRules/utils";
 
 // Document item schema validation
 const documentItemSchema = z.object({
@@ -63,19 +65,19 @@ const importNumberSchema = z.object({
   import_number: z.string().min(1, { message: "Import number is required" })
 });
 
-type CreateDocumentInput = z.infer<typeof createDocumentSchema>;
-
 export class DocumentController {
   private documentService: DocumentService;
   private csvRecordService: CsvRecordService;
   private customerService: CustomerService;
   private aiTrainingService: AiTrainingService;
+  private engineModelRuleService: EngineModelRuleService;
 
   constructor() {
     this.documentService = new DocumentService();
     this.csvRecordService = new CsvRecordService();
     this.customerService = new CustomerService();
     this.aiTrainingService = new AiTrainingService();
+    this.engineModelRuleService = new EngineModelRuleService();
   }
 
   async getDocumentById(req: BunRequest): Promise<Response> {
@@ -350,13 +352,15 @@ export class DocumentController {
         updated_at: moment().toDate()
       };
       
+      const engineModelRules = await this.engineModelRuleService.getAllEngineModelRules();
+      
       // Prepare document items
       const documentItems = validatedData.document_items?.map(item => ({
           document_id: validatedData.id,
           part_number: item.part_number.trim(),
           quantity_ordered: item.quantity_ordered || null,
           import_price: item.import_price ? item.import_price.trim() : null,
-          engine_model: isEmpty(item.engine_model) ? null : String(item.engine_model),
+          engine_model: isEmpty(item.engine_model) ? null : replaceEngineModelTitleByRules(engineModelRules, String(item.engine_model)),
           engine_number: isEmpty(item.engine_number) ? null : String(item.engine_number),
           serial_number: isEmpty(item.serial_number) ? null : String(item.serial_number),
           t_part_number_page: item.t_part_number_page !== undefined ? item.t_part_number_page : null, 
@@ -428,11 +432,11 @@ export class DocumentController {
     }
   }
 
-  async refreshDocuments(req: BunRequest): Promise<Response> {
+  async refreshDocuments(_: BunRequest): Promise<Response> {
     try {
       const result = await this.documentService.refreshDocuments();
       
-      if (result.error) {
+      if (result?.error) {
         return Response.json(
           { error: result.error },
           { status: 500 }
@@ -441,9 +445,9 @@ export class DocumentController {
 
       return Response.json({
         success: true,
-        added: result.added,
-        message: result.added > 0 
-          ? `Added ${result.added} new document(s) from storage bucket` 
+        added: result?.added,
+        message: result?.added && (result?.added > 0)
+          ? `Added ${result?.added} new document(s) from storage bucket`
           : "No new documents found in storage bucket"
       });
     } catch (error) {
@@ -609,11 +613,11 @@ export class DocumentController {
       const result = await this.documentService.uploadPdfToExternal(pdfFile);
       
       // Since the response is a ZIP file, return it directly without parsing as JSON
-      return new Response(result.body, {
-        status: result.status,
+      return new Response(result?.body, {
+        status: result?.status,
         headers: {
-          'Content-Type': result.headers.get('Content-Type') || 'application/zip',
-          'Content-Disposition': result.headers.get('Content-Disposition') || 'attachment; filename="images.zip"'
+          'Content-Type': result?.headers.get('Content-Type') || 'application/zip',
+          'Content-Disposition': result?.headers.get('Content-Disposition') || 'attachment; filename="images.zip"'
         }
       });
     } catch (error) {

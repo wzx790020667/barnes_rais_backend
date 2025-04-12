@@ -1,4 +1,4 @@
-import { supabase, db } from "../../../lib/db";
+import { supabase, db } from "../../../lib";
 import { arc_rules, type ArcRule } from "../../../db/schema";
 
 export class ArcRuleService {

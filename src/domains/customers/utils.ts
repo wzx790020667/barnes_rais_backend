@@ -1,4 +1,4 @@
-import { supabase } from "../../lib/db";
+import { supabase } from "../../lib";
 
 type CustomerCriteria = {
   id: string;

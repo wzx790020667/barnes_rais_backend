@@ -8,6 +8,11 @@ export const SERVER_CONFIG = {
   HOST: process.env.HOST || "localhost",
   APP_NAME: process.env.APP_NAME || "ARD Server",
   NODE_ENV: process.env.NODE_ENV || "development",
+  // HTTPS configuration
+  HTTPS_PORT: process.env.HTTPS_PORT ? parseInt(process.env.HTTPS_PORT) : 3443,
+  TLS_KEY_PATH: process.env.TLS_KEY_PATH,
+  TLS_CERT_PATH: process.env.TLS_CERT_PATH,
+  TLS_PASSPHRASE: process.env.TLS_PASSPHRASE,
 };
 
 // JWT configuration
@@ -38,6 +43,10 @@ export const AI_SERVICE_CONFIG = {
 
 // Training data storage configuration
 export const TRAINING_DATA_CONFIG = {
-  BASE_PATH: process.env.TRAINING_DATA_PATH || `${process.env.HOME || '/home'}/barnes_rais_training/training_data`,
+  // Detect if running in container by checking for a container-specific env var
+  BASE_DATASET_OUTPUT_PATH: process.env.IS_CONTAINER === 'true' 
+    ? '/app/barnes_rais_training/training_data'
+    : `${process.env.HOME || '/home'}/barnes_rais_training/training_data`,
+  BASE_DATASET_INPUT_PATH: '/barnes_rais_training/training_data',
   BASE_MODEL_PATH: `/barnes_rais_training/models`,
 };

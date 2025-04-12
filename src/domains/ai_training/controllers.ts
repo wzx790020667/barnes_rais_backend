@@ -195,15 +195,14 @@ export class AiTrainingController {
 
         return Response.json({
             success: true,
-            message: "Training task completed successfully",
-            task: result.task
+            message: "Training task completed successfully"
         });
     }
 
     async bindModelByTaskId(customerId: string, taskId: string, req: BunRequest): Promise<Response> {
         const body = await req.json();
 
-        const { success, data, error } = bindModelByTaskIdSchema.safeParse(body);
+        const { success, error } = bindModelByTaskIdSchema.safeParse(body);
         if (!success) {
             return Response.json({
                 success: false,
@@ -212,7 +211,7 @@ export class AiTrainingController {
             }, {status: 400});
         }
 
-        const result = await this.aiTrainingService.bindModelByTaskId(customerId, taskId, data.modelPath);
+        const result = await this.aiTrainingService.bindModelByTaskId(customerId, taskId);
 
         if (!result.success) {
             return Response.json({

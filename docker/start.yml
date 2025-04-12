@@ -9,6 +9,10 @@ services:
     container_name: barnes-rais-backend
     restart: always
     ports:
-      - "3001:3001"
+      - "3443:3443"
     env_file:
       - .env
+    environment:
+      - IS_CONTAINER=true
+    volumes:
+      - ${HOME}/barnes_rais_training/training_data:/app/barnes_rais_training/training_data

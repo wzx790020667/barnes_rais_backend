@@ -1,7 +1,6 @@
 import { UserRole, type User } from "./types";
 import { JwtUtils } from "../../utils/jwt";
-import type { JwtPayload } from "../../utils/jwt";
-import { drizzleDb } from "../../lib/db/drizzle";
+import { drizzleDb } from "../../lib";
 import { users } from "../../db/schema";
 import { eq, sql } from "drizzle-orm";
 import bcrypt from "bcrypt";
@@ -38,9 +37,6 @@ export class AuthService {
       name: user.username,  // Using username as name for JWT payload
       role: user.role,
     }, JWT_EXPIRATION);
-
-    // Return user without password and token
-    const { password: _, ...userWithoutPassword } = user;
     
     // Convert database schema user to auth domain user
     const authUser: Omit<User, "password"> = {
@@ -247,7 +243,7 @@ export class AuthService {
   
   async deleteUser(userId: string): Promise<boolean> {
     // Delete user from the database
-    const result = await drizzleDb
+    await drizzleDb
       .delete(users)
       .where(eq(users.id, userId));
       

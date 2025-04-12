@@ -1,5 +1,5 @@
-import { supabase, db } from "../../../lib/db";
-import { engine_model_rules, type EngineModelRule } from "../../../db/schema";
+import { supabase, db } from "../../../lib";
+import { type EngineModelRule } from "../../../db/schema";
 
 export class EngineModelRuleService {
   async getEngineModelRuleById(id: string): Promise<EngineModelRule | null> {

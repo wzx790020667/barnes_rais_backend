@@ -12,19 +12,38 @@ export const replaceByArcRule = (arcRule: ArcRule, csvRecord: CsvRecord) => {
 }
 
 export const replaceByEngineModelRule = (engineModelRule: EngineModelRule, csvRecord: CsvRecord) => {
-    const engineModelTitle = engineModelRule.engine_model_title;
     const engineModelCommonPrefix = engineModelRule.common_prefix;
     const resultDisplay = engineModelRule.result_display;
 
-    if (!engineModelTitle || !engineModelCommonPrefix || !resultDisplay) return csvRecord;
+    if (!engineModelCommonPrefix || !resultDisplay) return csvRecord;
 
-    if (csvRecord.engine_model && csvRecord.engine_model.includes(engineModelTitle)) {
-        // const pattern = `${engineModelTitle}: ${engineModelCommonPrefix}`;
+    if (csvRecord.engine_model && csvRecord.engine_model.includes(engineModelCommonPrefix)) {
         const pattern = `${engineModelCommonPrefix}`;
-        if (csvRecord.engine_model.startsWith(pattern)) {
+        const recordEngineModel = csvRecord.engine_model.trim();
+
+        if (recordEngineModel.startsWith(pattern)) {
             csvRecord.engine_model = resultDisplay;
         }
     }
+}
+
+export const replaceEngineModelTitleByRules = (engineModelRules: EngineModelRule[], engineModel: string) => {
+    for (const rule of engineModelRules) {
+        if (!rule.engine_model_title) continue;
+
+        const pattern = `${rule.engine_model_title}:`;
+        const pattern_with_space = `${rule.engine_model_title} `;
+
+        if (engineModel.startsWith(pattern)) {
+            return engineModel.replace(pattern, "");
+        }
+
+        if (engineModel.startsWith(pattern_with_space)) {
+            return engineModel.replace(pattern_with_space, "");
+        }
+    }
+
+    return engineModel;
 }
 
 export const replaceByWorkScopeRule = (workScopeRule: WorkScopeRule, csvRecord: CsvRecord) => {

@@ -1,5 +1,5 @@
-import { supabase, db } from "../../../lib/db";
-import { work_scope_rules, type WorkScopeRule } from "../../../db/schema";
+import { supabase, db } from "../../../lib";
+import { type WorkScopeRule } from "../../../db/schema";
 
 export class WorkScopeRuleService {
   async getWorkScopeRuleById(id: string): Promise<WorkScopeRule | null> {

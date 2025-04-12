@@ -1,7 +1,7 @@
-import { supabase, db, drizzleDb } from "../../lib/db";
-import { customers, documents, type Customer } from "../../db/schema";
+import { supabase, db, drizzleDb } from "../../lib";
+import { documents, type Customer } from "../../db/schema";
 import { generateCustomerInfoHash } from "../../lib/utils";
-import { count, eq, inArray, sql, and } from "drizzle-orm";
+import { count, eq, and } from "drizzle-orm";
 
 export class CustomerService {
   async getCustomerById(id: string): Promise<Customer | null> {

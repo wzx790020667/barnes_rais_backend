@@ -5,6 +5,7 @@ import crypto from 'crypto';
  * @param customerName - The customer name
  * @param coCode - The company code
  * @param fileFormat - The file format
+ * @param documentType - The document type
  * @returns A unique hash string
  */
 export function generateCustomerInfoHash(

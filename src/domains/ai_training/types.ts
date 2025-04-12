@@ -40,3 +40,7 @@ interface POItem {
   "Serial Number": string | null;
   "Quantity Ordered": string | null;
 }
+
+export interface AiTrainingStatus {
+
+}

@@ -1,16 +1,18 @@
 import { drizzleDb } from "../../lib";
-import { customers, document_items, documents, t_datasets, t_tasks, ttv_results, type Customer, type Document, type TrainingDataset, type TrainingTask, type TrainingTaskStatus, type TrainingTaskVerificationResult } from "../../db/schema";
+import { customers, document_items, documents, t_datasets, t_tasks, ttv_results, type Document, type TrainingDataset, type TrainingTask, type TrainingTaskVerificationResult } from "../../db/schema";
 import { eq, inArray, and } from "drizzle-orm";
 import { generateCustomerInfoHash } from "../../lib/utils";
 import type { BunRequest } from "bun";
 import type { ImportTrainingData, POTrainingData } from "./types";
 import { calculateAccuracy, createAnnotationsForImportDocument, createAnnotationsForPODocument, getModelPath } from "./util";
-import { TRAINING_DATA_CONFIG } from "../../config";
+import { SERVER_CONFIG, TRAINING_DATA_CONFIG } from "../../config";
 import { mkdir } from "node:fs/promises";
 import { join } from "node:path";
-import { supabase, db } from "../../lib/db";
+import { supabase, db } from "../../lib";
 import { DocumentService } from "../documents/services";
 import { DOCUMENT_BUCKET_NAME } from "../documents/constants";
+import axios, { AxiosError } from "axios";
+import { AI_SERVICE_CONFIG } from "../../config";
 
 export class AiTrainingService {
 
@@ -127,7 +129,7 @@ export class AiTrainingService {
         }, {} as Record<string, typeof items>);
 
         // Create dataset directory
-        const datasetFolderPath = join(TRAINING_DATA_CONFIG.BASE_PATH, traningDatasetName);
+        const datasetFolderPath = join(TRAINING_DATA_CONFIG.BASE_DATASET_OUTPUT_PATH, traningDatasetName);
         await mkdir(datasetFolderPath, { recursive: true });
         
         const results = [];
@@ -296,13 +298,17 @@ export class AiTrainingService {
     }
 
     async getRunningTrainingTasks(): Promise<TrainingTask[]> {
+        const url = `${AI_SERVICE_CONFIG.URL}/api/training_status`;
         try {
             // Get tasks from database
             const tasks = await drizzleDb.select().from(t_tasks)
                 .where(eq(t_tasks.status, "training"));
             
             // TODO: Enable API call here later.
-            // const response = await axios.get(`${AI_SERVICE_CONFIG.URL}/api/training/tasks/running`);
+            const response = await axios.get(url);
+            if (!response.data.success) {
+                return [];
+            }
             
             // Update all tasks with new target_time
             const updatedTasks = tasks.map(task => ({
@@ -311,8 +317,8 @@ export class AiTrainingService {
             }));
             
             return updatedTasks;
-        } catch (error) {
-            console.error("Error fetching running training tasks:", error);
+        } catch (error: any) {
+            console.error("Error fetching running training tasks:", error.message, "url: ", url);
             return [];
         }
     }
@@ -377,25 +383,24 @@ export class AiTrainingService {
         try {
             const datasetName = dataset?.name || 'unknown';
             
-            // TODO: Enable here after AI service is ready
             // Get the server's host and port from the request or use fallback
-            // const host = req?.headers.get('host') || `${SERVER_CONFIG.HOST}:${SERVER_CONFIG.PORT}`;
-            // const protocol = req?.headers.get('x-forwarded-proto') || 'http';
-            // const serverUrl = `${protocol}://${host}`;
+            const host = req?.headers.get('host') || `${SERVER_CONFIG.HOST}:${SERVER_CONFIG.PORT}`;
+            const protocol = req?.headers.get('x-forwarded-proto') || 'http';
+            const serverUrl = `${protocol}://${host}`;
             
             // // Make the actual API call to the external AI service
-            // await axios.post(`${AI_SERVICE_CONFIG.URL}/api/train`, {
-            //     taskId: taskId,
-            //     dataset_name: datasetName,
-            //     document_type: customer.document_type,
-            //     prompt: task.prompt,
-            //     dataset_path: `${TRAINING_DATA_CONFIG.BASE_PATH}/${datasetName}`,
-            //     callback_url: `${serverUrl}/api/webhook/training/tasks/${taskId}/complete`,
-            // }, {
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     }
-            // });
+            await axios.post(`${AI_SERVICE_CONFIG.URL}/api/pretrain`, {
+                task_id: taskId,
+                dataset_name: datasetName,
+                document_type: customer.document_type,
+                prompt: task.prompt,
+                dataset_path: `${TRAINING_DATA_CONFIG.BASE_DATASET_INPUT_PATH}/${datasetName}`,
+                callback_url: `${serverUrl}/api/webhook/training/tasks/${taskId}/complete`,
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
             
             // Update task status to "training"
             const updatedTask = await drizzleDb.update(t_tasks)
@@ -598,7 +603,6 @@ export class AiTrainingService {
                 type: bucketDoc.contentType || 'application/pdf'
             });
             
-            // TODO: chenge to Full-ARD method call here
             // Process the downloaded file using the existing uploadPdfToExternal method
             const result = await this.documentService.pdfFullARD(file, modelPath, task.document_type || "", task.prompt || "");
 
@@ -624,11 +628,11 @@ export class AiTrainingService {
     }
 
     async getTtvResults(taskId: string): Promise<TrainingTaskVerificationResult[]> {
-        return await drizzleDb.select().from(ttv_results)
+        return drizzleDb.select().from(ttv_results)
             .where(eq(ttv_results.t_task_id, taskId));
     }
 
-    async bindModelByTaskId(customerId: string, taskId: string, modelPath: string) {
+    async bindModelByTaskId(customerId: string, taskId: string) {
         const ttvResults = await this.getTtvResults(taskId);
         if (!ttvResults || ttvResults.length === 0) {
             return {

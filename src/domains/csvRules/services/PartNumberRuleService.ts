@@ -1,4 +1,4 @@
-import { supabase, db } from "../../../lib/db";
+import { supabase, db } from "../../../lib";
 import type { PartNumberRule } from "../../../db/schema";
 
 export class PartNumberRuleService {

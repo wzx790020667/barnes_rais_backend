@@ -1,4 +1,3 @@
-import type { String } from "lodash";
 import { AuthService } from "./AuthService";
 import type { BunRequest } from "bun";
 import { z } from "zod";

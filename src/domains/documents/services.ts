@@ -1,7 +1,7 @@
 import type { Document } from "../../db/schema";
-import { supabase, db } from "../../lib/db";
+import { supabase, db } from "../../lib";
 import type { DocumentItem } from "../../db/schema";
-import { drizzleDb } from "../../lib/db";
+import { drizzleDb } from "../../lib";
 import { eq } from "drizzle-orm";
 import { documents, document_items, csv_records } from "../../db/schema";
 import type { BucketDocument } from "./types";
@@ -509,7 +509,7 @@ export class DocumentService {
       .then((result) => (result.error ? false : true));
   }
 
-  async refreshDocuments(): Promise<{ added: number; error?: string }> {
+  async refreshDocuments(): Promise<{ added: number; error?: string } | null> {
     return db
       .query(async () => {
         try {
@@ -520,7 +520,10 @@ export class DocumentService {
               sortBy: { column: "created_at", order: "desc" },
             });
 
-          if (bucketError) throw bucketError;
+          if (bucketError) {
+              console.error("Error of refreshDocuments(), ", bucketError);
+              return null;
+          }
           if (!bucketFiles || bucketFiles.length === 0) {
             return { added: 0 };
           }
@@ -540,7 +543,10 @@ export class DocumentService {
             .select("file_path")
             .in("file_path", fileNames);
 
-          if (listError) throw listError;
+          if (listError) {
+              console.error("Error of refreshDocuments(), ", listError);
+              return null;
+          }
           
           // Find files that don't exist in the database
           const existingFilePaths = new Set(
@@ -564,12 +570,15 @@ export class DocumentService {
           });
           
           // Insert the new documents
-          const { data: insertedDocs, error: insertError } = await supabase
+          const { error: insertError } = await supabase
             .from("documents")
             .insert(newDocuments)
             .select();
             
-          if (insertError) throw insertError;
+          if (insertError) {
+              console.error("Error from ", insertError);
+              return null;
+          }
           
           return { added: newDocuments.length };
         } catch (error) {
@@ -581,7 +590,7 @@ export class DocumentService {
         if (result.error) {
           return { 
             added: 0, 
-            error: result.error instanceof Error ? result.error.message : String(result.error) 
+            error: result.error.message
           };
         }
         return result.data || { added: 0 };
@@ -635,7 +644,10 @@ export class DocumentService {
             .from("document_files")
             .upload(file.name, file);
 
-          if (error) throw error;
+          if (error) {
+              console.error("Error from uploadDocumentToBucket", error)
+              return null;
+          }
           
           return { path: data.path };
         } catch (error) {
@@ -663,7 +675,8 @@ export class DocumentService {
       
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`External API error: ${response.status} - ${errorText}`);
+        console.error(`External API error: ${response.status} - ${errorText}`);
+        return null;
       }
       
       // Return the OCR result
@@ -674,7 +687,7 @@ export class DocumentService {
     }
   }
 
-  async uploadPdfToExternal(pdfFile: File, modelPath = "", isFullARD: boolean = false): Promise<{ body: ReadableStream<Uint8Array> | null; headers: Headers; status: number }> {
+  async uploadPdfToExternal(pdfFile: File, modelPath = "", isFullARD: boolean = false): Promise<{ body: ReadableStream<Uint8Array> | null; headers: Headers; status: number } | null> {
     try {
       // Create a FormData object for the AI service request
       const formData = new FormData();
@@ -697,7 +710,8 @@ export class DocumentService {
       
       if (!response.ok) {
         const errorText = await response.text();
-        throw new Error(`External API error: ${response.status} - ${errorText}`);
+        console.error(`External API error: ${response.status} - ${errorText}`);
+        return null;
       }
       
       // Return the response data needed to construct the final response
