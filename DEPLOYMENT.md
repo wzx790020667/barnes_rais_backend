@@ -288,7 +288,10 @@ Self-signed SSL certificates generated in .ssl/ directory
 ### 8. Start the Server
 
 ```bash
-docker compose --env-file .env up --build -d
+# Go to the docker folder where the yaml file stays
+cd docker
+# Start the backend server
+docker compose -f start.yml --env-file .env up --build -d
 ```
 
 ### 9. Check for success messages
