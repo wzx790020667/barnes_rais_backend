@@ -27,8 +27,3 @@ chmod 644 .ssl/fullchain.pem  # Owner can read, write; others can read
 echo "Self-signed SSL certificates generated in .ssl/ directory"
 echo "- Private key: .ssl/privkey.pem"
 echo "- Certificate: .ssl/fullchain.pem"
-echo ""
-echo "Add the following to your .env file:"
-echo "HTTPS_PORT=3443"
-echo "TLS_KEY_PATH=$(pwd)/.ssl/privkey.pem"
-echo "TLS_CERT_PATH=$(pwd)/.ssl/fullchain.pem"
