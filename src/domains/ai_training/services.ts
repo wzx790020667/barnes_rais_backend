@@ -336,10 +336,11 @@ export class AiTrainingService {
             
             // Enable API call here later.
             const response = await axios.get(url);
-            // console.log("[aiTrainingService.getRunningTrainingTasks] - is_training: ", response.data.is_training);
+            const statusData = response.data;
+            console.log(`[aiTrainingService.getRunningTrainingTasks] - statusData.task_id: ${statusData.task_id}, statusData.is_training: ${statusData.is_training}`);
             
             return {
-                ...response.data,
+                ...statusData,
                 start_time: tasks[0].start_time || new Date(),
             };
         } catch (error: any) {
