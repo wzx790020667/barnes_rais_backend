@@ -270,13 +270,28 @@ curl --location --request POST 'http://<YOUR_SERVER_IP_ADDRESS>:3001/api/documen
 --form 'file=@"/path/to/po_forms_merged_01.pdf"'
 ```
 
-### 7. Start the Server
+### 7. Generate SSL certificates for HTTPS server hosting (Only needed for the deployment at the first time).
+
+```bash
+# cd to the project root folder, then run this to gen ssl keys
+sudo bash gen-ssl-cert.sh
+```
+
+If it's generated successfully, you would see logs like below:
+
+```bash
+Self-signed SSL certificates generated in .ssl/ directory
+- Private key: .ssl/privkey.pem
+- Certificate: .ssl/fullchain.pem
+```
+
+### 8. Start the Server
 
 ```bash
 docker compose --env-file .env up --build -d
 ```
 
-### 8. Check for success messages
+### 9. Check for success messages
 
 ```
 # Check the backend server logs
@@ -286,7 +301,7 @@ docker logs -f barnes-rais-backend
 If you see below logs, which menas everything has been successfully setup.
 
 ```bash
-ARD Server running at http://0.0.0.0:3001
+ARD Server running at https://0.0.0.0:3443
 ✅ Successfully connected to Supabase Auth service
 ✅ Successfully connected to Supabase Database, count: null
 ✅ Successfully connected to database from Drizzle
