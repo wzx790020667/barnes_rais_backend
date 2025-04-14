@@ -42,5 +42,14 @@ interface POItem {
 }
 
 export interface AiTrainingStatus {
-
+  start_time: Date;
+  current_step: number;
+  dataset_name: string;
+  is_training: boolean;
+  progress: number;
+  status_message: string;
+  task_id: string;
+  total_steps: number;
+  training_duration: number;
+  training_duration_so_far: number;
 }

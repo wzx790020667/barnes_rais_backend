@@ -177,6 +177,7 @@ export class AiTrainingController {
     }
     
     async completeTrainingTask(taskId: string): Promise<Response> {
+        console.log("[AiTrainingController.completeTrainingTask] - received a completed training task with taskId:", taskId);
         if (!taskId) {
             return Response.json({
                 success: false,
@@ -185,6 +186,7 @@ export class AiTrainingController {
         }
 
         const result = await this.aiTrainingService.completeTrainingTask(taskId);
+        console.log("[AiTrainingController.completeTrainingTask] - completed training task with taskId: ", taskId);
         
         if (!result.success) {
             return Response.json({
@@ -199,24 +201,13 @@ export class AiTrainingController {
         });
     }
 
-    async bindModelByTaskId(customerId: string, taskId: string, req: BunRequest): Promise<Response> {
-        const body = await req.json();
-
-        const { success, error } = bindModelByTaskIdSchema.safeParse(body);
-        if (!success) {
-            return Response.json({
-                success: false,
-                message: "Invalid request body",
-                error: error
-            }, {status: 400});
-        }
-
-        const result = await this.aiTrainingService.bindModelByTaskId(customerId, taskId);
+    async bindModelByTaskId(customerId: string, datasetId: string): Promise<Response> {
+        const result = await this.aiTrainingService.bindModelByTaskId(customerId, datasetId);
 
         if (!result.success) {
             return Response.json({
                 success: false,
-                message: result.message || "Failed to bind model to task"
+                message: result.message || "Failed to bind model to the customer"
             }, {status: 400});
         }
 
@@ -228,18 +219,32 @@ export class AiTrainingController {
     }
 
     async checkTrainingTasks(): Promise<Response> {
-        const tasks = await this.aiTrainingService.getRunningTrainingTasks();
-        
-        if (tasks.length === 0) {
-            return Response.json({
-                hasRunningTasks: false,
-                tasks: []
-            });
+        const result = await this.aiTrainingService.getRunningTrainingTasks();
+        if (!result) {
+            return Response.json(null);
         }
         
+        return Response.json(result);
+    }
+
+    async loadInferenceModel(modelName: string): Promise<Response> {
+        const result = await this.aiTrainingService.loadInferenceModel(modelName);
+
+        if (!result.success) {
+            return Response.json({
+                success: false,
+                message: result.message || "Failed to load inference model"
+            }, {status: 400});
+        }
+
         return Response.json({
-            hasRunningTasks: true,
-            tasks: tasks
+            success: true,
+            message: "Inference model loaded successfully"
         });
+    }
+
+    async stopTraining(): Promise<Response> {
+        const result = await this.aiTrainingService.stopTraining();
+        return Response.json(result);
     }
 }

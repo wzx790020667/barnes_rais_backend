@@ -19,6 +19,7 @@ export const customers = pgTable("customers", {
   file_format: varchar({ length: 255 }),
   customer_info_hash: varchar({ length: 255 }),
   t_bind_path: varchar({ length: 255 }),
+  t_model_name: varchar({ length: 255 }),
   created_at: timestamp("created_at", {withTimezone: true}).defaultNow(),
   updated_at: timestamp("updated_at", {withTimezone: true}).defaultNow(),
 });
@@ -135,7 +136,7 @@ export const csv_records = pgTable("csv_records", {
 })
 
 export const t_datasets = pgTable("t_datasets", {
-  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  id: varchar({ length: 255 }).primaryKey(),
   customer_id: uuid("customer_id").references(() => customers.id).notNull(),
   name: varchar({ length: 255 }).unique(),
   training_docs: json("training_docs"), // array of document {document_id, filepath}
@@ -147,16 +148,16 @@ export const t_datasets = pgTable("t_datasets", {
 export type TrainingTaskStatus = "pending" | "training" | "completed" | "failed";
 
 export const t_tasks = pgTable("t_tasks", {
-  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
+  id: varchar({ length: 255 }).primaryKey(),
   name: varchar({ length: 255 }).unique(),
-  t_dataset_id: uuid("t_dataset_id").references(() => t_datasets.id).notNull(),
+  t_dataset_id: varchar({ length: 255 }).references(() => t_datasets.id).notNull(),
   customer_id: uuid("customer_id").references(() => customers.id).notNull(),
   prompt: text("prompt"),
   status: varchar({ length: 255 }).$type<TrainingTaskStatus>(),
   start_time: timestamp("start_time"),
   target_time: timestamp("target_time"),
   completed_time: timestamp("completed_time"),
-  model_path: varchar({length: 255}),
+  model_name: varchar({length: 255}),
   accuracy: numeric("accuracy"),
   document_type: varchar({length: 255}),
   created_at: timestamp("created_at", {withTimezone: true}).defaultNow(),
@@ -164,8 +165,8 @@ export const t_tasks = pgTable("t_tasks", {
 })
 
 export const ttv_results = pgTable("ttv_results", {
-  id: uuid("id").primaryKey().default(sql`gen_random_uuid()`),
-  t_task_id: uuid("t_task_id").references(() => t_tasks.id).notNull(),
+  id: varchar({ length: 255 }).primaryKey(),
+  t_task_id: varchar("t_task_id").references(() => t_tasks.id).notNull(),
   original_doc: json("original_doc"),
   verified_doc: json("verified_doc"),
   accuracy: numeric("accuracy"),

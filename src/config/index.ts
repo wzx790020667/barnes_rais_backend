@@ -45,8 +45,8 @@ export const AI_SERVICE_CONFIG = {
 export const TRAINING_DATA_CONFIG = {
   // Detect if running in container by checking for a container-specific env var
   BASE_DATASET_OUTPUT_PATH: process.env.IS_CONTAINER === 'true' 
-    ? '/app/barnes_rais_training/training_data'
-    : `${process.env.HOME || '/home'}/barnes_rais_training/training_data`,
-  BASE_DATASET_INPUT_PATH: '/barnes_rais_training/training_data',
-  BASE_MODEL_PATH: `/barnes_rais_training/models`,
+    ? '/app/training_data'
+    : `${process.env.HOME || '/home'}/training_data`,
+  BASE_DATASET_INPUT_PATH: '/training_data',
+  BASE_MODEL_PATH: `/training_data/models`,
 };

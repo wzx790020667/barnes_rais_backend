@@ -3,16 +3,17 @@ import { customers, document_items, documents, t_datasets, t_tasks, ttv_results,
 import { eq, inArray, and } from "drizzle-orm";
 import { generateCustomerInfoHash } from "../../lib/utils";
 import type { BunRequest } from "bun";
-import type { ImportTrainingData, POTrainingData } from "./types";
+import type { AiTrainingStatus, ImportTrainingData, POTrainingData } from "./types";
 import { calculateAccuracy, createAnnotationsForImportDocument, createAnnotationsForPODocument, getModelPath } from "./util";
-import { SERVER_CONFIG, TRAINING_DATA_CONFIG } from "../../config";
+import { TRAINING_DATA_CONFIG } from "../../config";
 import { mkdir } from "node:fs/promises";
 import { join } from "node:path";
 import { supabase, db } from "../../lib";
 import { DocumentService } from "../documents/services";
 import { DOCUMENT_BUCKET_NAME } from "../documents/constants";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { AI_SERVICE_CONFIG } from "../../config";
+import moment from "moment";
 
 export class AiTrainingService {
 
@@ -20,6 +21,31 @@ export class AiTrainingService {
 
     constructor() {
         this.documentService = new DocumentService();
+    }
+
+    async loadInferenceModel(modelName: string) {
+        const url = `${AI_SERVICE_CONFIG.URL}/api/load_inference_model`;
+        const formData = new FormData();
+        console.log("[aiTrainingService.loadInferenceModel] - prepare to call url: ", url, "modelName: ", modelName);
+
+        const response = await axios.post(url, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        console.log("[aiTrainingService.loadInferenceModel] - response: ", response.data);
+
+        if (response.data.success !== 'success') {
+            return {
+                success: false,
+                message: response.data.message
+            };
+        }
+
+        return {
+            success: true,
+            message: response.data.message
+        };
     }
     
     async getAvailableDocuments(customerId: string): Promise<Document[]> {
@@ -196,7 +222,7 @@ export class AiTrainingService {
         }
 
         const dataset = await drizzleDb.insert(t_datasets).values({
-            id: crypto.randomUUID(),
+            id: name,
             customer_id: customerId,
             training_docs: trainingDocIds,
             verification_docs: verificationDocIds,
@@ -250,7 +276,7 @@ export class AiTrainingService {
         }
 
         const task = await drizzleDb.insert(t_tasks).values({
-            id: crypto.randomUUID(),
+            id: name,
             name: name,
             t_dataset_id: trainingDatasetId,
             customer_id: customerId,
@@ -276,7 +302,7 @@ export class AiTrainingService {
 
     async getTrainingTasks(customerId: string, status?: string): Promise<TrainingTask[]> {
         let query = supabase.from("t_tasks")
-            .select("*, t_dataset_id(id, name)")
+            .select("*")
             .eq("customer_id", customerId);
             
         if (status) {
@@ -297,29 +323,28 @@ export class AiTrainingService {
         return data as unknown as TrainingTask[];
     }
 
-    async getRunningTrainingTasks(): Promise<TrainingTask[]> {
+    async getRunningTrainingTasks(): Promise<AiTrainingStatus | null> {
         const url = `${AI_SERVICE_CONFIG.URL}/api/training_status`;
         try {
             // Get tasks from database
             const tasks = await drizzleDb.select().from(t_tasks)
                 .where(eq(t_tasks.status, "training"));
-            
-            // TODO: Enable API call here later.
-            const response = await axios.get(url);
-            if (!response.data.success) {
-                return [];
+
+            if (!tasks || tasks.length === 0) {
+                return null;
             }
             
-            // Update all tasks with new target_time
-            const updatedTasks = tasks.map(task => ({
-                ...task,
-                // target_time: response.data.target_time // TODO: Enable API call here later.
-            }));
+            // Enable API call here later.
+            const response = await axios.get(url);
+            // console.log("[aiTrainingService.getRunningTrainingTasks] - is_training: ", response.data.is_training);
             
-            return updatedTasks;
+            return {
+                ...response.data,
+                start_time: tasks[0].start_time || new Date(),
+            };
         } catch (error: any) {
             console.error("Error fetching running training tasks:", error.message, "url: ", url);
-            return [];
+            return null;
         }
     }
     
@@ -378,29 +403,25 @@ export class AiTrainingService {
             };
         }
         
-        // Dummy AI service API call
         // In a real implementation, we would make an HTTP request to the AI service
         try {
-            const datasetName = dataset?.name || 'unknown';
-            
-            // Get the server's host and port from the request or use fallback
-            const host = req?.headers.get('host') || `${SERVER_CONFIG.HOST}:${SERVER_CONFIG.PORT}`;
-            const protocol = req?.headers.get('x-forwarded-proto') || 'http';
-            const serverUrl = `${protocol}://${host}`;
-            
-            // // Make the actual API call to the external AI service
-            await axios.post(`${AI_SERVICE_CONFIG.URL}/api/pretrain`, {
+            const datasetName = dataset?.id || 'unknown';
+            const requestPayload = {
                 task_id: taskId,
                 dataset_name: datasetName,
                 document_type: customer.document_type,
                 prompt: task.prompt,
-                dataset_path: `${TRAINING_DATA_CONFIG.BASE_DATASET_INPUT_PATH}/${datasetName}`,
-                callback_url: `${serverUrl}/api/webhook/training/tasks/${taskId}/complete`,
-            }, {
+                callback_url: `/api/webhook/training/tasks/${taskId}/complete`,
+            }
+            console.log("[aiTrainingService.startTrainingTask] - requestPayload: ", requestPayload);
+            
+            // Make the actual API call to the external AI service
+            const response = await axios.post(`${AI_SERVICE_CONFIG.URL}/api/pretrain`, requestPayload, {
                 headers: {
                     'Content-Type': 'application/json',
                 }
             });
+            console.log("[aiTrainingService.startTrainingTask] - response: ", response.data);
             
             // Update task status to "training"
             const updatedTask = await drizzleDb.update(t_tasks)
@@ -455,11 +476,18 @@ export class AiTrainingService {
             };
         }
 
-        const modelPath = getModelPath(task.document_type || "", task.id);
-
         try {
+            // Load the inference model for data verification
+            const result = await this.loadInferenceModel(task.t_dataset_id);
+            if (!result.success) {
+                return {
+                    success: false,
+                    message: "Failed to load inference model"
+                };
+            }
+
             // First run the document verification in parallel (outside transaction)
-            const ttvResult = await this._createTtvResult(task, modelPath);
+            const ttvResult = await this._createTtvResult(task, task.t_dataset_id);
             if (!ttvResult.success) {
                 return {
                     success: false,
@@ -473,7 +501,7 @@ export class AiTrainingService {
                     status: "completed",
                     updated_at: new Date(),
                     completed_time: new Date(),
-                    model_path: modelPath,
+                    model_name: task.t_dataset_id,
                     accuracy: ttvResult.meanAccuracy?.toFixed(2) || "0.00"
                 })
                 .where(eq(t_tasks.id, taskId))
@@ -500,7 +528,7 @@ export class AiTrainingService {
         }
     }
 
-    async _createTtvResult(trainingTask: TrainingTask, modelPath: string, tx?: any) {
+    async _createTtvResult(trainingTask: TrainingTask, modelName: string, tx?: any) {
         const queryExecutor = tx || drizzleDb;
         
         const trainingDataset = await queryExecutor.select().from(t_datasets)
@@ -533,7 +561,7 @@ export class AiTrainingService {
         // TODO: A question to ask Seven about if the AI service is able to handle the large number of documents concurrently.
         // TODO: Maybe the customer's machine does not support this amount of concurrency.
         const verificationResults = await Promise.all(
-            verificationDocs.map(doc => this._verifyDocument(doc, modelPath, trainingTask))
+            verificationDocs.map(doc => this._verifyDocument(doc, modelName, trainingTask))
         );
 
         const accuracyList = verificationResults.map(result => result.data?.accuracy || 0);
@@ -545,7 +573,7 @@ export class AiTrainingService {
             .map(result => {
                 const { originalDoc, verifiedDoc, accuracy, unmatchedFieldPaths } = result.data!;
                 return {
-                    id: crypto.randomUUID(),
+                    id: `TTVR_${moment().unix()}`,
                     t_task_id: trainingTask.id,
                     original_doc: originalDoc,
                     verified_doc: verifiedDoc,
@@ -566,7 +594,7 @@ export class AiTrainingService {
         };
     }
 
-    async _verifyDocument(doc: Document, modelPath: string, task: TrainingTask) {
+    async _verifyDocument(doc: Document, modelName: string, task: TrainingTask) {
         const originalDoc = doc;
         
         try {
@@ -604,7 +632,7 @@ export class AiTrainingService {
             });
             
             // Process the downloaded file using the existing uploadPdfToExternal method
-            const result = await this.documentService.pdfFullARD(file, modelPath, task.document_type || "", task.prompt || "");
+            const result = await this.documentService.pdfFullARD(file, task.document_type || "", task.prompt || "");
 
             const verifiedDoc = result;
             const { accuracy, unmatchedFieldPaths } = calculateAccuracy(originalDoc, verifiedDoc);
@@ -632,31 +660,9 @@ export class AiTrainingService {
             .where(eq(ttv_results.t_task_id, taskId));
     }
 
-    async bindModelByTaskId(customerId: string, taskId: string) {
-        const ttvResults = await this.getTtvResults(taskId);
-        if (!ttvResults || ttvResults.length === 0) {
-            return {
-                success: false,
-                message: "No TTV results found"
-            };
-        }
-
-        const customer = await drizzleDb.select()
-            .from(customers)
-            .where(eq(customers.id, customerId))
-            .limit(1)
-            .then(results => results[0]);
-
-        if (!customer || customer.document_type === "" || customer.document_type === null) {
-            return {
-                success: false,
-                message: `Customer or customer.document_type not found, customer.document_type: ${customer?.document_type}`
-            };
-        }
-
-        // TODO: comfirm the model path rule here.
+    async bindModelByTaskId(customerId: string, datasetId: string) {
         const updatedCustomer = await drizzleDb.update(customers).set({
-            t_bind_path: getModelPath(customer.document_type, taskId)
+            t_model_name: datasetId
         }).where(eq(customers.id, customerId));
 
         return {
@@ -666,14 +672,23 @@ export class AiTrainingService {
         };
     }
 
-    async getTrainingTaskByPath(bindPath: string) {
+    async getTrainingTaskByDatasetId(datasetId: string) {
         const task = await drizzleDb.select()
             .from(t_tasks)
-            .where(eq(t_tasks.model_path, bindPath))
+            .where(eq(t_tasks.t_dataset_id, datasetId))
             .limit(1)
             .then(results => results[0]);
 
+        if (!task) {
+            return null;
+        }
+
         return task;
     }
-    
+
+    async stopTraining() {
+        const url = `${AI_SERVICE_CONFIG.URL}/api/stop_training`;
+        const response = await axios.post(url);
+        return response.data;
+    }
 }

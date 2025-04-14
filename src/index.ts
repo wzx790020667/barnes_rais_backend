@@ -270,12 +270,18 @@ const httpServer: ServeConfig = {
     "/api/webhook/training/tasks/:taskId/complete": {
       POST: async (req) => addCorsHeaders(await aiTrainingController.completeTrainingTask(req.params.taskId)),
     },
-    "/api/customers/:customerId/training/tasks/:taskId/bind": {
-      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => aiTrainingController.bindModelByTaskId(req.params.customerId, req.params.taskId, req))),
+    "/api/customers/:customerId/training/datasets/:datasetId/bind": {
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => aiTrainingController.bindModelByTaskId(req.params.customerId, req.params.datasetId))),
     },
     "/api/customers/:customerId/training/tasks/:taskId/results": {
       GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => aiTrainingController.getTrainingTaskVerificationResults(req.params.taskId))),
     },
+    "/api/load_inference_model/:modelName": {
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => aiTrainingController.loadInferenceModel(req.params.modelName))),
+    },
+    "/api/stop_training": {
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => aiTrainingController.stopTraining())),
+    }
   },
   
   // Fallback handler for routes not defined in the routes object

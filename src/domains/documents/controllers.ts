@@ -790,14 +790,19 @@ export class DocumentController {
         return Response.json({ error: "Customer not found" }, { status: 404 });
       }
 
-      const task = await this.aiTrainingService.getTrainingTaskByPath(customer.t_bind_path || "");
+      const task = await this.aiTrainingService.getTrainingTaskByDatasetId(customer.t_model_name || "");
       if (!task) {
         return Response.json({ error: "Training task not found" }, { status: 404 });
       }
-  
+
+      const result = await this.aiTrainingService.loadInferenceModel(task.t_dataset_id);
+
+      if (!result.success) {
+        return Response.json({ error: result.message }, { status: 500 });
+      }
+
       const document = await this.documentService.pdfFullARD(
           pdfFile,
-          customer.t_bind_path || "", 
           documentType,
           task.prompt || ""
       );

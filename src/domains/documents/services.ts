@@ -6,6 +6,7 @@ import { eq } from "drizzle-orm";
 import { documents, document_items, csv_records } from "../../db/schema";
 import type { BucketDocument } from "./types";
 import { AI_SERVICE_CONFIG } from "../../config";
+import axios from "axios";
 
 export class DocumentService {
   async getDocumentById(id: string): Promise<Document | null> {
@@ -687,21 +688,13 @@ export class DocumentService {
     }
   }
 
-  async uploadPdfToExternal(pdfFile: File, modelPath = "", isFullARD: boolean = false): Promise<{ body: ReadableStream<Uint8Array> | null; headers: Headers; status: number } | null> {
+  async uploadPdfToExternal(pdfFile: File): Promise<{ body: ReadableStream<Uint8Array> | null; headers: Headers; status: number } | null> {
     try {
       // Create a FormData object for the AI service request
       const formData = new FormData();
       formData.append('pdf', pdfFile);
       formData.append('get_ocr', 'true');
 
-      if (modelPath !== "") {
-        formData.append('model_path', modelPath); // TODO: change this to a correct name
-      }
-
-      if (isFullARD) {
-        formData.append('is_full_ard', 'true'); // TODO: change this to a correct name
-      }
-      
       // Make the request to the external PDF to images endpoint
       const response = await fetch(`${AI_SERVICE_CONFIG.URL}/api/pdf_to_images`, {
         method: 'POST',
@@ -726,22 +719,24 @@ export class DocumentService {
     }
   }
 
-  async pdfFullARD(pdfFile: File, modelPath: string, documentType: string, prompt: string): Promise<Document> {
+  async pdfFullARD(pdfFile: File, documentType: string, prompt: string): Promise<Document> {
     try {
       // Create a FormData object for the AI service request
       const formData = new FormData();
       formData.append('pdf', pdfFile);
-      formData.append('model_path', modelPath);
-      formData.append("document_type", documentType);
+      formData.append("doc_type", documentType);
       formData.append("prompt", prompt);
+
       console.log("formData", formData);
 
       // TODO: Enable this later.
-      // const respose = await axios.post(`${AI_SERVICE_CONFIG.URL}/api/full_ard_pdf`, formData, {
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data'
-      //   }
-      // });
+      const respose = await axios.post(`${AI_SERVICE_CONFIG.URL}/api/inference`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      const responseDocument = respose.data as Document;
 
       // TODO: Remove this later. Dummy data
       let document: Document | null;
@@ -751,7 +746,7 @@ export class DocumentService {
         document = await this.getDocumentById("002516ba-6075-49dc-be93-e9848eddc356");
       }
 
-      return document as Document;
+      return document!;
     } catch (error) {
       console.error("PDF to images service error:", error);
       throw error;
