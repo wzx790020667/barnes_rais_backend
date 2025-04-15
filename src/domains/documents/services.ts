@@ -733,7 +733,7 @@ export class DocumentService {
       const url = `${AI_SERVICE_CONFIG.URL}/api/inference`;
       const mockUrl = "http://127.0.0.1:4523/m1/6048702-5738699-default/api/inference"; // TODO: remove mock url later
       
-      const response = await fetch(mockUrl, {
+      const response = await fetch(url, {
         method: 'POST',
         body: formData
       });

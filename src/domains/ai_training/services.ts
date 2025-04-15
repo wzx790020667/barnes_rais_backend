@@ -22,14 +22,14 @@ export class AiTrainingService {
         const url = `${AI_SERVICE_CONFIG.URL}/api/load_inference_model`;
         const mockUrl = "http://127.0.0.1:4523/m1/6048702-5738699-default/api/load_inference_model"; // TODO: remove mock url later
         
-        console.log("[aiTrainingService.loadInferenceModel] - prepare to call url: ", mockUrl, "modelName: ", modelName);
+        console.log("[aiTrainingService.loadInferenceModel] - prepare to call url: ", url, "modelName: ", modelName);
 
         // Create form data for fetch request
         const formData = new FormData();
         formData.append("model_name", modelName);
         
         try {
-            const response = await fetch(mockUrl, {
+            const response = await fetch(url, {
                 method: 'POST',
                 body: formData
             });
@@ -345,7 +345,7 @@ export class AiTrainingService {
             }
             
             // Enable API call here later.
-            const response = await fetch(mockUrl);
+            const response = await fetch(url);
             const statusData = await response.json();
             console.log(`[aiTrainingService.getRunningTrainingTasks] - statusData.task_id: ${statusData.task_id}, statusData.is_training: ${statusData.is_training}`);
             
@@ -608,42 +608,6 @@ export class AiTrainingService {
         const originalDoc = doc;
         
         try {
-            // Get document from bucket - this is an async operation
-            // const bucketDoc = await this.documentService.getDocumentFromBucket(DOCUMENT_BUCKET_NAME, doc.file_path);
-            // if (!bucketDoc) {
-            //     return {
-            //         success: false,
-            //         data: null,
-            //         message: `Document not found in bucket: ${doc.id}`
-            //     };
-            // }
-
-            // // Download the file from the signed URL
-            // const fileResponse = await fetch(bucketDoc.content, {
-            //     // Add fetch options to optimize network requests
-            //     priority: 'high',
-            //     cache: 'force-cache'
-            // });
-            
-            // if (!fileResponse.ok) {
-            //     return {
-            //         success: false,
-            //         data: null,
-            //         message: `Failed to download file from bucket: ${fileResponse.status} ${fileResponse.statusText}`
-            //     };
-            // }
-            
-            // Get the file blob from response
-            // const fileBlob = await fileResponse.blob();
-            
-            // Create a File object from the blob
-            // const file = new File([fileBlob], bucketDoc.file_path, {
-            //     type: bucketDoc.contentType || 'application/pdf'
-            // });
-            
-            // Process the downloaded file using the existing uploadPdfToExternal method
-            // const result = await this.documentService.pdfFullARD(file, task.document_type || "", task.prompt || "");
-
             const mockUrl = "http://127.0.0.1:4523/m1/6048702-5738699-default/api/text_inference"; // TODO: remove mock url later
             const url = `${AI_SERVICE_CONFIG.URL}/api/text_inference`;
             
@@ -653,7 +617,7 @@ export class AiTrainingService {
             form.append("model_name", modelName);
             form.append("prompt", task.prompt || "");
             
-            const response = await fetch(mockUrl, {
+            const response = await fetch(url, {
                 method: 'POST',
                 body: form
             });
