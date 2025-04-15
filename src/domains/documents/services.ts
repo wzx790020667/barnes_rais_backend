@@ -674,7 +674,6 @@ export class DocumentService {
       const response = await fetch(`${AI_SERVICE_CONFIG.URL}/api/image_ocr`, {
         method: 'POST',
         body: formData,
-        verbose: true
       });
       
       if (!response.ok) {
@@ -702,7 +701,6 @@ export class DocumentService {
       const response = await fetch(`${AI_SERVICE_CONFIG.URL}/api/pdf_to_images`, {
         method: 'POST',
         body: formData,
-        verbose: true
       });
       
       if (!response.ok) {
@@ -723,15 +721,20 @@ export class DocumentService {
     }
   }
 
-  async pdfFullARD(pdfFile: File, documentType: string, prompt: string): Promise<Partial<DocumentWithItems> | null> {
+  async pdfFullARD(pdfFile: File | null = null, documentType: string, prompt: string, raw: string | null = null): Promise<Partial<DocumentWithItems> | null> {
     try {
       // Create a FormData object for the AI service request
       const formData = new FormData();
-      formData.append('pdf', pdfFile);
       formData.append("doc_type", documentType);
       formData.append("prompt", prompt);
 
-      console.log("formData", formData);
+      if (pdfFile) {
+        formData.append('pdf', pdfFile);
+      }
+
+      if (raw) {
+        formData.append('raw', raw);
+      }
 
       const url = `${AI_SERVICE_CONFIG.URL}/api/inference`;
       const mockUrl = "http://127.0.0.1:4523/m1/6048702-5738699-default/api/inference"; // TODO: remove mock url later
@@ -745,22 +748,22 @@ export class DocumentService {
         throw new Error(`API request failed with status ${response.status}`);
       }
       
-      const responseDocument = await response.json() as any;
+      const responseDocument = await response.json() as Partial<DocumentWithItems>;
 
-      let document: Partial<DocumentWithItems> | null = null;
-      if (documentType === "purchase_order") {
-        document = toPODocumentFromAnnotation(responseDocument as POTrainingData, responseDocument.t_page_texts);
-        if (document) {
-          document.document_type = "purchase_order";
-        }
-      } else {
-        document = toImportDocumentFromAnnotation(responseDocument as ImportTrainingData, responseDocument.t_page_texts);
-        if (document) {
-          document.document_type = "import_declaration";
-        }
-      }
+      // let document: Partial<DocumentWithItems> | null = null;
+      // if (documentType === "purchase_order") {
+      //   document = toPODocumentFromAnnotation(responseDocument as POTrainingData, responseDocument.t_page_texts);
+      //   if (document) {
+      //     document.document_type = "purchase_order";
+      //   }
+      // } else {
+      //   document = toImportDocumentFromAnnotation(responseDocument as ImportTrainingData, responseDocument.t_page_texts);
+      //   if (document) {
+      //     document.document_type = "import_declaration";
+      //   }
+      // }
 
-      return document;
+      return responseDocument;
     } catch (error) {
       console.error("PDF to images service error:", error);
       throw error;

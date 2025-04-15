@@ -12,10 +12,13 @@ import { supabase, db } from "../../lib";
 import axios from "axios";
 import { AI_SERVICE_CONFIG } from "../../config";
 import moment from "moment";
+import { DocumentService } from "../documents/services";
 
 export class AiTrainingService {
+    private documentService: DocumentService;
 
     constructor() {
+        this.documentService = new DocumentService();
     }
 
     async loadInferenceModel(modelName: string) {
@@ -608,34 +611,38 @@ export class AiTrainingService {
         const originalDoc = doc;
         
         try {
-            const mockUrl = "http://127.0.0.1:4523/m1/6048702-5738699-default/api/text_inference"; // TODO: remove mock url later
-            const url = `${AI_SERVICE_CONFIG.URL}/api/text_inference`;
+            // const mockUrl = "http://127.0.0.1:4523/m1/6048702-5738699-default/api/text_inference";
+            // const url = `${AI_SERVICE_CONFIG.URL}/api/text_inference`;
             
-            // Create form data for fetch request
-            const form = new FormData();
-            form.append("content", JSON.stringify(doc.t_page_texts));
-            form.append("model_name", modelName);
-            form.append("prompt", task.prompt || "");
+            // // Create form data for fetch request
+            // const form = new FormData();
+            // form.append("content", JSON.stringify(doc.t_page_texts));
+            // form.append("model_name", modelName);
+            // form.append("prompt", task.prompt || "");
             
-            const response = await fetch(url, {
-                method: 'POST',
-                body: form
-            });
+            // const response = await fetch(url, {
+            //     method: 'POST',
+            //     body: form
+            // });
             
-            if (!response.ok) {
-                return {
-                    success: false,
-                    message: `API error: ${response.status} ${response.statusText}`
-                };
-            }
+            // if (!response.ok) {
+            //     return {
+            //         success: false,
+            //         message: `API error: ${response.status} ${response.statusText}`
+            //     };
+            // }
             
-            const verifiedDocRaw = await response.json();
-            let verifiedDoc: Partial<DocumentWithItems> | null = null;
-            if (doc.document_type === "import_declaration") {
-                verifiedDoc = toImportDocumentFromAnnotation(verifiedDocRaw, verifiedDocRaw.content);
-            } else if (doc.document_type === "purchase_order") {
-                verifiedDoc = toPODocumentFromAnnotation(verifiedDocRaw, verifiedDocRaw.content);
-            }
+            // const verifiedDocRaw = await response.json();
+
+            const verifiedDoc = await this.documentService.pdfFullARD(null, doc.document_type || "", task.prompt || "", JSON.stringify(doc.t_page_texts));
+
+
+            // let verifiedDoc: Partial<DocumentWithItems> | null = null;
+            // if (doc.document_type === "import_declaration") {
+            //     verifiedDoc = toImportDocumentFromAnnotation(verifiedDocRaw, verifiedDocRaw.content);
+            // } else if (doc.document_type === "purchase_order") {
+            //     verifiedDoc = toPODocumentFromAnnotation(verifiedDocRaw, verifiedDocRaw.content);
+            // }
 
             if (!verifiedDoc) {
                 return {
