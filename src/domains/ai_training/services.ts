@@ -34,7 +34,10 @@ export class AiTrainingService {
         try {
             const response = await fetch(url, {
                 method: 'POST',
-                body: formData
+                body: formData,
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
             });
             
             const data = await response.json();
@@ -420,22 +423,25 @@ export class AiTrainingService {
         // In a real implementation, we would make an HTTP request to the AI service
         try {
             const datasetName = dataset?.id || 'unknown';
-            const requestPayload = {
-                task_id: taskId,
-                dataset_name: datasetName,
-                document_type: customer.document_type,
-                prompt: task.prompt,
-                callback_url: `/api/webhook/training/tasks/${taskId}/complete`,
-            }
-            console.log("[aiTrainingService.startTrainingTask] - requestPayload: ", requestPayload);
+            const formData = new FormData();
+            formData.append("task_id", taskId);
+            formData.append("dataset_name", datasetName);
+            formData.append("document_type", customer.document_type || "");
+            formData.append("prompt", task.prompt || "");
+            formData.append("callback_url", `/api/webhook/training/tasks/${taskId}/complete`);
+
+            console.log("[aiTrainingService.startTrainingTask] - requestPayload: ", formData);
             
             // Make the actual API call to the external AI service
             const response = await fetch(`${AI_SERVICE_CONFIG.URL}/api/pretrain`, {
                 method: 'POST',
-                body: JSON.stringify(requestPayload)
+                body: formData,
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
             });
             const responseData = await response.json();
-            
+
             console.log("[aiTrainingService.startTrainingTask] - response: ", responseData);
             
             // Update task status to "training"
