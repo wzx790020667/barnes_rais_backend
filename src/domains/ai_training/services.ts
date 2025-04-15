@@ -40,7 +40,7 @@ export class AiTrainingService {
             const data = await response.json();
             console.log("[aiTrainingService.loadInferenceModel] - response: ", data);
             
-            if (data.success !== 'success') {
+            if (data.status !== 'success') {
                 return {
                     success: false,
                     message: data.message
