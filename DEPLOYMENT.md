@@ -245,6 +245,7 @@ After the bucket is created, we need to set the policies for this bucket.
 
 #### 6.2. Create a policies to make the bucket accessible.
 
+The bucket name is `documentfiles` instead of `document_files` shown on the image.
 ![1742968113020](images/DEPLOYMENT/1742968113020.png)
 
 ![1742967950729](images/DEPLOYMENT/1742967950729.png)
@@ -257,7 +258,7 @@ After the bucket is created, we need to set the policies for this bucket.
 
 ```bash
 # Buckets list that needs to be created
-document_files
+documentfiles
 ```
 
 #### 6.4. Upload files to the bucket from Barnes Rais Backend (Optional)

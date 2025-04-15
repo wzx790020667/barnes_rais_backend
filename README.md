@@ -38,19 +38,19 @@ The server uses environment variables for configuration. Bun has built-in suppor
 
 Available environment variables:
 
-| Variable       | Description                  | Default                                                              |
-| -------------- | ---------------------------- | -------------------------------------------------------------------- |
-| PORT           | HTTP server port number      | 3001                                                                 |
-| HOST           | Server hostname              | localhost                                                            |
-| APP_NAME       | Application name             | Barnes Rais Backend                                                  |
-| NODE_ENV       | Environment mode             | development/production                                               |
-| HTTPS_PORT     | HTTPS server port number     | 3443                                                                 |
-| TLS_KEY_PATH   | Path to SSL private key      | -                                                                    |
-| TLS_CERT_PATH  | Path to SSL certificate      | -                                                                    |
-| TLS_PASSPHRASE | SSL key passphrase (if any)  | -                                                                    |
-| SUPABASE_URL   | Supabase URL                 | http://<YOUR_SERVER_IP_ADDRESS>:54321                                |
-| SUPABASE_KEY   | Supabase API key             | SERVICE_ROLE_KEY (from .env file of Supabase)                        |
-| DATABASE_URL   | PostgreSQL connection string | postgres://postgres:postgres@<YOUR_SERVER_IP_ADDRESS>:54322/postgres |
+| Variable       | Description                  | Default                                                             |
+| -------------- | ---------------------------- | ------------------------------------------------------------------- |
+| PORT           | HTTP server port number      | 3001                                                                |
+| HOST           | Server hostname              | localhost                                                           |
+| APP_NAME       | Application name             | Barnes Rais Backend                                                 |
+| NODE_ENV       | Environment mode             | development/production                                              |
+| HTTPS_PORT     | HTTPS server port number     | 3443                                                                |
+| TLS_KEY_PATH   | Path to SSL private key      | -                                                                   |
+| TLS_CERT_PATH  | Path to SSL certificate      | -                                                                   |
+| TLS_PASSPHRASE | SSL key passphrase (if any)  | -                                                                   |
+| SUPABASE_URL   | Supabase URL                 | http://<YOUR_SERVER_IP_ADDRESS>:8000                                |
+| SUPABASE_KEY   | Supabase API key             | SERVICE_ROLE_KEY (from .env file of Supabase)                       |
+| DATABASE_URL   | PostgreSQL connection string | postgres://postgres:postgres@<YOUR_SERVER_IP_ADDRESS>:8000/postgres |
 
 ## Local Development
 

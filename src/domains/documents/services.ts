@@ -8,6 +8,7 @@ import type { BucketDocument } from "./types";
 import { AI_SERVICE_CONFIG } from "../../config";
 import { toImportDocumentFromAnnotation, toPODocumentFromAnnotation } from "../ai_training/util";
 import type { ImportTrainingData, POTrainingData } from "../ai_training/types";
+import { DOCUMENT_BUCKET_NAME } from "./constants";
 
 export class DocumentService {
   async getDocumentById(id: string): Promise<Document | null> {
@@ -517,7 +518,7 @@ export class DocumentService {
         try {
           // Get documents from bucket
           const { data: bucketFiles, error: bucketError } = await supabase.storage
-            .from("documentfiles")
+            .from(DOCUMENT_BUCKET_NAME)
             .list("", {
               sortBy: { column: "created_at", order: "desc" },
             });
@@ -641,9 +642,9 @@ export class DocumentService {
     return db
       .query(async () => {
         try {
-          // Upload file to the documentfiles bucket
+          // Upload file to the bucket
           const { data, error } = await supabase.storage
-            .from("documentfiles")
+            .from(DOCUMENT_BUCKET_NAME)
             .upload(file.name, file);
 
           if (error) {
