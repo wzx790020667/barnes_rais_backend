@@ -237,7 +237,7 @@ Account: `supabase`
 
 Password: `this_password_is_insecure_and_should_be_updated`
 
-#### 6.1. Create a bucket named document_files as shown in the image.
+#### 6.1. Create a bucket named documentfiles as shown in the image.
 
 ![1742967284549](images/DEPLOYMENT/1742967284549.png)
 
@@ -266,7 +266,7 @@ documentfiles
 Curl example:
 
 ```bash
-# Curl command of file uploading to the bucket (document_files).
+# Curl command of file uploading to the bucket (documentfiles).
 curl --location --request POST 'http://<YOUR_SERVER_IP_ADDRESS>:3001/api/documents/bucket/upload' \
 --form 'file=@"/path/to/po_forms_merged_01.pdf"'
 ```
