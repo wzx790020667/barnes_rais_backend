@@ -4,12 +4,12 @@ export interface ImportTrainingData {
   annotations: ImportAnnotation[];
 }
 
-interface ImportAnnotation {
+export interface ImportAnnotation {
   "Import Document Number": string | null;
   Item: ImportItem[];
 }
 
-interface ImportItem {
+export interface ImportItem {
   object_id: number | null;
   "Part Number": string | null;
   "Import Price": string | null;
@@ -22,7 +22,7 @@ export interface POTrainingData {
   annotations: POAnnotation[];
 }
 
-interface POAnnotation {
+export interface POAnnotation {
   "Purchase Order Number": string | null;
   "End User Customer Name": string | null;
   "Work Scope": string | null;
@@ -32,7 +32,7 @@ interface POAnnotation {
   Item: POItem[];
 }
 
-interface POItem {
+export interface POItem {
   object_id: string | null;
   "Part Number": string | null;
   "Engine Model": string | null;

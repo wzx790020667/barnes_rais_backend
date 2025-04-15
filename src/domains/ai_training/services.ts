@@ -483,13 +483,6 @@ export class AiTrainingService {
                 message: "Training task not found"
             };
         }
-        
-        if (task.status === "completed") {
-            return {
-                success: false,
-                message: "Training task is already completed"
-            };
-        }
 
         try {
             // Load the inference model for data verification
@@ -575,7 +568,8 @@ export class AiTrainingService {
         // Process all documents sequentially
         const verificationResults = [];
         for (const doc of verificationDocs) {
-            const result = await this._verifyDocument(doc, modelName, trainingTask);
+            console.log("[aiTrainingService._createTtvResult] - start to verify document: ", doc.id);
+            const result = await this._verifyDocument(doc, trainingTask);
             verificationResults.push(result);
         }
 
@@ -609,43 +603,10 @@ export class AiTrainingService {
         };
     }
 
-    async _verifyDocument(doc: Document, modelName: string, task: TrainingTask) {
+    async _verifyDocument(doc: Document, task: TrainingTask) {
         const originalDoc = doc;
-        
         try {
-            // const mockUrl = "http://127.0.0.1:4523/m1/6048702-5738699-default/api/text_inference";
-            // const url = `${AI_SERVICE_CONFIG.URL}/api/text_inference`;
-            
-            // // Create form data for fetch request
-            // const form = new FormData();
-            // form.append("content", JSON.stringify(doc.t_page_texts));
-            // form.append("model_name", modelName);
-            // form.append("prompt", task.prompt || "");
-            
-            // const response = await fetch(url, {
-            //     method: 'POST',
-            //     body: form
-            // });
-            
-            // if (!response.ok) {
-            //     return {
-            //         success: false,
-            //         message: `API error: ${response.status} ${response.statusText}`
-            //     };
-            // }
-            
-            // const verifiedDocRaw = await response.json();
-
-            const verifiedDoc = await this.documentService.pdfFullARD(null, doc.document_type || "", task.prompt || "", JSON.stringify(doc.t_page_texts));
-
-
-            // let verifiedDoc: Partial<DocumentWithItems> | null = null;
-            // if (doc.document_type === "import_declaration") {
-            //     verifiedDoc = toImportDocumentFromAnnotation(verifiedDocRaw, verifiedDocRaw.content);
-            // } else if (doc.document_type === "purchase_order") {
-            //     verifiedDoc = toPODocumentFromAnnotation(verifiedDocRaw, verifiedDocRaw.content);
-            // }
-
+            const verifiedDoc = await this.documentService.pdfFullARD(null, doc.document_type || "", task.prompt || "", JSON.stringify(doc.t_page_texts)) ;
             if (!verifiedDoc) {
                 return {
                     success: false,
@@ -654,7 +615,6 @@ export class AiTrainingService {
             }
 
             const { accuracy, unmatchedFieldPaths } = calculateAccuracy(originalDoc, verifiedDoc);
-
             console.log(`[aiTrainingService._verifyDocument] - conmpleted a document verification, accuracy: ${accuracy}`);
             
             return {

@@ -7,8 +7,9 @@ import { documents, document_items, csv_records } from "../../db/schema";
 import type { BucketDocument } from "./types";
 import { AI_SERVICE_CONFIG } from "../../config";
 import { toImportDocumentFromAnnotation, toPODocumentFromAnnotation } from "../ai_training/util";
-import type { ImportTrainingData, POTrainingData } from "../ai_training/types";
+import type { ImportAnnotation, ImportTrainingData, POAnnotation, POTrainingData } from "../ai_training/types";
 import { DOCUMENT_BUCKET_NAME } from "./constants";
+import { json } from "node:stream/consumers";
 
 export class DocumentService {
   async getDocumentById(id: string): Promise<Document | null> {
@@ -736,9 +737,7 @@ export class DocumentService {
         formData.append('raw', raw);
       }
 
-      const url = `${AI_SERVICE_CONFIG.URL}/api/inference`;
-      const mockUrl = "http://127.0.0.1:4523/m1/6048702-5738699-default/api/inference"; // TODO: remove mock url later
-      
+      const url = `${AI_SERVICE_CONFIG.URL}/api/inference`;      
       const response = await fetch(url, {
         method: 'POST',
         body: formData
@@ -748,23 +747,33 @@ export class DocumentService {
         throw new Error(`API request failed with status ${response.status}`);
       }
       
-      const responseDocument = await response.json() as Partial<DocumentWithItems>;
-      console.log("[DocumentService.pdfFullARD] - responseDocument: ", responseDocument);
+      const responseDocument = await response.json();
+      console.log("[DocumentService.pdfFullARD] - responseDocument: ", JSON.stringify(responseDocument));
 
-      // let document: Partial<DocumentWithItems> | null = null;
-      // if (documentType === "purchase_order") {
-      //   document = toPODocumentFromAnnotation(responseDocument as POTrainingData, responseDocument.t_page_texts);
-      //   if (document) {
-      //     document.document_type = "purchase_order";
-      //   }
-      // } else {
-      //   document = toImportDocumentFromAnnotation(responseDocument as ImportTrainingData, responseDocument.t_page_texts);
-      //   if (document) {
-      //     document.document_type = "import_declaration";
-      //   }
-      // }
+      let document: Partial<DocumentWithItems> | null = null;
+      if (documentType === "purchase_order") {
+        const payload: POTrainingData = {
+          Doc_type: documentType,
+          content: responseDocument.t_page_texts,
+          annotations: responseDocument as POAnnotation[]
+        }
+        document = toPODocumentFromAnnotation(payload, responseDocument.t_page_texts);
+        if (document) {
+          document.document_type = "purchase_order";
+        }
+      } else {
+        const payload: ImportTrainingData = {
+          Doc_type: documentType,
+          content: responseDocument.t_page_texts,
+          annotations: responseDocument as ImportAnnotation[]
+        }
+        document = toImportDocumentFromAnnotation(payload, responseDocument.t_page_texts);
+        if (document) {
+          document.document_type = "import_declaration";
+        }
+      }
 
-      return responseDocument;
+      return document;
     } catch (error) {
       console.error("PDF to images service error:", error);
       throw error;
