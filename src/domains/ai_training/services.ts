@@ -34,10 +34,7 @@ export class AiTrainingService {
         try {
             const response = await fetch(url, {
                 method: 'POST',
-                body: formData,
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
+                body: formData
             });
             
             const data = await response.json();
@@ -435,10 +432,7 @@ export class AiTrainingService {
             // Make the actual API call to the external AI service
             const response = await fetch(`${AI_SERVICE_CONFIG.URL}/api/pretrain`, {
                 method: 'POST',
-                body: formData,
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
+                body: formData
             });
             const responseData = await response.json();
 

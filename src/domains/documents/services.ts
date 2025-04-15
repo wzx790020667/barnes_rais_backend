@@ -701,9 +701,6 @@ export class DocumentService {
       const response = await fetch(`${AI_SERVICE_CONFIG.URL}/api/pdf_to_images`, {
         method: 'POST',
         body: formData,
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
       });
       
       if (!response.ok) {
@@ -744,10 +741,7 @@ export class DocumentService {
       
       const response = await fetch(url, {
         method: 'POST',
-        body: formData,
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+        body: formData
       });
       
       if (!response.ok) {
