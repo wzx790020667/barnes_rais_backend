@@ -72,8 +72,9 @@ export class CustomerService {
         const { data, error } = await supabase
           .from("customers")
           .select("*")
-          .range(offset, offset + pageSize - 1);
-          
+          .range(offset, offset + pageSize - 1)
+          .order("customer_name", { ascending: true });
+
         if (error) throw error;
 
         if (!data || data.length === 0) {

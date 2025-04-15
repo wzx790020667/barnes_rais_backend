@@ -674,6 +674,7 @@ export class DocumentService {
       const response = await fetch(`${AI_SERVICE_CONFIG.URL}/api/image_ocr`, {
         method: 'POST',
         body: formData,
+        verbose: true
       });
       
       if (!response.ok) {
@@ -701,6 +702,7 @@ export class DocumentService {
       const response = await fetch(`${AI_SERVICE_CONFIG.URL}/api/pdf_to_images`, {
         method: 'POST',
         body: formData,
+        verbose: true
       });
       
       if (!response.ok) {
