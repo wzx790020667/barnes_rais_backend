@@ -270,8 +270,8 @@ const httpServer: ServeConfig = {
     "/api/webhook/training/tasks/:taskId/complete": {
       POST: async (req) => addCorsHeaders(await aiTrainingController.completeTrainingTask(req.params.taskId)),
     },
-    "/api/customers/:customerId/training/datasets/:datasetId/bind": {
-      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => aiTrainingController.bindModelByTaskId(req.params.customerId, req.params.datasetId))),
+    "/api/customers/:customerId/training/dataset/:datasetId/bind": {
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => aiTrainingController.bindModelByDatasetId(req.params.customerId, req.params.datasetId))),
     },
     "/api/customers/:customerId/training/tasks/:taskId/results": {
       GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => aiTrainingController.getTrainingTaskVerificationResults(req.params.taskId))),

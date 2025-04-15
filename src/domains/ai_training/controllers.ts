@@ -16,11 +16,6 @@ const createTrainingTaskSchema = z.object({
     documentType: z.string().min(0).optional(),
 });
 
-const bindModelByTaskIdSchema = z.object({
-    modelPath: z.string()
-});
-
-
 export class AiTrainingController {
     private readonly aiTrainingService: AiTrainingService;
 
@@ -185,24 +180,27 @@ export class AiTrainingController {
             }, {status: 400});
         }
 
-        const result = await this.aiTrainingService.completeTrainingTask(taskId);
-        console.log("[AiTrainingController.completeTrainingTask] - completed training task with taskId: ", taskId);
+        // Run the script as a detached process
+        const proc = Bun.spawn(["bun", "run", "./src/domains/ai_training/background_tasks/complete_training_task.ts", taskId], {
+            stdout: "inherit",
+            stderr: "inherit",
+            stdin: "ignore",
+            detached: true,
+        });
         
-        if (!result.success) {
-            return Response.json({
-                success: false,
-                message: result.message || "Failed to complete training task"
-            }, {status: 400});
-        }
+        // Unref to allow the parent process to exit without waiting for the child
+        proc.unref();
+        
+        console.log("[AiTrainingController.completeTrainingTask] - started background process for taskId:", taskId);
 
         return Response.json({
-            success: true,
-            message: "Training task completed successfully"
+            triggered: true,
+            message: "Training task completion started in background"
         });
     }
 
-    async bindModelByTaskId(customerId: string, datasetId: string): Promise<Response> {
-        const result = await this.aiTrainingService.bindModelByTaskId(customerId, datasetId);
+    async bindModelByDatasetId(customerId: string, datasetId: string): Promise<Response> {
+        const result = await this.aiTrainingService.bindModelByDatasetId(customerId, datasetId);
 
         if (!result.success) {
             return Response.json({

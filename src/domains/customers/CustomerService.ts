@@ -39,7 +39,8 @@ export class CustomerService {
             .from(documents)
             .where(and(
               eq(documents.status, 'approved'),
-              eq(documents.customer_info_hash, customerInfoHash)
+              eq(documents.customer_info_hash, customerInfoHash),
+              eq(documents.from_full_ard, false)
             ));
           
           // @ts-ignore

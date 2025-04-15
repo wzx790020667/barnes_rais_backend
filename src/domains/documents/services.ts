@@ -1,4 +1,4 @@
-import type { Document } from "../../db/schema";
+import type { Document, DocumentWithItems } from "../../db/schema";
 import { supabase, db } from "../../lib";
 import type { DocumentItem } from "../../db/schema";
 import { drizzleDb } from "../../lib";
@@ -6,7 +6,8 @@ import { eq } from "drizzle-orm";
 import { documents, document_items, csv_records } from "../../db/schema";
 import type { BucketDocument } from "./types";
 import { AI_SERVICE_CONFIG } from "../../config";
-import axios from "axios";
+import { toImportDocumentFromAnnotation, toPODocumentFromAnnotation } from "../ai_training/util";
+import type { ImportTrainingData, POTrainingData } from "../ai_training/types";
 
 export class DocumentService {
   async getDocumentById(id: string): Promise<Document | null> {
@@ -516,7 +517,7 @@ export class DocumentService {
         try {
           // Get documents from bucket
           const { data: bucketFiles, error: bucketError } = await supabase.storage
-            .from("document_files")
+            .from("documentfiles")
             .list("", {
               sortBy: { column: "created_at", order: "desc" },
             });
@@ -640,9 +641,9 @@ export class DocumentService {
     return db
       .query(async () => {
         try {
-          // Upload file to the document_files bucket
+          // Upload file to the documentfiles bucket
           const { data, error } = await supabase.storage
-            .from("document_files")
+            .from("documentfiles")
             .upload(file.name, file);
 
           if (error) {
@@ -719,7 +720,7 @@ export class DocumentService {
     }
   }
 
-  async pdfFullARD(pdfFile: File, documentType: string, prompt: string): Promise<Document> {
+  async pdfFullARD(pdfFile: File, documentType: string, prompt: string): Promise<Partial<DocumentWithItems> | null> {
     try {
       // Create a FormData object for the AI service request
       const formData = new FormData();
@@ -729,24 +730,34 @@ export class DocumentService {
 
       console.log("formData", formData);
 
-      // TODO: Enable this later.
-      const respose = await axios.post(`${AI_SERVICE_CONFIG.URL}/api/inference`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+      const url = `${AI_SERVICE_CONFIG.URL}/api/inference`;
+      const mockUrl = "http://127.0.0.1:4523/m1/6048702-5738699-default/api/inference"; // TODO: remove mock url later
+      
+      const response = await fetch(mockUrl, {
+        method: 'POST',
+        body: formData
       });
+      
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
+      }
+      
+      const responseDocument = await response.json() as any;
 
-      const responseDocument = respose.data as Document;
-
-      // TODO: Remove this later. Dummy data
-      let document: Document | null;
+      let document: Partial<DocumentWithItems> | null = null;
       if (documentType === "purchase_order") {
-        document = await this.getDocumentById("34ab009f-192c-4a97-b0cd-00ea4b29b25b");
+        document = toPODocumentFromAnnotation(responseDocument as POTrainingData, responseDocument.t_page_texts);
+        if (document) {
+          document.document_type = "purchase_order";
+        }
       } else {
-        document = await this.getDocumentById("002516ba-6075-49dc-be93-e9848eddc356");
+        document = toImportDocumentFromAnnotation(responseDocument as ImportTrainingData, responseDocument.t_page_texts);
+        if (document) {
+          document.document_type = "import_declaration";
+        }
       }
 
-      return document!;
+      return document;
     } catch (error) {
       console.error("PDF to images service error:", error);
       throw error;

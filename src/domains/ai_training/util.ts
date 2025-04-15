@@ -1,5 +1,6 @@
 import { TRAINING_DATA_CONFIG } from "../../config";
-import type { Document, DocumentItem } from "../../db/schema";
+import type { Document, DocumentItem, DocumentWithItems } from "../../db/schema";
+import type { ImportTrainingData, POTrainingData } from "./types";
 
 interface ExtendedDocumentItem extends DocumentItem {
     object_id: number | null;
@@ -43,6 +44,62 @@ export const createAnnotationsForImportDocument = (doc: Document, docItems: Docu
         annotations.push(annotation);
     }
     return annotations;
+}
+
+export const toImportDocumentFromAnnotation = (trainingData: ImportTrainingData, pageTexts: string[]): Partial<DocumentWithItems> | null => {
+    if (!trainingData?.annotations || trainingData.annotations.length === 0) return null;
+
+    const doc: Partial<Document> = {
+        t_page_texts: pageTexts,
+        import_number: null,
+        t_import_number_page: null
+    };
+
+    // Temporary map to store items by their object_id
+    const itemsMap = new Map<number, Partial<DocumentItem>>();
+
+    // Process each page annotation
+    trainingData.annotations.forEach((pageAnnotation, page: number) => {
+        // Handle document-level fields
+        if (pageAnnotation["Import Document Number"] !== null) {
+            doc.import_number = pageAnnotation["Import Document Number"];
+            doc.t_import_number_page = page;
+        }
+
+        // Handle item-level fields
+        pageAnnotation.Item.forEach((item: any) => {
+            if (item.object_id === null) return;
+            
+            // Get or create an item entry in our map
+            const existingItem = itemsMap.get(item.object_id) || {};
+            
+            // Update item with this page's data
+            if (item["Part Number"] !== null) {
+                existingItem.part_number = item["Part Number"];
+                existingItem.t_part_number_page = page;
+            }
+            
+            if (item["Import Price"] !== null) {
+                existingItem.import_price = item["Import Price"];
+                existingItem.t_import_price_page = page;
+            }
+            
+            if (item["Quantity Ordered"] !== null) {
+                existingItem.quantity_ordered = item["Quantity Ordered"];
+                existingItem.t_quantity_ordered_page = page;
+            }
+            
+            itemsMap.set(item.object_id, existingItem);
+        });
+    });
+
+    // Convert the map values to an array
+    const docItems = Array.from(itemsMap.values());
+
+    return {
+        ...doc,
+        document_items: docItems as DocumentItem[]
+    };
 }
 
 export const createAnnotationsForPODocument = (doc: Document, docItems: DocumentItem[]) => {
@@ -93,6 +150,106 @@ export const createAnnotationsForPODocument = (doc: Document, docItems: Document
     return annotations;
 }
 
+export const toPODocumentFromAnnotation = (trainingData: POTrainingData, pageTexts: string[]): Partial<DocumentWithItems> | null => {
+    if (!trainingData?.annotations || trainingData.annotations.length === 0) return null;
+
+    const doc: Partial<Document> = {
+        t_page_texts: pageTexts,
+        po_number: null,
+        t_po_number_page: null,
+        end_user_customer_name: null,
+        t_end_user_customer_name_page: null,
+        work_scope: null,
+        t_work_scope_page: null,
+        arc_requirement: null,
+        t_arc_requirement_page: null,
+        tsn: null,
+        t_tsn_page: null,
+        csn: null,
+        t_csn_page: null
+    };
+
+    // Temporary map to store items by their object_id
+    const itemsMap = new Map<number, Partial<DocumentItem>>();
+
+    // Process each page annotation
+    trainingData.annotations.forEach((pageAnnotation, page: number) => {
+        // Handle document-level fields
+        if (pageAnnotation["Purchase Order Number"] !== null) {
+            doc.po_number = pageAnnotation["Purchase Order Number"];
+            doc.t_po_number_page = page;
+        }
+        
+        if (pageAnnotation["End User Customer Name"] !== null) {
+            doc.end_user_customer_name = pageAnnotation["End User Customer Name"];
+            doc.t_end_user_customer_name_page = page;
+        }
+        
+        if (pageAnnotation["Work Scope"] !== null) {
+            doc.work_scope = pageAnnotation["Work Scope"];
+            doc.t_work_scope_page = page;
+        }
+        
+        if (pageAnnotation["ARC Requirement"] !== null) {
+            doc.arc_requirement = pageAnnotation["ARC Requirement"];
+            doc.t_arc_requirement_page = page;
+        }
+        
+        if (pageAnnotation["TSN Number"] !== null) {
+            doc.tsn = pageAnnotation["TSN Number"];
+            doc.t_tsn_page = page;
+        }
+        
+        if (pageAnnotation["CSN Number"] !== null) {
+            doc.csn = pageAnnotation["CSN Number"];
+            doc.t_csn_page = page;
+        }
+
+        // Handle item-level fields
+        pageAnnotation.Item.forEach((item: any) => {
+            if (item.object_id === null) return;
+            
+            // Get or create an item entry in our map
+            const existingItem = itemsMap.get(item.object_id) || {};
+            
+            // Update item with this page's data
+            if (item["Part Number"] !== null) {
+                existingItem.part_number = item["Part Number"];
+                existingItem.t_part_number_page = page;
+            }
+            
+            if (item["Quantity Ordered"] !== null) {
+                existingItem.quantity_ordered = item["Quantity Ordered"];
+                existingItem.t_quantity_ordered_page = page;
+            }
+            
+            if (item["Engine Model"] !== null) {
+                existingItem.engine_model = item["Engine Model"];
+                existingItem.t_engine_model_page = page;
+            }
+            
+            if (item["Engine Number"] !== null) {
+                existingItem.engine_number = item["Engine Number"];
+                existingItem.t_engine_number_page = page;
+            }
+            
+            if (item["Serial Number"] !== null) {
+                existingItem.serial_number = item["Serial Number"];
+                existingItem.t_serial_number_page = page;
+            }
+            
+            itemsMap.set(item.object_id, existingItem);
+        });
+    });
+
+    // Convert the map values to an array
+    const docItems = Array.from(itemsMap.values());
+
+    return {
+        ...doc,
+        document_items: docItems as DocumentItem[]
+    };
+}
 
 // New function that returns both page numbers and the map of items by page
 export const _groupItemsByPageNumber = (docItems: DocumentItem[]) => {
@@ -130,7 +287,7 @@ export const _groupItemsByPageNumber = (docItems: DocumentItem[]) => {
     return pageItemsMap;
 }
 
-export const calculateAccuracy = (originalDoc: Document, verifiedDoc: Document) => {
+export const calculateAccuracy = (originalDoc: Partial<DocumentWithItems>, verifiedDoc: Partial<DocumentWithItems>) => {
     // Fields to compare from Document
     const documentFields = [
         'import_number',
@@ -165,8 +322,8 @@ export const calculateAccuracy = (originalDoc: Document, verifiedDoc: Document) 
 
     // Compare document items if they exist
     // Use any type to access document_items since it might come from a join query
-    const originalItems = (originalDoc as any).document_items as DocumentItem[] || [];
-    const verifiedItems = (verifiedDoc as any).document_items as DocumentItem[] || [];
+    const originalItems = originalDoc.document_items || [];
+    const verifiedItems = verifiedDoc.document_items || [];
 
     // Item fields to compare
     const itemFields = [

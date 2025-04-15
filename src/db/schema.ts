@@ -187,3 +187,7 @@ export type TrainingDataset = typeof t_datasets.$inferSelect;
 export type TrainingTask = typeof t_tasks.$inferSelect;
 export type TrainingTaskVerificationResult = typeof ttv_results.$inferSelect;
 
+
+export type DocumentWithItems = Document & {
+  document_items: DocumentItem[];
+}

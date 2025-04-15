@@ -1,51 +1,60 @@
 import { drizzleDb } from "../../lib";
-import { customers, document_items, documents, t_datasets, t_tasks, ttv_results, type Document, type TrainingDataset, type TrainingTask, type TrainingTaskVerificationResult } from "../../db/schema";
+import { customers, document_items, documents, t_datasets, t_tasks, ttv_results, type Document, type DocumentWithItems, type TrainingDataset, type TrainingTask, type TrainingTaskVerificationResult } from "../../db/schema";
 import { eq, inArray, and } from "drizzle-orm";
 import { generateCustomerInfoHash } from "../../lib/utils";
 import type { BunRequest } from "bun";
 import type { AiTrainingStatus, ImportTrainingData, POTrainingData } from "./types";
-import { calculateAccuracy, createAnnotationsForImportDocument, createAnnotationsForPODocument, getModelPath } from "./util";
+import { calculateAccuracy, createAnnotationsForImportDocument, createAnnotationsForPODocument, getModelPath, toImportDocumentFromAnnotation, toPODocumentFromAnnotation } from "./util";
 import { TRAINING_DATA_CONFIG } from "../../config";
 import { mkdir } from "node:fs/promises";
 import { join } from "node:path";
 import { supabase, db } from "../../lib";
-import { DocumentService } from "../documents/services";
-import { DOCUMENT_BUCKET_NAME } from "../documents/constants";
 import axios from "axios";
 import { AI_SERVICE_CONFIG } from "../../config";
 import moment from "moment";
 
 export class AiTrainingService {
 
-    private documentService: DocumentService;
-
     constructor() {
-        this.documentService = new DocumentService();
     }
 
     async loadInferenceModel(modelName: string) {
         const url = `${AI_SERVICE_CONFIG.URL}/api/load_inference_model`;
+        const mockUrl = "http://127.0.0.1:4523/m1/6048702-5738699-default/api/load_inference_model"; // TODO: remove mock url later
+        
+        console.log("[aiTrainingService.loadInferenceModel] - prepare to call url: ", mockUrl, "modelName: ", modelName);
+
+        // Create form data for fetch request
         const formData = new FormData();
-        console.log("[aiTrainingService.loadInferenceModel] - prepare to call url: ", url, "modelName: ", modelName);
-
-        const response = await axios.post(url, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
+        formData.append("model_name", modelName);
+        
+        try {
+            const response = await fetch(mockUrl, {
+                method: 'POST',
+                body: formData
+            });
+            
+            const data = await response.json();
+            console.log("[aiTrainingService.loadInferenceModel] - response: ", data);
+            
+            if (data.success !== 'success') {
+                return {
+                    success: false,
+                    message: data.message
+                };
             }
-        });
-        console.log("[aiTrainingService.loadInferenceModel] - response: ", response.data);
-
-        if (response.data.success !== 'success') {
+            
+            return {
+                success: true,
+                message: data.message
+            };
+        } catch (error) {
+            console.error("[aiTrainingService.loadInferenceModel] - error: ", error);
             return {
                 success: false,
-                message: response.data.message
+                message: error instanceof Error ? error.message : String(error)
             };
         }
-
-        return {
-            success: true,
-            message: response.data.message
-        };
     }
     
     async getAvailableDocuments(customerId: string): Promise<Document[]> {
@@ -325,6 +334,7 @@ export class AiTrainingService {
 
     async getRunningTrainingTasks(): Promise<AiTrainingStatus | null> {
         const url = `${AI_SERVICE_CONFIG.URL}/api/training_status`;
+        const mockUrl = "http://127.0.0.1:4523/m1/6048702-5738699-default/api/training_status"; // TODO: remove mock url later
         try {
             // Get tasks from database
             const tasks = await drizzleDb.select().from(t_tasks)
@@ -335,8 +345,8 @@ export class AiTrainingService {
             }
             
             // Enable API call here later.
-            const response = await axios.get(url);
-            const statusData = response.data;
+            const response = await fetch(mockUrl);
+            const statusData = await response.json();
             console.log(`[aiTrainingService.getRunningTrainingTasks] - statusData.task_id: ${statusData.task_id}, statusData.is_training: ${statusData.is_training}`);
             
             return {
@@ -417,12 +427,11 @@ export class AiTrainingService {
             console.log("[aiTrainingService.startTrainingTask] - requestPayload: ", requestPayload);
             
             // Make the actual API call to the external AI service
-            const response = await axios.post(`${AI_SERVICE_CONFIG.URL}/api/pretrain`, requestPayload, {
-                headers: {
-                    'Content-Type': 'application/json',
-                }
+            const response = await fetch(`${AI_SERVICE_CONFIG.URL}/api/pretrain`, {
+                method: 'POST',
+                body: JSON.stringify(requestPayload)
             });
-            console.log("[aiTrainingService.startTrainingTask] - response: ", response.data);
+            console.log("[aiTrainingService.startTrainingTask] - response: ", response);
             
             // Update task status to "training"
             const updatedTask = await drizzleDb.update(t_tasks)
@@ -558,12 +567,12 @@ export class AiTrainingService {
             };
         }
 
-        // Process all documents in parallel
-        // TODO: A question to ask Seven about if the AI service is able to handle the large number of documents concurrently.
-        // TODO: Maybe the customer's machine does not support this amount of concurrency.
-        const verificationResults = await Promise.all(
-            verificationDocs.map(doc => this._verifyDocument(doc, modelName, trainingTask))
-        );
+        // Process all documents sequentially
+        const verificationResults = [];
+        for (const doc of verificationDocs) {
+            const result = await this._verifyDocument(doc, modelName, trainingTask);
+            verificationResults.push(result);
+        }
 
         const accuracyList = verificationResults.map(result => result.data?.accuracy || 0);
         const meanAccuracy = accuracyList.reduce((acc, curr) => acc + curr, 0) / accuracyList.length;
@@ -571,10 +580,10 @@ export class AiTrainingService {
         // Filter successful results and prepare data for insertion
         const ttvsToInsert = verificationResults
             .filter(result => result.success && result.data)
-            .map(result => {
+            .map((result, index) => {
                 const { originalDoc, verifiedDoc, accuracy, unmatchedFieldPaths } = result.data!;
                 return {
-                    id: `TTVR_${moment().unix()}`,
+                    id: `TTVR_${moment().unix()}_${index}`,
                     t_task_id: trainingTask.id,
                     original_doc: originalDoc,
                     verified_doc: verifiedDoc,
@@ -600,43 +609,80 @@ export class AiTrainingService {
         
         try {
             // Get document from bucket - this is an async operation
-            const bucketDoc = await this.documentService.getDocumentFromBucket(DOCUMENT_BUCKET_NAME, doc.file_path);
-            if (!bucketDoc) {
-                return {
-                    success: false,
-                    data: null,
-                    message: `Document not found in bucket: ${doc.id}`
-                };
-            }
+            // const bucketDoc = await this.documentService.getDocumentFromBucket(DOCUMENT_BUCKET_NAME, doc.file_path);
+            // if (!bucketDoc) {
+            //     return {
+            //         success: false,
+            //         data: null,
+            //         message: `Document not found in bucket: ${doc.id}`
+            //     };
+            // }
 
-            // Download the file from the signed URL
-            const fileResponse = await fetch(bucketDoc.content, {
-                // Add fetch options to optimize network requests
-                priority: 'high',
-                cache: 'force-cache'
-            });
+            // // Download the file from the signed URL
+            // const fileResponse = await fetch(bucketDoc.content, {
+            //     // Add fetch options to optimize network requests
+            //     priority: 'high',
+            //     cache: 'force-cache'
+            // });
             
-            if (!fileResponse.ok) {
-                return {
-                    success: false,
-                    data: null,
-                    message: `Failed to download file from bucket: ${fileResponse.status} ${fileResponse.statusText}`
-                };
-            }
+            // if (!fileResponse.ok) {
+            //     return {
+            //         success: false,
+            //         data: null,
+            //         message: `Failed to download file from bucket: ${fileResponse.status} ${fileResponse.statusText}`
+            //     };
+            // }
             
             // Get the file blob from response
-            const fileBlob = await fileResponse.blob();
+            // const fileBlob = await fileResponse.blob();
             
             // Create a File object from the blob
-            const file = new File([fileBlob], bucketDoc.file_path, {
-                type: bucketDoc.contentType || 'application/pdf'
-            });
+            // const file = new File([fileBlob], bucketDoc.file_path, {
+            //     type: bucketDoc.contentType || 'application/pdf'
+            // });
             
             // Process the downloaded file using the existing uploadPdfToExternal method
-            const result = await this.documentService.pdfFullARD(file, task.document_type || "", task.prompt || "");
+            // const result = await this.documentService.pdfFullARD(file, task.document_type || "", task.prompt || "");
 
-            const verifiedDoc = result;
+            const mockUrl = "http://127.0.0.1:4523/m1/6048702-5738699-default/api/text_inference"; // TODO: remove mock url later
+            const url = `${AI_SERVICE_CONFIG.URL}/api/text_inference`;
+            
+            // Create form data for fetch request
+            const form = new FormData();
+            form.append("content", JSON.stringify(doc.t_page_texts));
+            form.append("model_name", modelName);
+            form.append("prompt", task.prompt || "");
+            
+            const response = await fetch(mockUrl, {
+                method: 'POST',
+                body: form
+            });
+            
+            if (!response.ok) {
+                return {
+                    success: false,
+                    message: `API error: ${response.status} ${response.statusText}`
+                };
+            }
+            
+            const verifiedDocRaw = await response.json();
+            let verifiedDoc: Partial<DocumentWithItems> | null = null;
+            if (doc.document_type === "import_declaration") {
+                verifiedDoc = toImportDocumentFromAnnotation(verifiedDocRaw, verifiedDocRaw.content);
+            } else if (doc.document_type === "purchase_order") {
+                verifiedDoc = toPODocumentFromAnnotation(verifiedDocRaw, verifiedDocRaw.content);
+            }
+
+            if (!verifiedDoc) {
+                return {
+                    success: false,
+                    message: "Failed to convert verified document"
+                };
+            }
+
             const { accuracy, unmatchedFieldPaths } = calculateAccuracy(originalDoc, verifiedDoc);
+
+            console.log(`[aiTrainingService._verifyDocument] - conmpleted a document verification, accuracy: ${accuracy}`);
             
             return {
                 success: true,
@@ -661,7 +707,7 @@ export class AiTrainingService {
             .where(eq(ttv_results.t_task_id, taskId));
     }
 
-    async bindModelByTaskId(customerId: string, datasetId: string) {
+    async bindModelByDatasetId(customerId: string, datasetId: string) {
         const updatedCustomer = await drizzleDb.update(customers).set({
             t_model_name: datasetId
         }).where(eq(customers.id, customerId));
@@ -689,7 +735,9 @@ export class AiTrainingService {
 
     async stopTraining() {
         const url = `${AI_SERVICE_CONFIG.URL}/api/stop_training`;
-        const response = await axios.post(url);
-        return response.data;
+        const response = await fetch(url, {
+            method: 'POST'
+        });
+        return await response.json();
     }
 }
