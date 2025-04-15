@@ -434,7 +434,9 @@ export class AiTrainingService {
                 method: 'POST',
                 body: JSON.stringify(requestPayload)
             });
-            console.log("[aiTrainingService.startTrainingTask] - response: ", response);
+            const responseData = await response.json();
+            
+            console.log("[aiTrainingService.startTrainingTask] - response: ", responseData);
             
             // Update task status to "training"
             const updatedTask = await drizzleDb.update(t_tasks)
