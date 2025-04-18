@@ -196,6 +196,9 @@ const httpServer: ServeConfig = {
       PUT: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => customerController.updateCustomer(req))),
       DELETE: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => customerController.deleteCustomer(req))),
     },
+    "/api/customers/find/end-user-customer-number": {
+      POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => customerController.findEndUserCustomerNumberByName(req))),
+    },
     
     // Arc Rule routes
     "/api/arc-rules": {

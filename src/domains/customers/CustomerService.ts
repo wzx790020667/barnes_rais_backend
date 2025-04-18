@@ -1,7 +1,7 @@
 import { supabase, db, drizzleDb } from "../../lib";
-import { documents, type Customer } from "../../db/schema";
+import { documents, customers, type Customer } from "../../db/schema";
 import { generateCustomerInfoHash } from "../../lib/utils";
-import { count, eq, and } from "drizzle-orm";
+import { count, eq, and, sql, asc } from "drizzle-orm";
 
 export class CustomerService {
   async getCustomerById(id: string): Promise<Customer | null> {
@@ -61,34 +61,33 @@ export class CustomerService {
         // Calculate offset based on page and pageSize
         const offset = (page - 1) * pageSize;
         
-        // Get total count first
-        const { data: countData, error: countError } = await supabase
-          .from("customers")
-          .select("count", { count: "exact" });
+        // Get total count first using Drizzle
+        const [countResult] = await drizzleDb
+          .select({ count: sql<number>`count(*)` })
+          .from(customers);
                     
-        if (countError) throw countError;
+        const total = Number(countResult?.count || 0);
         
-        // Get paginated results
-        const { data, error } = await supabase
-          .from("customers")
-          .select("*")
-          .range(offset, offset + pageSize - 1)
-          .order("customer_name", { ascending: true });
+        // Get paginated results using Drizzle
+        const customersData = await drizzleDb
+          .select()
+          .from(customers)
+          .limit(pageSize)
+          .offset(offset)
+          .orderBy(asc(customers.customer_name));
 
-        if (error) throw error;
-
-        if (!data || data.length === 0) {
+        if (!customersData || customersData.length === 0) {
           return { customers: [], total: 0 };
         }
         
         // Generate customer_info_hash for each customer if not already present
-        const customersWithHash = data.map(customer => {
+        const customersWithHash = customersData.map(customer => {
           if (!customer.customer_info_hash) {
             customer.customer_info_hash = generateCustomerInfoHash(
               customer.customer_name,
-              customer.co_code,
-              customer.file_format,
-              customer.document_type
+              customer.co_code || '',
+              customer.file_format || '',
+              customer.document_type || ''
             );
           }
           return customer;
@@ -129,7 +128,7 @@ export class CustomerService {
         
         return { 
           customers: customersWithFinishedDocs as Customer[], 
-          total: countData?.[0]?.count || 0 
+          total: total 
         };
       })
       .then((result) => result.data || { customers: [], total: 0 });
@@ -271,11 +270,10 @@ export class CustomerService {
         const { data, error } = await supabase
           .from("customers")
           .select("*")
-          .eq("customer_info_hash", customerInfoHash)
-          .single();
+          .eq("customer_info_hash", customerInfoHash);
 
         if (error) throw error;
-        return data as Customer;
+        return data[0] as Customer;
       })
       .then((result) => result.data || null);
   }
@@ -301,6 +299,21 @@ export class CustomerService {
 
       return Array.from(types);
     }).then(result => result.data || []);
+  }
 
+  async findEndUserCustomerNumberByName(endUserCustomerName: string): Promise<string | null> {
+    return db
+      .query(async () => {
+        const { data, error } = await supabase
+          .from("customers")
+          .select("customer_code")
+          .eq("customer_name", endUserCustomerName)
+          .limit(1)
+          .single();
+
+        if (error) throw error;
+        return data?.customer_code || null;
+      })
+      .then((result) => result.data || null);
   }
 }

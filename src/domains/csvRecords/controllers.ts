@@ -68,7 +68,7 @@ export class CsvRecordController {
                     replaceByPartNumberRule(rule, record);
                 }
 
-                record.CO_PREFIX = `${record.PRODUCT_CODE}-${record.CUST_CODE}`;
+                record.CO_PREFIX = `${record.PRODUCT_CODE}${record.CUST_CODE}`;
                 // @ts-ignore
                 record.part_rcvd_date = moment(record.part_rcvd_date).tz("Asia/Taipei").format("DDMMYYYY");
                 // @ts-ignore

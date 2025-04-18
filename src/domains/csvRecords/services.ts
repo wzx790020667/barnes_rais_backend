@@ -73,7 +73,7 @@ export class CsvRecordService {
                 document_id: documentWithItems.document.id,
                 batch_number: null,
                 import_doc_num: removeSlashes(documentWithItems.document.import_number || "") || null,
-                IMPORT_LINE: `-${index + 1}`,
+                IMPORT_LINE: `-${index + 1 < 10 ? `0${index + 1}` : index + 1}`,
                 cust_po: documentWithItems.document.po_number,
                 CO_PREFIX: null,
                 PRODUCT_CODE: null,

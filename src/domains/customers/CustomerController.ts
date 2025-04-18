@@ -29,6 +29,10 @@ const getDocumentTypesByCustomerSchema = z.object({
   file_format: z.string(),
 });
 
+const findEndUserCustomerNumberByNameSchema = z.object({
+  endUserCustomerName: z.string(),
+});
+
 export class CustomerController {
   private customerService: CustomerService;
 
@@ -383,6 +387,28 @@ export class CustomerController {
         { error: "Failed to get document types by customer" },
         { status: 500 }
       );
+    }
+  }
+
+  async findEndUserCustomerNumberByName(req: Request): Promise<Response> {
+    try {
+      const customerData = await req.json();
+      const result = findEndUserCustomerNumberByNameSchema.safeParse(customerData);
+
+      if (!result.success) {
+        return Response.json(
+          { error: "Invalid customer data", details: result.error.format() },
+          { status: 400 }
+        );
+      }
+
+      const endUserCustomerName = result.data.endUserCustomerName.trim();
+      const customerCode = await this.customerService.findEndUserCustomerNumberByName(endUserCustomerName);
+
+      return Response.json(customerCode);
+    } catch (error) {
+      console.error("Find end user customer number error:", error);
+      return Response.json({ error: "Failed to find end user customer number" }, { status: 500 });
     }
   }
 }

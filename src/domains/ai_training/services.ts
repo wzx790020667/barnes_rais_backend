@@ -9,7 +9,6 @@ import { TRAINING_DATA_CONFIG } from "../../config";
 import { mkdir } from "node:fs/promises";
 import { join } from "node:path";
 import { supabase, db } from "../../lib";
-import axios from "axios";
 import { AI_SERVICE_CONFIG } from "../../config";
 import moment from "moment";
 import { DocumentService } from "../documents/services";
