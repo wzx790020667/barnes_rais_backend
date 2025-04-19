@@ -199,6 +199,7 @@ export class AiTrainingService {
             
             // Write each training data to its own file
             await Bun.write(filePath, JSON.stringify(trainingData, null, 2));
+            console.log(`[aiTrainingService.createTrainingJSONFiles] - created file: ${filePath}`);
             
             results.push({
                 docId: doc.id,
