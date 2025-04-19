@@ -22,7 +22,6 @@ export class AiTrainingService {
 
     async loadInferenceModel(modelName: string) {
         const url = `${AI_SERVICE_CONFIG.URL}/api/load_inference_model`;
-        const mockUrl = "http://127.0.0.1:4523/m1/6048702-5738699-default/api/load_inference_model"; // TODO: remove mock url later
         
         console.log("[aiTrainingService.loadInferenceModel] - prepare to call url: ", url, "modelName: ", modelName);
 

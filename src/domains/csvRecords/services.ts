@@ -25,25 +25,42 @@ export class CsvRecordService {
         // Track how many times each part number has been searched
         const partNumberSearchCounts: Record<string, number> = {};
 
-        const findImportPriceByPartNumber = (partNumber: string | null) => {
-            if (!partNumber) return null;
+        const findImportPriceAndLineByPartNumber = (partNumber: string | null) => {
+            if (!partNumber) return {
+                import_price: null,
+                IMPORT_LINE: null
+            };
             
             const importItems = importDocumentWithItems?.items;
-            if (!importItems || importItems.length === 0) return null;
+            if (!importItems || importItems.length === 0) return {
+                import_price: null,
+                IMPORT_LINE: null
+            };
             
             // Filter all matching items for this part number
-            const matchingItems = importItems.filter(item => item.part_number === partNumber);
-            if (matchingItems.length === 0) return null;
+            const matchingItemsWithIndices = importItems
+                .map((item, index) => ({ item, originalIndex: index }))
+                .filter(({ item }) => item.part_number === partNumber);
+            
+            if (matchingItemsWithIndices.length === 0) return {
+                import_price: null,
+                IMPORT_LINE: null
+            };
             
             // Get current search count and increment for next search
             partNumberSearchCounts[partNumber] = (partNumberSearchCounts[partNumber] || 0) + 1;
             const currentSearchCount = partNumberSearchCounts[partNumber];
             
             // Get the index based on search count (1-indexed to 0-indexed)
-            const index = Math.min(currentSearchCount - 1, matchingItems.length - 1);
+            const index = Math.min(currentSearchCount - 1, matchingItemsWithIndices.length - 1);
+            const selectedMatch = matchingItemsWithIndices[index];
+            const selectedMatchIndex = selectedMatch.originalIndex;
             
             // Return the import price of the selected item
-            return matchingItems[index]?.import_price || null;
+            return {
+                import_price: selectedMatch?.item.import_price || null,
+                IMPORT_LINE: `-${selectedMatchIndex + 1 < 10 ? `0${selectedMatchIndex + 1}` : selectedMatchIndex + 1}`
+            };
         }
 
         // All of here are purchase order documents
@@ -68,12 +85,14 @@ export class CsvRecordService {
 
         let records: Omit<CsvRecord, "id" | "created_at">[] = [];
 
-        documentWithItems.items.forEach((item, index) => {
+        documentWithItems.items.forEach((item) => {
+            const { import_price, IMPORT_LINE } = findImportPriceAndLineByPartNumber(item.part_number);
+
             const record: Omit<CsvRecord, "id" | "created_at"> = {
                 document_id: documentWithItems.document.id,
                 batch_number: null,
                 import_doc_num: removeSlashes(documentWithItems.document.import_number || "") || null,
-                IMPORT_LINE: `-${index + 1 < 10 ? `0${index + 1}` : index + 1}`,
+                IMPORT_LINE: IMPORT_LINE,
                 cust_po: documentWithItems.document.po_number,
                 CO_PREFIX: null,
                 PRODUCT_CODE: null,
@@ -81,7 +100,7 @@ export class CsvRecordService {
                 CUST_NAME: importDocumentWithItems?.document.customer_name || null,
                 item: item.part_number,
                 ser_num: item.serial_number,
-                import_price: findImportPriceByPartNumber(item.part_number),
+                import_price: import_price,
                 qty_ordered: extractDigits(item.quantity_ordered || ""),
                 engine_model: item.engine_model,
                 engine_num: item.engine_number,

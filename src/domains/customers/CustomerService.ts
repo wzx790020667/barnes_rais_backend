@@ -2,6 +2,7 @@ import { supabase, db, drizzleDb } from "../../lib";
 import { documents, customers, type Customer } from "../../db/schema";
 import { generateCustomerInfoHash } from "../../lib/utils";
 import { count, eq, and, sql, asc } from "drizzle-orm";
+import { isEmpty, result } from "lodash";
 
 export class CustomerService {
   async getCustomerById(id: string): Promise<Customer | null> {
@@ -74,7 +75,7 @@ export class CustomerService {
           .from(customers)
           .limit(pageSize)
           .offset(offset)
-          .orderBy(asc(customers.customer_name));
+          .orderBy(asc(customers.customer_name), asc(customers.id));
 
         if (!customersData || customersData.length === 0) {
           return { customers: [], total: 0 };
@@ -304,16 +305,36 @@ export class CustomerService {
   async findEndUserCustomerNumberByName(endUserCustomerName: string): Promise<string | null> {
     return db
       .query(async () => {
+        if (isEmpty(endUserCustomerName)) {
+          return null;
+        }
+        
+        // Normalize search string by removing trailing punctuation and special characters
+        const trimmedName = endUserCustomerName.trim();
+        const normalizedSearch = trimmedName.replace(/[.,:，?!;]/g, "");
+        
         const { data, error } = await supabase
           .from("customers")
           .select("customer_code")
-          .eq("customer_name", endUserCustomerName)
-          .limit(1)
-          .single();
+          .or(
+            `customer_name.ilike.%${normalizedSearch}%`
+          )
+          .limit(1);
 
-        if (error) throw error;
-        return data?.customer_code || null;
+        if (error) {
+          console.log("Error in customer search:", error);
+          throw error;
+        }
+        
+        if (data?.length === 0) {
+          console.log("No customers found");
+          return null;
+        }
+        
+        return data[0]?.customer_code || null;
       })
-      .then((result) => result.data || null);
+      .then((result) => {
+        return result.data || null
+      });
   }
 }
