@@ -748,7 +748,7 @@ export class DocumentService {
       }
       
       const responseDocument = await response.json();
-      console.log("[DocumentService.pdfFullARD] - responseDocument: ", JSON.stringify(responseDocument));
+      console.log("[DocumentService.pdfFullARD] - response data from Full ARD API: ", JSON.stringify(responseDocument));
 
       let document: Partial<DocumentWithItems> | null = null;
       if (documentType === "purchase_order") {
