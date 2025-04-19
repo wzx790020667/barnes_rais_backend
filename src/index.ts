@@ -265,7 +265,7 @@ const httpServer: ServeConfig = {
       GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => aiTrainingController.getTrainingTasks(req.params.customerId, req))),
     },
     "/api/training/check/tasks": {
-      GET: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, () => aiTrainingController.checkTrainingTasks())),
+      GET: async (req) => addCorsHeaders(await aiTrainingController.checkTrainingTasks()),
     },
     "/api/customers/:customerId/training/tasks/:taskId/start": {
       POST: async (req) => addCorsHeaders(await authMiddleware.requireAuth(req, (req) => aiTrainingController.startTrainingTask(req.params.customerId, req.params.taskId))),
