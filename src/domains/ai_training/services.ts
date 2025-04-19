@@ -551,6 +551,7 @@ export class AiTrainingService {
         }
 
         const verificationDocIds = trainingDataset.verification_docs as string[];
+        console.log("[aiTrainingService._createTtvResult] - verificationDocIds: ", verificationDocIds);
         const verificationDocs = await db.query(async () => {
             const { data, error } = await supabase.from("documents").select("*, document_items(*)").in("id", verificationDocIds);
             if (error) throw error;
