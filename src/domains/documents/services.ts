@@ -9,7 +9,8 @@ import { AI_SERVICE_CONFIG } from "../../config";
 import { toImportDocumentFromAnnotation, toPODocumentFromAnnotation } from "../ai_training/util";
 import type { ImportAnnotation, ImportTrainingData, POAnnotation, POTrainingData } from "../ai_training/types";
 import { DOCUMENT_BUCKET_NAME } from "./constants";
-import { json } from "node:stream/consumers";
+import { AIInferenceService } from "../ai_inference/services";
+
 
 export class DocumentService {
   async getDocumentById(id: string): Promise<Document | null> {
@@ -724,30 +725,34 @@ export class DocumentService {
 
   async pdfFullARD(pdfFile: File | null = null, documentType: string, prompt: string, raw: string | null = null): Promise<Partial<DocumentWithItems> | null> {
     try {
-      // Create a FormData object for the AI service request
-      const formData = new FormData();
-      formData.append("doc_type", documentType);
-      formData.append("prompt", prompt);
-
+      const aiInferenceService = new AIInferenceService();
+      
+      let responseDocument;
       if (pdfFile) {
-        formData.append('pdf', pdfFile);
-      }
-
-      if (raw) {
+        // Use the AIInferenceService to run the inference
+        responseDocument = await aiInferenceService.runInference(pdfFile, documentType, prompt);
+      } else if (raw) {
+        // Create a FormData object for the AI service request
+        const formData = new FormData();
+        formData.append("doc_type", documentType);
+        formData.append("prompt", prompt);
         formData.append('raw', raw);
+
+        const url = `${AI_SERVICE_CONFIG.URL}/api/inference`;      
+        const response = await fetch(url, {
+          method: 'POST',
+          body: formData
+        });
+        
+        if (!response.ok) {
+          throw new Error(`API request failed with status ${response.status}`);
+        }
+        
+        responseDocument = await response.json();
+      } else {
+        throw new Error("Either pdfFile or raw must be provided");
       }
 
-      const url = `${AI_SERVICE_CONFIG.URL}/api/inference`;      
-      const response = await fetch(url, {
-        method: 'POST',
-        body: formData
-      });
-      
-      if (!response.ok) {
-        throw new Error(`API request failed with status ${response.status}`);
-      }
-      
-      const responseDocument = await response.json();
       console.log("[DocumentService.pdfFullARD] - response data from Full ARD API: ", JSON.stringify(responseDocument));
 
       let document: Partial<DocumentWithItems> | null = null;

@@ -1,5 +1,6 @@
 import type { BunRequest } from "bun";
 import { AiTrainingService } from "./services";
+import { AIInferenceService } from "../ai_inference/services";
 import { z } from "zod";
 import type { Document } from "../../db/schema";
 
@@ -18,9 +19,11 @@ const createTrainingTaskSchema = z.object({
 
 export class AiTrainingController {
     private readonly aiTrainingService: AiTrainingService;
+    private readonly aiInferenceService: AIInferenceService;
 
-    constructor() {
-        this.aiTrainingService = new AiTrainingService();
+    constructor(aiTrainingService: AiTrainingService, aiInferenceService: AIInferenceService) {
+        this.aiTrainingService = aiTrainingService;
+        this.aiInferenceService = aiInferenceService;
     }
 
     async getTrainingDocuments(customerId: string): Promise<Response> {
@@ -226,19 +229,12 @@ export class AiTrainingController {
     }
 
     async loadInferenceModel(modelName: string): Promise<Response> {
-        const result = await this.aiTrainingService.loadInferenceModel(modelName);
-
-        if (!result.success) {
-            return Response.json({
-                success: false,
-                message: result.message || "Failed to load inference model"
-            }, {status: 400});
+        if (!modelName) {
+            return Response.json({ success: false, message: "Model name is required" }, { status: 400 });
         }
 
-        return Response.json({
-            success: true,
-            message: "Inference model loaded successfully"
-        });
+        const result = await this.aiInferenceService.loadInferenceModel(modelName);
+        return Response.json(result);
     }
 
     async stopTraining(): Promise<Response> {

@@ -21,6 +21,12 @@ import { PartNumberRuleController } from "./domains/csvRules/controllers/PartNum
 import { CsvRecordController } from "./domains/csvRecords/controllers";
 import { AiTrainingController } from "./domains/ai_training/controllers";
 import { AuthMiddleware } from "./middlewares/authMiddleware";
+import { DocumentService } from "./domains/documents/services";
+import { CsvRecordService } from "./domains/csvRecords/services";
+import { CustomerService } from "./domains/customers/CustomerService";
+import { EngineModelRuleService } from "./domains/csvRules/services/EngineModelRuleService";
+import { AIInferenceService } from "./domains/ai_inference/services";
+import { AiTrainingService } from "./domains/ai_training/services";
 
 // Create a global singleton for websocket clients
 const wsClients = new Set();
@@ -28,16 +34,33 @@ const wsClients = new Set();
 // Create the WebSocket service with the clients set
 export const websocketService = createWebSocketService(wsClients);
 
-// Create controller instances
+// Create service instances first to avoid circular dependencies
+const aiInferenceService = new AIInferenceService();
+const documentService = new DocumentService();
+const csvRecordService = new CsvRecordService();
+const customerService = new CustomerService();
+const engineModelRuleService = new EngineModelRuleService();
+const aiTrainingService = new AiTrainingService(documentService, aiInferenceService);
+
+// Inject the websocket service after initializing all services
+aiTrainingService.setWebsocketService(websocketService);
+
+// Create controller instances with injected dependencies
 const authController = new AuthController();
-const documentController = new DocumentController();
+const documentController = new DocumentController(
+  documentService, 
+  csvRecordService, 
+  customerService, 
+  aiInferenceService, 
+  engineModelRuleService
+);
 const customerController = new CustomerController();
 const arcRuleController = new ArcRuleController();
 const engineModelRuleController = new EngineModelRuleController();
 const workScopeRuleController = new WorkScopeRuleController();
 const partNumberRuleController = new PartNumberRuleController();
 const csvRecordController = new CsvRecordController();
-const aiTrainingController = new AiTrainingController();
+const aiTrainingController = new AiTrainingController(aiTrainingService, aiInferenceService);
 
 // Create auth middleware instance
 const authMiddleware = new AuthMiddleware();

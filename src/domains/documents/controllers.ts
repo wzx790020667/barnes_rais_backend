@@ -8,7 +8,7 @@ import type { BunRequest } from "bun";
 import { DOCUMENT_BUCKET_NAME } from "./constants";
 import moment from "moment-timezone";
 import { CustomerService } from "../customers/CustomerService";
-import { AiTrainingService } from "../ai_training/services";
+import { AIInferenceService } from "../ai_inference/services";
 import { EngineModelRuleService } from "../csvRules/services/EngineModelRuleService";
 import { replaceEngineModelTitleByRules } from "../csvRules/utils";
 
@@ -69,15 +69,21 @@ export class DocumentController {
   private documentService: DocumentService;
   private csvRecordService: CsvRecordService;
   private customerService: CustomerService;
-  private aiTrainingService: AiTrainingService;
+  private aiInferenceService: AIInferenceService;
   private engineModelRuleService: EngineModelRuleService;
 
-  constructor() {
-    this.documentService = new DocumentService();
-    this.csvRecordService = new CsvRecordService();
-    this.customerService = new CustomerService();
-    this.aiTrainingService = new AiTrainingService();
-    this.engineModelRuleService = new EngineModelRuleService();
+  constructor(
+    documentService: DocumentService,
+    csvRecordService: CsvRecordService,
+    customerService: CustomerService,
+    aiInferenceService: AIInferenceService,
+    engineModelRuleService: EngineModelRuleService
+  ) {
+    this.documentService = documentService;
+    this.csvRecordService = csvRecordService;
+    this.customerService = customerService;
+    this.aiInferenceService = aiInferenceService;
+    this.engineModelRuleService = engineModelRuleService;
   }
 
   async getDocumentById(req: BunRequest): Promise<Response> {
@@ -790,12 +796,12 @@ export class DocumentController {
         return Response.json({ error: "Customer not found" }, { status: 404 });
       }
 
-      const task = await this.aiTrainingService.getTrainingTaskByDatasetId(customer.t_model_name || "");
+      const task = await this.aiInferenceService.getTrainingTaskByDatasetId(customer.t_model_name || "");
       if (!task) {
         return Response.json({ error: "Training task not found" }, { status: 404 });
       }
 
-      const result = await this.aiTrainingService.loadInferenceModel(task.t_dataset_id);
+      const result = await this.aiInferenceService.loadInferenceModel(task.t_dataset_id);
 
       if (!result.success) {
         return Response.json({ error: result.message }, { status: 500 });

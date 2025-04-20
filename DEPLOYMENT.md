@@ -305,10 +305,14 @@ docker logs -f barnes-rais-backend
 If you see below logs, which menas everything has been successfully setup.
 
 ```bash
-ARD Server running at https://0.0.0.0:3443
+$ bun run src/index.ts
+🔄 Verifying Supabase connection...
+🔄 Verifying Drizzle database connection...
+ARD Server running securely at https://0.0.0.0:3443
+WebSocket server available on wss://0.0.0.0:3443
 ✅ Successfully connected to Supabase Auth service
-✅ Successfully connected to Supabase Database, count: null
 ✅ Successfully connected to database from Drizzle
+✅ Successfully connected to Supabase Database, count: null
 ```
 
 ## Maintenance

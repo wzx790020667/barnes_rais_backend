@@ -12,51 +12,32 @@ import { supabase, db } from "../../lib";
 import { AI_SERVICE_CONFIG } from "../../config";
 import moment from "moment";
 import { DocumentService } from "../documents/services";
-import { websocketService } from "../../index";
+import { AIInferenceService } from "../ai_inference/services";
+
+// Create a type for WebsocketService to be injected
+type WebsocketService = {
+    sendTrainingStarted: (taskId: string, datasetName: string, customerId: string) => void;
+    sendTrainingCompleted: (taskId: string, accuracy: string) => void;
+    sendTrainingFailed: (taskId: string, message: string) => void;
+};
 
 export class AiTrainingService {
     private documentService: DocumentService;
+    private aiInferenceService: AIInferenceService;
+    private websocketService: WebsocketService | null = null;
 
-    constructor() {
-        this.documentService = new DocumentService();
+    constructor(documentService: DocumentService, aiInferenceService: AIInferenceService) {
+        this.documentService = documentService;
+        this.aiInferenceService = aiInferenceService;
+    }
+
+    // Method to set websocket service after initialization
+    setWebsocketService(websocketService: WebsocketService) {
+        this.websocketService = websocketService;
     }
 
     async loadInferenceModel(modelName: string) {
-        const url = `${AI_SERVICE_CONFIG.URL}/api/load_inference_model`;
-        
-        console.log("[aiTrainingService.loadInferenceModel] - prepare to call url: ", url, "modelName: ", modelName);
-
-        // Create form data for fetch request
-        const formData = new FormData();
-        formData.append("model_name", modelName);
-        
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                body: formData
-            });
-            
-            const data = await response.json();
-            console.log("[aiTrainingService.loadInferenceModel] - response: ", data);
-            
-            if (data.status !== 'success') {
-                return {
-                    success: false,
-                    message: data.message
-                };
-            }
-            
-            return {
-                success: true,
-                message: data.message
-            };
-        } catch (error) {
-            console.error("[aiTrainingService.loadInferenceModel] - error: ", error);
-            return {
-                success: false,
-                message: error instanceof Error ? error.message : String(error)
-            };
-        }
+        return this.aiInferenceService.loadInferenceModel(modelName);
     }
     
     async getAvailableDocuments(customerId: string): Promise<Document[]> {
@@ -438,8 +419,10 @@ export class AiTrainingService {
 
             console.log("[aiTrainingService.startTrainingTask] - response: ", responseData);
 
-            // Send websocket message to the client
-            websocketService.sendTrainingStarted(taskId, datasetName, customerId);
+            // Send websocket message to the client if available
+            if (this.websocketService) {
+                this.websocketService.sendTrainingStarted(taskId, datasetName, customerId);
+            }
             
             // Update task status to "training"
             const updatedTask = await drizzleDb.update(t_tasks)
@@ -500,7 +483,9 @@ export class AiTrainingService {
             // First run the document verification in parallel (outside transaction)
             const ttvResult = await this._createTtvResult(task, task.t_dataset_id);
             if (!ttvResult.success) {
-                websocketService.sendTrainingFailed(taskId, "Failed to create TTV result");
+                if (this.websocketService) {
+                    this.websocketService.sendTrainingFailed(taskId, "Failed to create TTV result");
+                }
                 return {
                     success: false,
                     message: "Failed to create TTV result"
@@ -520,15 +505,19 @@ export class AiTrainingService {
                 .returning();
                 
             if (!updatedTask || updatedTask.length === 0) {
-                websocketService.sendTrainingFailed(taskId, "Failed to update task status");
+                if (this.websocketService) {
+                    this.websocketService.sendTrainingFailed(taskId, "Failed to update task status");
+                }
                 return {
                     success: false,
                     message: "Failed to update task status"
                 };
             }
             
-            // Send completion notification via WebSocket
-            websocketService.sendTrainingCompleted(taskId, updatedTask[0].accuracy?.toString() || "0.00");
+            // Send completion notification via WebSocket if available
+            if (this.websocketService) {
+                this.websocketService.sendTrainingCompleted(taskId, updatedTask[0].accuracy?.toString() || "0.00");
+            }
             
             return {
                 success: true,
@@ -537,7 +526,9 @@ export class AiTrainingService {
             };
         } catch (error) {
             console.error("Error completing training task:", error);
-            websocketService.sendTrainingFailed(taskId, error instanceof Error ? error.message : String(error));
+            if (this.websocketService) {
+                this.websocketService.sendTrainingFailed(taskId, error instanceof Error ? error.message : String(error));
+            }
             return {
                 success: false,
                 message: "Failed to complete training task"
@@ -658,17 +649,7 @@ export class AiTrainingService {
     }
 
     async getTrainingTaskByDatasetId(datasetId: string) {
-        const task = await drizzleDb.select()
-            .from(t_tasks)
-            .where(eq(t_tasks.t_dataset_id, datasetId))
-            .limit(1)
-            .then(results => results[0]);
-
-        if (!task) {
-            return null;
-        }
-
-        return task;
+        return this.aiInferenceService.getTrainingTaskByDatasetId(datasetId);
     }
 
     async stopTraining() {
