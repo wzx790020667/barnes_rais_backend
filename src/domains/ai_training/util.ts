@@ -287,7 +287,61 @@ export const _groupItemsByPageNumber = (docItems: DocumentItem[]) => {
     return pageItemsMap;
 }
 
-export const calculateAccuracy = (originalDoc: Partial<DocumentWithItems>, verifiedDoc: Partial<DocumentWithItems>) => {
+export const calculateAccuracy = (originalDoc: Partial<DocumentWithItems>, verifiedDoc: Partial<DocumentWithItems> | null) => {
+    // If verifiedDoc is null, return 0 accuracy and all paths unmatched
+    if (!verifiedDoc) {
+        const unmatchedFieldPaths: string[] = [];
+        const documentFields = [
+            'import_number',
+            'po_number',
+            'end_user_customer_name',
+            'end_user_customer_number',
+            'work_scope',
+            'arc_requirement',
+            'tsn',
+            'csn'
+        ];
+
+        // Add all document fields that exist in originalDoc to unmatchedFieldPaths
+        for (const field of documentFields) {
+            if (originalDoc[field as keyof Document] !== null && originalDoc[field as keyof Document] !== undefined) {
+                unmatchedFieldPaths.push(`document.${field}`);
+            }
+        }
+
+        // Add all item fields that exist in originalDoc to unmatchedFieldPaths
+        const originalItems = originalDoc.document_items || [];
+        const itemFields = [
+            'part_number',
+            'quantity_ordered',
+            'import_price',
+            'engine_model',
+            'engine_number',
+            'serial_number'
+        ];
+
+        for (let i = 0; i < originalItems.length; i++) {
+            const originalItem = originalItems[i];
+            
+            for (const field of itemFields) {
+                if (originalItem[field as keyof DocumentItem] !== null && 
+                    originalItem[field as keyof DocumentItem] !== undefined) {
+                    unmatchedFieldPaths.push(`document_items[${i}].${field}`);
+                }
+            }
+        }
+
+        return {
+            accuracy: 0,
+            unmatchedFieldPaths,
+            totalFieldCount: 0,
+            matchedFieldCount: 0
+        };
+    }
+
+    // Track unmatched fields
+    const unmatchedFieldPaths: string[] = [];
+
     // Fields to compare from Document
     const documentFields = [
         'import_number',
@@ -300,9 +354,6 @@ export const calculateAccuracy = (originalDoc: Partial<DocumentWithItems>, verif
         'csn'
     ];
 
-    // Track unmatched fields
-    const unmatchedFieldPaths: string[] = [];
-    
     // Count total fields and matched fields
     let totalFieldCount = 0;
     let matchedFieldCount = 0;

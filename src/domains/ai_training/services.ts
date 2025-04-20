@@ -607,12 +607,7 @@ export class AiTrainingService {
         const originalDoc = doc;
         try {
             const verifiedDoc = await this.documentService.pdfFullARD(null, doc.document_type || "", task.prompt || "", JSON.stringify(doc.t_page_texts)) ;
-            if (!verifiedDoc) {
-                return {
-                    success: false,
-                    message: "Failed to convert verified document"
-                };
-            }
+            console.log("[aiTrainingService._verifyDocument] - verifiedDoc: ", verifiedDoc);
 
             const { accuracy, unmatchedFieldPaths } = calculateAccuracy(originalDoc, verifiedDoc);
             console.log(`[aiTrainingService._verifyDocument] - conmpleted a document verification, accuracy: ${accuracy}`);
