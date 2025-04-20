@@ -13,6 +13,8 @@ export const SERVER_CONFIG = {
   TLS_KEY_PATH: process.env.TLS_KEY_PATH,
   TLS_CERT_PATH: process.env.TLS_CERT_PATH,
   TLS_PASSPHRASE: process.env.TLS_PASSPHRASE,
+  // WebSocket configuration
+  WS_PORT: process.env.WS_PORT ? parseInt(process.env.WS_PORT) : 3001,
 };
 
 // JWT configuration

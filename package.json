@@ -9,7 +9,8 @@
     "test": "bun test",
     "supabase:start": "bunx supabase start",
     "schema:push": "bunx drizzle-kit push",
-    "db:seed": "bun run src/db/seeds/index.ts"
+    "db:seed": "bun run src/db/seeds/index.ts",
+    "test:ws": "bun run test-websocket.js"
   },
   "devDependencies": {
     "@types/bun": "latest",
@@ -17,7 +18,8 @@
     "@types/lodash": "^4.17.16",
     "drizzle-kit": "^0.30.5",
     "supabase": "^2.19.7",
-    "tsx": "^4.19.3"
+    "tsx": "^4.19.3",
+    "ws": "^8.15.1"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"

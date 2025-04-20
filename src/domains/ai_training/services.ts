@@ -12,6 +12,7 @@ import { supabase, db } from "../../lib";
 import { AI_SERVICE_CONFIG } from "../../config";
 import moment from "moment";
 import { DocumentService } from "../documents/services";
+import { websocketService } from "../../index";
 
 export class AiTrainingService {
     private documentService: DocumentService;
@@ -436,6 +437,9 @@ export class AiTrainingService {
             const responseData = await response.json();
 
             console.log("[aiTrainingService.startTrainingTask] - response: ", responseData);
+
+            // Send websocket message to the client
+            websocketService.sendTrainingStarted(taskId, datasetName, customerId);
             
             // Update task status to "training"
             const updatedTask = await drizzleDb.update(t_tasks)
@@ -496,6 +500,7 @@ export class AiTrainingService {
             // First run the document verification in parallel (outside transaction)
             const ttvResult = await this._createTtvResult(task, task.t_dataset_id);
             if (!ttvResult.success) {
+                websocketService.sendTrainingFailed(taskId, "Failed to create TTV result");
                 return {
                     success: false,
                     message: "Failed to create TTV result"
@@ -515,11 +520,15 @@ export class AiTrainingService {
                 .returning();
                 
             if (!updatedTask || updatedTask.length === 0) {
+                websocketService.sendTrainingFailed(taskId, "Failed to update task status");
                 return {
                     success: false,
                     message: "Failed to update task status"
                 };
             }
+            
+            // Send completion notification via WebSocket
+            websocketService.sendTrainingCompleted(taskId, updatedTask[0].accuracy?.toString() || "0.00");
             
             return {
                 success: true,
@@ -528,6 +537,7 @@ export class AiTrainingService {
             };
         } catch (error) {
             console.error("Error completing training task:", error);
+            websocketService.sendTrainingFailed(taskId, error instanceof Error ? error.message : String(error));
             return {
                 success: false,
                 message: "Failed to complete training task"
