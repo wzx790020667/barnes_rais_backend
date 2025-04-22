@@ -195,7 +195,6 @@ export const toPODocumentFromAnnotation = (trainingData: POTrainingData, pageTex
             existingItem.t_serial_number_page = existingItem.t_serial_number_page || page;
             existingItem.engine_model = existingItem.engine_model || item["Engine Model"] || null;
             existingItem.t_engine_model_page = existingItem.t_engine_model_page || page;
-
             
             itemsMap.set(item.object_id, existingItem);
         });
@@ -324,10 +323,8 @@ const calculateAccuracyHelper = (
     for (const field of documentFields) {
         totalFieldCount++;
 
-        const isOriginalNull = originalDoc[field as keyof Document] !== null && 
-            originalDoc[field as keyof Document] !== undefined;
-        const isVerifiedNull = verifiedDoc[field as keyof Document] !== null && 
-            verifiedDoc[field as keyof Document] !== undefined;
+        const isOriginalNull = originalDoc[field as keyof Document] === null;
+        const isVerifiedNull = verifiedDoc[field as keyof Document] === null;
 
         if (isOriginalNull && isVerifiedNull) {
             matchedFieldCount++;
@@ -355,6 +352,8 @@ const calculateAccuracyHelper = (
         const originalItem = originalItems[i];
         const verifiedItem = verifiedItems[i];
 
+        console.log(i, originalItem.part_number, verifiedItem.part_number, originalItem.part_number === verifiedItem.part_number);
+
         // If one list is shorter than the other, count missing items as unmatched
         if (!originalItem || !verifiedItem) {
             // Count all fields in the existing item as unmatched
@@ -372,10 +371,8 @@ const calculateAccuracyHelper = (
         for (const field of itemFields) {
             totalFieldCount++;
 
-            const isOriginalNull = originalItem[field as keyof DocumentItem] !== null && 
-                originalItem[field as keyof DocumentItem] !== undefined;
-            const isVerifiedNull = verifiedItem[field as keyof DocumentItem] !== null && 
-                verifiedItem[field as keyof DocumentItem] !== undefined;
+            const isOriginalNull = originalItem[field as keyof DocumentItem] === null;
+            const isVerifiedNull = verifiedItem[field as keyof DocumentItem] === null;
             
             if (isOriginalNull && isVerifiedNull) {
                 matchedFieldCount++;
