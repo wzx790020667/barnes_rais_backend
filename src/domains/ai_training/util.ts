@@ -250,7 +250,6 @@ export const calculateAccuracyForPO = (originalDoc: Partial<DocumentWithItems>, 
     const documentFields = [
         'po_number',
         'end_user_customer_name',
-        'end_user_customer_number',
         'work_scope',
         'arc_requirement',
         'tsn',
