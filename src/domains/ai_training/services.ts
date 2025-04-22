@@ -4,7 +4,7 @@ import { eq, inArray, and } from "drizzle-orm";
 import { generateCustomerInfoHash } from "../../lib/utils";
 import type { BunRequest } from "bun";
 import type { AiTrainingStatus, ImportTrainingData, POTrainingData } from "./types";
-import { calculateAccuracy, createAnnotationsForImportDocument, createAnnotationsForPODocument, getModelPath, toImportDocumentFromAnnotation, toPODocumentFromAnnotation } from "./util";
+import { createAnnotationsForImportDocument, createAnnotationsForPODocument, calculateAccuracyForImport, calculateAccuracyForPO } from "./util";
 import { TRAINING_DATA_CONFIG } from "../../config";
 import { mkdir } from "node:fs/promises";
 import { join } from "node:path";
@@ -560,6 +560,7 @@ export class AiTrainingService {
         }).then(results => results.data || []);
 
         if (!verificationDocs || verificationDocs.length === 0) {
+            console.log("[aiTrainingService._createTtvResult] - no verification documents found, verificationDocs.length: ", verificationDocs.length);
             return {
                 success: false,
                 message: "No verification documents found"
@@ -610,8 +611,10 @@ export class AiTrainingService {
             const verifiedDoc = await this.documentService.pdfFullARD(null, doc.document_type || "", task.prompt || "", JSON.stringify(doc.t_page_texts)) ;
             console.log("[aiTrainingService._verifyDocument] - verifiedDoc: ", verifiedDoc);
 
-            const { accuracy, unmatchedFieldPaths } = calculateAccuracy(originalDoc, verifiedDoc);
-            console.log(`[aiTrainingService._verifyDocument] - conmpleted a document verification, accuracy: ${accuracy}`);
+            const { accuracy, unmatchedFieldPaths } = doc.document_type === "purchase_order" ? 
+                calculateAccuracyForPO(originalDoc, verifiedDoc) : 
+                calculateAccuracyForImport(originalDoc, verifiedDoc);
+            console.log(`[aiTrainingService._verifyDocument] - conmpleted a document verification, accuracy: ${accuracy}, document_type: ${doc.document_type}`);
             
             return {
                 success: true,

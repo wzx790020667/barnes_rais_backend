@@ -144,6 +144,13 @@ export class CustomerController {
         );
       }
 
+      if (customer === "DUPLICATED_CUSTOMER") {
+        return Response.json(
+          { error: "Customer already exists" },
+          { status: 400 }
+        );
+      }
+
       return Response.json(customer, { status: 201 });
     } catch (error) {
       console.error("Create customer error:", error);
@@ -200,9 +207,16 @@ export class CustomerController {
         );
       }
 
+      if (updatedCustomer === "DUPLICATED_CUSTOMER") {
+        return Response.json(
+          { error: "Customer already exists" },
+          { status: 400 }
+        );
+      }
+
       return Response.json(updatedCustomer);
-    } catch (error) {
-      console.error("Update customer error:", error);
+    } catch (error: any) {
+      console.error("[CustomerController.updateCustomer] - Update customer error", error);
       return Response.json(
         { error: "Failed to update customer" },
         { status: 500 }

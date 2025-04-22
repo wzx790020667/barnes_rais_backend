@@ -23,6 +23,7 @@ export class AIInferenceService {
             console.log("[AIInferenceService.loadInferenceModel] - response: ", data);
             
             if (data.status !== 'success') {
+                console.error("[AIInferenceService.loadInferenceModel] - failed to load inference model, response: ", data);
                 return {
                     success: false,
                     message: data.message
@@ -58,8 +59,38 @@ export class AIInferenceService {
         // Create a FormData object for the AI service request
         const formData = new FormData();
         formData.append("doc_type", documentType);
-        formData.append("prompt", prompt);
+        formData.append("prompt", prompt === "" ? " " : prompt);
         formData.append('pdf', pdfFile);
+
+        console.log("[AIInferenceService.runInference] - prepare to call url: ", url, "formData: ", formData);
+        
+        const response = await fetch(url, {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+
+        console.log("[AIInferenceService.runInference] - response data: ", data?.error || data);
+        
+        if (!response.ok) {
+            console.error("[AIInferenceService.runInference] - AI inference API request failed, response data: ", data);
+            throw new Error(`AI inference API request failed with status ${response.status}, ${data?.error || data}`);
+        }
+        
+        return data;
+    }
+    
+    async runInferenceByRaw(raw: string, documentType: string, prompt: string) {
+        const url = `${AI_SERVICE_CONFIG.URL}/api/inference`;
+        
+        // Create a FormData object for the AI service request
+        const formData = new FormData();
+        formData.append("doc_type", documentType);
+        formData.append("prompt", prompt === "" ? " " : prompt);
+        formData.append('raw', raw);
+
+        console.log("[AIInferenceService.runInferenceByRaw] - prepare to call url: ", url);
         
         const response = await fetch(url, {
             method: 'POST',
@@ -67,9 +98,12 @@ export class AIInferenceService {
         });
         
         if (!response.ok) {
-            throw new Error(`AI inference API request failed with status ${response.status}`);
+            throw new Error(`API request failed with status ${response.status}`);
         }
         
-        return await response.json();
+        const data = await response.json();
+        console.log("[AIInferenceService.runInferenceByRaw] - response data: ", data);
+        
+        return data;
     }
 } 

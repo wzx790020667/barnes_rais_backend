@@ -792,6 +792,8 @@ export class DocumentController {
         document_type: documentType,
       });
 
+      console.log("[DocumentsController.pdfFullARD] - customer: ", customer);
+
       if (!customer) {
         return Response.json({ error: "Customer not found" }, { status: 404 });
       }
@@ -807,6 +809,8 @@ export class DocumentController {
         return Response.json({ error: result.message }, { status: 500 });
       }
 
+      console.log("[DocumentsController.pdfFullARD] - task: ", task);
+
       const document = await this.documentService.pdfFullARD(
           pdfFile,
           documentType,
@@ -814,10 +818,10 @@ export class DocumentController {
       );
 
       return Response.json(document);
-    } catch (error) {
+    } catch (error: any) {
       console.error("PDF Full ARD error:", error);
       return Response.json(
-        { error: "Failed to process PDF Full ARD" },
+        { error: error || "Failed to process PDF Full ARD" },
         { status: 500 }
       );
     }

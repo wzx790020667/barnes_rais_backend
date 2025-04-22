@@ -1,8 +1,8 @@
 import { supabase, db, drizzleDb } from "../../lib";
-import { documents, customers, type Customer } from "../../db/schema";
+import { documents, customers, type Customer, t_datasets, t_tasks, ttv_results } from "../../db/schema";
 import { generateCustomerInfoHash } from "../../lib/utils";
 import { count, eq, and, sql, asc } from "drizzle-orm";
-import { isEmpty, result } from "lodash";
+import { isEmpty } from "lodash";
 
 export class CustomerService {
   async getCustomerById(id: string): Promise<Customer | null> {
@@ -137,7 +137,7 @@ export class CustomerService {
 
   async createCustomer(
     customer: Partial<Customer>
-  ): Promise<Customer | null> {
+  ): Promise<Customer | null | "DUPLICATED_CUSTOMER"> {
     return db
       .query(async () => {
         const { data, error } = await supabase
@@ -145,6 +145,10 @@ export class CustomerService {
           .insert(customer)
           .select()
           .single();
+
+        if (error && error.code === "23505") {
+          return "DUPLICATED_CUSTOMER";
+        }
 
         if (error) throw error;
         return data as Customer;
@@ -155,7 +159,7 @@ export class CustomerService {
   async updateCustomer(
     id: string,
     customerData: Partial<Customer>
-  ): Promise<Customer | null> {
+  ): Promise<Customer | null | "DUPLICATED_CUSTOMER"> {
     return db
       .query(async () => {
         const { data, error } = await supabase
@@ -164,6 +168,10 @@ export class CustomerService {
           .eq("id", id)
           .select()
           .single();
+
+        if (error && error.code === "23505") {
+          return "DUPLICATED_CUSTOMER";
+        }
 
         if (error) throw error;
         return data as Customer;
@@ -174,15 +182,75 @@ export class CustomerService {
   async deleteCustomer(id: string): Promise<boolean> {
     return db
       .query(async () => {
-        const { error } = await supabase
-          .from("customers")
-          .delete()
-          .eq("id", id);
-
-        if (error) throw error;
-        return true;
+        try {
+          // Use drizzleDb transaction for cascading deletion
+          const result = await drizzleDb.transaction(async (tx) => {
+            // First find datasets for this customer
+            const customerDatasets = await tx
+              .select({ id: t_datasets.id })
+              .from(t_datasets)
+              .where(eq(t_datasets.customer_id, id));
+            
+            const datasetIds = customerDatasets.map(dataset => dataset.id);
+            console.log("[CustomerService.deleteCustomer] - datasetIds: ", datasetIds);
+            
+            // For each dataset, find related tasks
+            const customerTasks = await tx
+              .select({ id: t_tasks.id })
+              .from(t_tasks)
+              .where(eq(t_tasks.customer_id, id));
+              
+            const taskIds = customerTasks.map(task => task.id);
+            console.log("[CustomerService.deleteCustomer] - taskIds: ", taskIds);
+            
+            // Delete ttv_results that reference these tasks
+            if (taskIds.length > 0) {
+              // Check each task for ttv_results
+              for (const taskId of taskIds) {
+                console.log(`[CustomerService.deleteCustomer] - Deleting ttv_results for task ${taskId}`);
+                
+                // Find all ttv_results for this task
+                const ttvResults = await tx
+                  .select({ id: ttv_results.id })
+                  .from(ttv_results)
+                  .where(eq(ttv_results.t_task_id, taskId));
+                
+                console.log(`[CustomerService.deleteCustomer] - Found ${ttvResults.length} ttv_results for task ${taskId}`);
+                
+                // Delete each ttv_result individually
+                for (const result of ttvResults) {
+                  await tx
+                    .delete(ttv_results)
+                    .where(eq(ttv_results.id, result.id));
+                }
+              }
+            }
+            
+            // Delete t_tasks for this customer
+            await tx
+              .delete(t_tasks)
+              .where(eq(t_tasks.customer_id, id));
+            
+            // Delete t_datasets for this customer
+            await tx
+              .delete(t_datasets)
+              .where(eq(t_datasets.customer_id, id));
+            
+            // Finally delete the customer
+            const deleted = await tx
+              .delete(customers)
+              .where(eq(customers.id, id));
+              
+            return true; // If we get here without an error, deletion was successful
+          });
+          
+          return result;
+        } catch (error) {
+          console.error("Error deleting customer:", error);
+          throw error;
+        }
       })
-      .then((result) => result.error ? false : true);
+      .then((result) => result.error ? false : (result.data ?? false));
   }
 
   async searchCustomers(query: string, page: number = 1, pageSize: number = 10): Promise<{ customersNames: string[]; total: number }> {

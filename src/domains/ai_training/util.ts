@@ -61,10 +61,8 @@ export const toImportDocumentFromAnnotation = (trainingData: ImportTrainingData,
     // Process each page annotation
     trainingData.annotations.forEach((pageAnnotation, page: number) => {
         // Handle document-level fields
-        if (pageAnnotation["Import Document Number"] !== null) {
-            doc.import_number = pageAnnotation["Import Document Number"];
-            doc.t_import_number_page = page;
-        }
+        doc.import_number = doc.import_number || pageAnnotation["Import Document Number"] || null;
+        doc.t_import_number_page = doc.t_import_number_page || page;
 
         // Handle item-level fields
         pageAnnotation.Item.forEach((item: any) => {
@@ -74,20 +72,12 @@ export const toImportDocumentFromAnnotation = (trainingData: ImportTrainingData,
             const existingItem = itemsMap.get(item.object_id) || {};
             
             // Update item with this page's data
-            if (item["Part Number"] !== null) {
-                existingItem.part_number = item["Part Number"];
-                existingItem.t_part_number_page = page;
-            }
-            
-            if (item["Import Price"] !== null) {
-                existingItem.import_price = item["Import Price"];
-                existingItem.t_import_price_page = page;
-            }
-            
-            if (item["Quantity Ordered"] !== null) {
-                existingItem.quantity_ordered = item["Quantity Ordered"];
-                existingItem.t_quantity_ordered_page = page;
-            }
+            existingItem.part_number = existingItem.part_number || item["Part Number"] || null;
+            existingItem.t_part_number_page = existingItem.t_part_number_page || page;
+            existingItem.import_price = existingItem.import_price || item["Import Price"] || null;
+            existingItem.t_import_price_page = existingItem.t_import_price_page || page;
+            existingItem.quantity_ordered = existingItem.quantity_ordered || item["Quantity Ordered"] || null;
+            existingItem.t_quantity_ordered_page = existingItem.t_quantity_ordered_page || page;
             
             itemsMap.set(item.object_id, existingItem);
         });
@@ -175,35 +165,18 @@ export const toPODocumentFromAnnotation = (trainingData: POTrainingData, pageTex
     // Process each page annotation
     trainingData.annotations.forEach((pageAnnotation, page: number) => {
         // Handle document-level fields
-        if (pageAnnotation["Purchase Order Number"] !== null) {
-            doc.po_number = pageAnnotation["Purchase Order Number"];
-            doc.t_po_number_page = page;
-        }
-        
-        if (pageAnnotation["End User Customer Name"] !== null) {
-            doc.end_user_customer_name = pageAnnotation["End User Customer Name"];
-            doc.t_end_user_customer_name_page = page;
-        }
-        
-        if (pageAnnotation["Work Scope"] !== null) {
-            doc.work_scope = pageAnnotation["Work Scope"];
-            doc.t_work_scope_page = page;
-        }
-        
-        if (pageAnnotation["ARC Requirement"] !== null) {
-            doc.arc_requirement = pageAnnotation["ARC Requirement"];
-            doc.t_arc_requirement_page = page;
-        }
-        
-        if (pageAnnotation["TSN Number"] !== null) {
-            doc.tsn = pageAnnotation["TSN Number"];
-            doc.t_tsn_page = page;
-        }
-        
-        if (pageAnnotation["CSN Number"] !== null) {
-            doc.csn = pageAnnotation["CSN Number"];
-            doc.t_csn_page = page;
-        }
+        doc.po_number = doc.po_number || pageAnnotation["Purchase Order Number"] || null;
+        doc.t_po_number_page = doc.t_po_number_page || page;
+        doc.end_user_customer_name = doc.end_user_customer_name || pageAnnotation["End User Customer Name"] || null;
+        doc.t_end_user_customer_name_page = doc.t_end_user_customer_name_page || page;
+        doc.work_scope = doc.work_scope || pageAnnotation["Work Scope"] || null;
+        doc.t_work_scope_page = doc.t_work_scope_page || page;
+        doc.arc_requirement = doc.arc_requirement || pageAnnotation["ARC Requirement"] || null;
+        doc.t_arc_requirement_page = doc.t_arc_requirement_page || page;
+        doc.tsn = doc.tsn || pageAnnotation["TSN Number"] || null;
+        doc.t_tsn_page = doc.t_tsn_page || page;
+        doc.csn = doc.csn || pageAnnotation["CSN Number"] || null;
+        doc.t_csn_page = doc.t_csn_page || page;
 
         // Handle item-level fields
         pageAnnotation.Item.forEach((item: any) => {
@@ -211,32 +184,18 @@ export const toPODocumentFromAnnotation = (trainingData: POTrainingData, pageTex
             
             // Get or create an item entry in our map
             const existingItem = itemsMap.get(item.object_id) || {};
-            
-            // Update item with this page's data
-            if (item["Part Number"] !== null) {
-                existingItem.part_number = item["Part Number"];
-                existingItem.t_part_number_page = page;
-            }
-            
-            if (item["Quantity Ordered"] !== null) {
-                existingItem.quantity_ordered = item["Quantity Ordered"];
-                existingItem.t_quantity_ordered_page = page;
-            }
-            
-            if (item["Engine Model"] !== null) {
-                existingItem.engine_model = item["Engine Model"];
-                existingItem.t_engine_model_page = page;
-            }
-            
-            if (item["Engine Number"] !== null) {
-                existingItem.engine_number = item["Engine Number"];
-                existingItem.t_engine_number_page = page;
-            }
-            
-            if (item["Serial Number"] !== null) {
-                existingItem.serial_number = item["Serial Number"];
-                existingItem.t_serial_number_page = page;
-            }
+
+            existingItem.part_number = existingItem.part_number || item["Part Number"] || null;
+            existingItem.t_part_number_page = existingItem.t_part_number_page || page;
+            existingItem.quantity_ordered = existingItem.quantity_ordered || item["Quantity Ordered"] || null;
+            existingItem.t_quantity_ordered_page = existingItem.t_quantity_ordered_page || page;
+            existingItem.engine_number = existingItem.engine_number || item["Engine Number"] || null;
+            existingItem.t_engine_number_page = existingItem.t_engine_number_page || page;
+            existingItem.serial_number = existingItem.serial_number || item["Serial Number"] || null;
+            existingItem.t_serial_number_page = existingItem.t_serial_number_page || page;
+            existingItem.engine_model = existingItem.engine_model || item["Engine Model"] || null;
+            existingItem.t_engine_model_page = existingItem.t_engine_model_page || page;
+
             
             itemsMap.set(item.object_id, existingItem);
         });
@@ -287,20 +246,49 @@ export const _groupItemsByPageNumber = (docItems: DocumentItem[]) => {
     return pageItemsMap;
 }
 
-export const calculateAccuracy = (originalDoc: Partial<DocumentWithItems>, verifiedDoc: Partial<DocumentWithItems> | null) => {
+export const calculateAccuracyForPO = (originalDoc: Partial<DocumentWithItems>, verifiedDoc: Partial<DocumentWithItems> | null) => {
+    const documentFields = [
+        'po_number',
+        'end_user_customer_name',
+        'end_user_customer_number',
+        'work_scope',
+        'arc_requirement',
+        'tsn',
+        'csn'
+    ];
+    const itemFields = [
+        'part_number',
+        'quantity_ordered',
+        'engine_model',
+        'engine_number',
+        'serial_number'
+    ];
+
+    return calculateAccuracyHelper(originalDoc, verifiedDoc, documentFields, itemFields);
+}
+
+export const calculateAccuracyForImport = (originalDoc: Partial<DocumentWithItems>, verifiedDoc: Partial<DocumentWithItems> | null) => {
+    const documentFields = [
+        'import_number',
+    ];
+    const itemFields = [
+        'part_number',
+        'quantity_ordered',
+        'import_price'
+    ];
+
+    return calculateAccuracyHelper(originalDoc, verifiedDoc, documentFields, itemFields);
+}
+
+const calculateAccuracyHelper = (
+    originalDoc: Partial<DocumentWithItems>, 
+    verifiedDoc: Partial<DocumentWithItems> | null,
+    documentFields: string[],
+    itemFields: string[]
+) => {
     // If verifiedDoc is null, return 0 accuracy and all paths unmatched
     if (!verifiedDoc) {
         const unmatchedFieldPaths: string[] = [];
-        const documentFields = [
-            'import_number',
-            'po_number',
-            'end_user_customer_name',
-            'end_user_customer_number',
-            'work_scope',
-            'arc_requirement',
-            'tsn',
-            'csn'
-        ];
 
         // Add all document fields that exist in originalDoc to unmatchedFieldPaths
         for (const field of documentFields) {
@@ -311,23 +299,10 @@ export const calculateAccuracy = (originalDoc: Partial<DocumentWithItems>, verif
 
         // Add all item fields that exist in originalDoc to unmatchedFieldPaths
         const originalItems = originalDoc.document_items || [];
-        const itemFields = [
-            'part_number',
-            'quantity_ordered',
-            'import_price',
-            'engine_model',
-            'engine_number',
-            'serial_number'
-        ];
 
         for (let i = 0; i < originalItems.length; i++) {
-            const originalItem = originalItems[i];
-            
             for (const field of itemFields) {
-                if (originalItem[field as keyof DocumentItem] !== null && 
-                    originalItem[field as keyof DocumentItem] !== undefined) {
-                    unmatchedFieldPaths.push(`document_items[${i}].${field}`);
-                }
+                unmatchedFieldPaths.push(`document_items[${i}].${field}`);
             }
         }
 
@@ -342,49 +317,39 @@ export const calculateAccuracy = (originalDoc: Partial<DocumentWithItems>, verif
     // Track unmatched fields
     const unmatchedFieldPaths: string[] = [];
 
-    // Fields to compare from Document
-    const documentFields = [
-        'import_number',
-        'po_number',
-        'end_user_customer_name',
-        'end_user_customer_number',
-        'work_scope',
-        'arc_requirement',
-        'tsn',
-        'csn'
-    ];
-
     // Count total fields and matched fields
     let totalFieldCount = 0;
     let matchedFieldCount = 0;
 
     // Compare document fields
     for (const field of documentFields) {
-        if (originalDoc[field as keyof Document] !== null && originalDoc[field as keyof Document] !== undefined) {
-            totalFieldCount++;
-            
-            if (originalDoc[field as keyof Document] === verifiedDoc[field as keyof Document]) {
+        totalFieldCount++;
+
+        const isOriginalNull = originalDoc[field as keyof Document] !== null && 
+            originalDoc[field as keyof Document] !== undefined;
+        const isVerifiedNull = verifiedDoc[field as keyof Document] !== null && 
+            verifiedDoc[field as keyof Document] !== undefined;
+
+        if (isOriginalNull && isVerifiedNull) {
+            matchedFieldCount++;
+            continue;
+        }
+
+        if (isOriginalNull || isVerifiedNull) {
+            unmatchedFieldPaths.push(`document.${field}`);
+            continue;
+        }
+
+        if (originalDoc[field as keyof Document] === verifiedDoc[field as keyof Document]) {
                 matchedFieldCount++;
-            } else {
-                unmatchedFieldPaths.push(`document.${field}`);
-            }
+        } else {
+            unmatchedFieldPaths.push(`document.${field}`);
         }
     }
 
     // Compare document items if they exist
-    // Use any type to access document_items since it might come from a join query
     const originalItems = originalDoc.document_items || [];
     const verifiedItems = verifiedDoc.document_items || [];
-
-    // Item fields to compare
-    const itemFields = [
-        'part_number',
-        'quantity_ordered',
-        'import_price',
-        'engine_model',
-        'engine_number',
-        'serial_number'
-    ];
 
     // Match items by their position/index as they should correspond
     for (let i = 0; i < Math.max(originalItems.length, verifiedItems.length); i++) {
@@ -397,11 +362,8 @@ export const calculateAccuracy = (originalDoc: Partial<DocumentWithItems>, verif
             const existingItem = originalItem || verifiedItem;
             if (existingItem) {
                 for (const field of itemFields) {
-                    if (existingItem[field as keyof DocumentItem] !== null && 
-                        existingItem[field as keyof DocumentItem] !== undefined) {
-                        totalFieldCount++;
-                        unmatchedFieldPaths.push(`document_items[${i}].${field}`);
-                    }
+                    totalFieldCount++;
+                    unmatchedFieldPaths.push(`document_items[${i}].${field}`);
                 }
             }
             continue;
@@ -409,15 +371,27 @@ export const calculateAccuracy = (originalDoc: Partial<DocumentWithItems>, verif
 
         // Compare item fields
         for (const field of itemFields) {
-            if (originalItem[field as keyof DocumentItem] !== null && 
-                originalItem[field as keyof DocumentItem] !== undefined) {
-                totalFieldCount++;
-                
-                if (originalItem[field as keyof DocumentItem] === verifiedItem[field as keyof DocumentItem]) {
+            totalFieldCount++;
+
+            const isOriginalNull = originalItem[field as keyof DocumentItem] !== null && 
+                originalItem[field as keyof DocumentItem] !== undefined;
+            const isVerifiedNull = verifiedItem[field as keyof DocumentItem] !== null && 
+                verifiedItem[field as keyof DocumentItem] !== undefined;
+            
+            if (isOriginalNull && isVerifiedNull) {
+                matchedFieldCount++;
+                continue;
+            }
+
+            if (isOriginalNull || isVerifiedNull) {
+                unmatchedFieldPaths.push(`document_items[${i}].${field}`);
+                continue;
+            }
+
+            if (originalItem[field as keyof DocumentItem] === verifiedItem[field as keyof DocumentItem]) {
                     matchedFieldCount++;
-                } else {
-                    unmatchedFieldPaths.push(`document_items[${i}].${field}`);
-                }
+            } else {
+                unmatchedFieldPaths.push(`document_items[${i}].${field}`);
             }
         }
     }
@@ -432,6 +406,7 @@ export const calculateAccuracy = (originalDoc: Partial<DocumentWithItems>, verif
         matchedFieldCount
     };
 }
+
 
 export const getModelPath = (documentType: string, taskId: string) => {
     return `${TRAINING_DATA_CONFIG.BASE_MODEL_PATH}/${documentType}/${taskId}.chk`;

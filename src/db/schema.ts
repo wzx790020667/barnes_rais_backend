@@ -17,7 +17,7 @@ export const customers = pgTable("customers", {
   co_code: varchar({ length: 255 }).notNull(),
   document_type: varchar({ length: 255 }),
   file_format: varchar({ length: 255 }),
-  customer_info_hash: varchar({ length: 255 }),
+  customer_info_hash: varchar({ length: 255 }).unique(),
   t_bind_path: varchar({ length: 255 }),
   t_model_name: varchar({ length: 255 }),
   created_at: timestamp("created_at", {withTimezone: true}).defaultNow(),

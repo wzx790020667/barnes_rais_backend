@@ -732,23 +732,8 @@ export class DocumentService {
         // Use the AIInferenceService to run the inference
         responseDocument = await aiInferenceService.runInference(pdfFile, documentType, prompt);
       } else if (raw) {
-        // Create a FormData object for the AI service request
-        const formData = new FormData();
-        formData.append("doc_type", documentType);
-        formData.append("prompt", prompt);
-        formData.append('raw', raw);
-
-        const url = `${AI_SERVICE_CONFIG.URL}/api/inference`;      
-        const response = await fetch(url, {
-          method: 'POST',
-          body: formData
-        });
-        
-        if (!response.ok) {
-          throw new Error(`API request failed with status ${response.status}`);
-        }
-        
-        responseDocument = await response.json();
+        // Use the AIInferenceService to run inference on raw text
+        responseDocument = await aiInferenceService.runInferenceByRaw(raw, documentType, prompt);
       } else {
         throw new Error("Either pdfFile or raw must be provided");
       }
