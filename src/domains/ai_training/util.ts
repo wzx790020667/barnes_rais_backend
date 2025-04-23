@@ -119,7 +119,6 @@ export const createAnnotationsForPODocument = (doc: Document, docItems: Document
                 "Quantity Ordered": null,
                 "Engine Model": null,
                 "Engine Number": null,
-                "Serial Number": null
             });
             annotations.push(annotation);
             continue;
@@ -255,7 +254,6 @@ export const calculateAccuracyForPO = (originalDoc: Partial<DocumentWithItems>, 
         'quantity_ordered',
         'engine_model',
         'engine_number',
-        'serial_number'
     ];
 
     return calculateAccuracyHelper(originalDoc, verifiedDoc, documentFields, itemFields);
