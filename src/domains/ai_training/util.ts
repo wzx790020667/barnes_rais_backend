@@ -130,7 +130,6 @@ export const createAnnotationsForPODocument = (doc: Document, docItems: Document
                 "Part Number": item.t_part_number_page === page ? item.part_number : null,
                 "Engine Model": item.t_engine_model_page === page ? item.engine_model : null,
                 "Engine Number": item.t_engine_number_page === page ? item.engine_number : null,
-                "Serial Number": item.t_serial_number_page === page ? item.serial_number : null,
                 "Quantity Ordered": item.t_quantity_ordered_page === page ? item.quantity_ordered : null
             }
             annotation.Item.push(annotationItem);
@@ -191,8 +190,6 @@ export const toPODocumentFromAnnotation = (trainingData: POTrainingData, pageTex
             existingItem.t_quantity_ordered_page = existingItem.t_quantity_ordered_page || page;
             existingItem.engine_number = existingItem.engine_number || item["Engine Number"] || null;
             existingItem.t_engine_number_page = existingItem.t_engine_number_page || page;
-            existingItem.serial_number = existingItem.serial_number || item["Serial Number"] || null;
-            existingItem.t_serial_number_page = existingItem.t_serial_number_page || page;
             existingItem.engine_model = existingItem.engine_model || item["Engine Model"] || null;
             existingItem.t_engine_model_page = existingItem.t_engine_model_page || page;
             
@@ -222,7 +219,6 @@ export const _groupItemsByPageNumber = (docItems: DocumentItem[]) => {
         if (item.t_import_price_page !== null) pageFields.add(item.t_import_price_page);
         if (item.t_engine_model_page !== null) pageFields.add(item.t_engine_model_page);
         if (item.t_engine_number_page !== null) pageFields.add(item.t_engine_number_page);
-        if (item.t_serial_number_page !== null) pageFields.add(item.t_serial_number_page);
         
         // Add item to each page it belongs to
         for (const page of pageFields) {

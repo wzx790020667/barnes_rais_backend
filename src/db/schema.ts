@@ -65,13 +65,12 @@ export const document_items = pgTable("document_items", {
   import_price: varchar({ length: 255 }),
   engine_model: varchar({ length: 255 }),
   engine_number: varchar({ length: 255 }),
-  serial_number: varchar({ length: 255 }),
+  serial_number: json("serial_number"),
   t_part_number_page: integer("t_part_number_page"),
   t_quantity_ordered_page: integer("t_quantity_ordered_page"),
   t_import_price_page: integer("t_import_price_page"),
   t_engine_model_page: integer("t_engine_model_page"),
   t_engine_number_page: integer("t_engine_number_page"),
-  t_serial_number_page: integer("t_serial_number_page"),
 });
 
 export const arc_rules = pgTable("arc_rules", {

@@ -20,13 +20,12 @@ const documentItemSchema = z.object({
   import_price: z.string().nullable().optional(), // Validate as number but convert to string before DB insert
   engine_model: z.string().optional().nullable().optional(),
   engine_number: z.string().optional().nullable().optional(),
-  serial_number: z.string().optional().nullable().optional(),
+  serial_number: z.array(z.string()).optional().nullable().optional(),
   t_part_number_page: z.number().optional().nullable(),
   t_quantity_ordered_page: z.number().optional().nullable(),
   t_import_price_page: z.number().optional().nullable(),
   t_engine_model_page: z.number().optional().nullable(),
   t_engine_number_page: z.number().optional().nullable(),
-  t_serial_number_page: z.number().optional().nullable(),
 });
 
 // Document schema validation
@@ -368,13 +367,12 @@ export class DocumentController {
           import_price: item.import_price ? item.import_price.trim() : null,
           engine_model: isEmpty(item.engine_model) ? null : replaceEngineModelTitleByRules(engineModelRules, String(item.engine_model)),
           engine_number: isEmpty(item.engine_number) ? null : String(item.engine_number),
-          serial_number: isEmpty(item.serial_number) ? null : String(item.serial_number),
+          serial_number: isEmpty(item.serial_number) ? null : item.serial_number,
           t_part_number_page: item.t_part_number_page !== undefined ? item.t_part_number_page : null, 
           t_quantity_ordered_page: item.t_quantity_ordered_page !== undefined ? item.t_quantity_ordered_page : null,
           t_import_price_page: item.t_import_price_page !== undefined ? item.t_import_price_page : null,
           t_engine_model_page: item.t_engine_model_page !== undefined ? item.t_engine_model_page : null,
           t_engine_number_page: item.t_engine_number_page !== undefined ? item.t_engine_number_page : null,
-          t_serial_number_page: item.t_serial_number_page !== undefined ? item.t_serial_number_page : null,
         })) || [] as Omit<DocumentItem, "id">[];
       
       // Create document with items
