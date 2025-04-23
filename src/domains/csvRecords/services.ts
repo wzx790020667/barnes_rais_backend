@@ -87,7 +87,6 @@ export class CsvRecordService {
 
         documentWithItems.items.forEach((item) => {
             const { import_price, IMPORT_LINE } = findImportPriceAndLineByPartNumber(item.part_number);
-            const serialNumber = item.serial_number ? (item.serial_number as string[]).join(",") : null;
 
             const record: Omit<CsvRecord, "id" | "created_at"> = {
                 document_id: documentWithItems.document.id,
@@ -100,7 +99,7 @@ export class CsvRecordService {
                 CUST_CODE: documentWithItems.document.co_code,
                 CUST_NAME: importDocumentWithItems?.document.customer_name || null,
                 item: item.part_number,
-                ser_num: serialNumber,
+                ser_num: item.serial_number,
                 import_price: import_price,
                 qty_ordered: extractDigits(item.quantity_ordered || ""),
                 engine_model: item.engine_model,
