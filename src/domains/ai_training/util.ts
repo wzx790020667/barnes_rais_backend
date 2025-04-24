@@ -346,13 +346,12 @@ const calculateAccuracyHelper = (
     // Compare document items if they exist
     const originalItems = originalDoc.document_items || [];
     const verifiedItems = verifiedDoc.document_items || [];
+    console.log("originalItems.length: ", originalItems.length, "verifiedItems.length: ", verifiedItems.length);
 
     // Match items by their position/index as they should correspond
     for (let i = 0; i < Math.max(originalItems.length, verifiedItems.length); i++) {
         const originalItem = originalItems[i];
         const verifiedItem = verifiedItems[i];
-
-        console.log(i, originalItem.part_number, verifiedItem.part_number, originalItem.part_number === verifiedItem.part_number);
 
         // If one list is shorter than the other, count missing items as unmatched
         if (!originalItem || !verifiedItem) {
@@ -366,6 +365,8 @@ const calculateAccuracyHelper = (
             }
             continue;
         }
+
+        console.log(i, originalItem.part_number, verifiedItem.part_number, originalItem.part_number === verifiedItem.part_number);
 
         // Compare item fields
         for (const field of itemFields) {

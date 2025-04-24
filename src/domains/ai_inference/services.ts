@@ -71,7 +71,7 @@ export class AIInferenceService {
 
         const data = await response.json();
 
-        console.log("[AIInferenceService.runInference] - response data: ", data?.error || data);
+        console.log("[AIInferenceService.runInference] - response data: ", data?.error || JSON.stringify(data));
         
         if (!response.ok) {
             console.error("[AIInferenceService.runInference] - AI inference API request failed, response data: ", data);
@@ -102,7 +102,7 @@ export class AIInferenceService {
         }
         
         const data = await response.json();
-        console.log("[AIInferenceService.runInferenceByRaw] - response data: ", data);
+        console.log("[AIInferenceService.runInferenceByRaw] - response data: ", JSON.stringify(data));
         
         return data;
     }

@@ -69,6 +69,7 @@ export class DocumentService {
         // Complete the query with ordering and pagination
         const { data, error } = await dataQuery
           .order("scanned_time", { ascending: false })
+          .order("id", { ascending: true })
           .range(offset, offset + pageSize - 1);
 
         if (error) throw error;
@@ -737,8 +738,6 @@ export class DocumentService {
       } else {
         throw new Error("Either pdfFile or raw must be provided");
       }
-
-      console.log("[DocumentService.pdfFullARD] - response data from Full ARD API: ", JSON.stringify(responseDocument));
 
       let document: Partial<DocumentWithItems> | null = null;
       if (documentType === "purchase_order") {

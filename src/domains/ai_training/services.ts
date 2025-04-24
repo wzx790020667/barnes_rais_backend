@@ -66,6 +66,7 @@ export class AiTrainingService {
             .from(documents)
             .where(and(
                 eq(documents.customer_info_hash, customerInfoHash),
+                eq(documents.status, "approved"),
                 eq(documents.from_full_ard, false)
             ));
         
@@ -576,6 +577,7 @@ export class AiTrainingService {
         }
 
         const accuracyList = verificationResults.map(result => result.data?.accuracy || 0);
+        console.log("[aiTrainingService._createTtvResult] - accuracyList: ", accuracyList);
         const meanAccuracy = accuracyList.reduce((acc, curr) => acc + curr, 0) / accuracyList.length;
 
         // Filter successful results and prepare data for insertion
@@ -609,7 +611,7 @@ export class AiTrainingService {
         const originalDoc = doc;
         try {
             const verifiedDoc = await this.documentService.pdfFullARD(null, doc.document_type || "", task.prompt || "", JSON.stringify(doc.t_page_texts)) ;
-            console.log("[aiTrainingService._verifyDocument] - verifiedDoc: ", verifiedDoc);
+            // console.log("[aiTrainingService._verifyDocument] - verifiedDoc: ", verifiedDoc);
 
             const { accuracy, unmatchedFieldPaths } = doc.document_type === "purchase_order" ? 
                 calculateAccuracyForPO(originalDoc, verifiedDoc) : 
