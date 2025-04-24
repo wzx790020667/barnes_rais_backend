@@ -18,5 +18,8 @@ export function generateCustomerInfoHash(
   const dataString = `${customerName}|${coCode || ''}|${fileFormat}| ${documentType}`;
   
   // Generate an MD5 hash of the combined string
+  // This md5 algorithm is used for creating a unique ID for the number of finished documents calculation in the customer table.
+  // It will create a unique hash based on (customerName, coCode, fileFormat, documentType).
+  // This hash is not used in any other security-senstive operations/processes/data protection mechanisms.
   return crypto.createHash('md5').update(dataString).digest('hex');
 }
