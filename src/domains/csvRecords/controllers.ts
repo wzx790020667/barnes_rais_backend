@@ -53,6 +53,7 @@ export class CsvRecordController {
             records.map(record => {
                 // Apply each type of rule
                 for (const rule of arcRules) {
+                    // console.log("rule", rule);
                     replaceByArcRule(rule, record);
                 }
 

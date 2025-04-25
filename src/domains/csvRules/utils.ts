@@ -5,23 +5,26 @@ export const replaceByArcRule = (arcRule: ArcRule, csvRecord: CsvRecord) => {
     const resultDisplay = arcRule.result_display;
 
     if (!appearance) return csvRecord;
+    if (!csvRecord.cert_num) return csvRecord;
 
-    if (csvRecord.cert_num && csvRecord.cert_num.includes(appearance)) {
+    const trimedCertNum = csvRecord.cert_num?.trim();
+
+    if (trimedCertNum === appearance) {
         csvRecord.cert_num = resultDisplay;
     }
 }
 
 export const replaceByEngineModelRule = (engineModelRule: EngineModelRule, csvRecord: CsvRecord) => {
-    const engineModelCommonPrefix = engineModelRule.common_prefix;
+    const engineModelAppearance = engineModelRule.common_prefix;
     const resultDisplay = engineModelRule.result_display;
 
-    if (!engineModelCommonPrefix || !resultDisplay) return csvRecord;
+    if (!engineModelAppearance || !resultDisplay) return csvRecord;
 
-    if (csvRecord.engine_model && csvRecord.engine_model.includes(engineModelCommonPrefix)) {
-        const pattern = `${engineModelCommonPrefix}`;
-        const recordEngineModel = csvRecord.engine_model.trim();
+    if (csvRecord.engine_model && csvRecord.engine_model.includes(engineModelAppearance)) {
+        const pattern = `${engineModelAppearance}`;
+        const trimmedEngineModel = csvRecord.engine_model.trim();
 
-        if (recordEngineModel.startsWith(pattern)) {
+        if (trimmedEngineModel.startsWith(pattern)) {
             csvRecord.engine_model = resultDisplay;
         }
     }
@@ -51,8 +54,11 @@ export const replaceByWorkScopeRule = (workScopeRule: WorkScopeRule, csvRecord: 
     const resultDisplay = workScopeRule.result_display;
 
     if (!overhualKeywords || !resultDisplay) return csvRecord;
+    if (!csvRecord.WORK_SCOPE) return csvRecord;
 
-    if (csvRecord.WORK_SCOPE && csvRecord.WORK_SCOPE.includes(overhualKeywords)) {
+    const trimmedWorkScope = csvRecord.WORK_SCOPE.trim();
+
+    if (trimmedWorkScope === overhualKeywords) {
         csvRecord.WORK_SCOPE = resultDisplay;
     }
 }
@@ -62,8 +68,11 @@ export const replaceByPartNumberRule = (partNumberRule: PartNumberRule, csvRecor
     const resultDisplay = partNumberRule.product_code;
 
     if (!partNumberKeywords || !resultDisplay) return csvRecord;
+    if (!csvRecord.item) return csvRecord;
 
-    if (csvRecord.item && csvRecord.item.includes(partNumberKeywords)) {
+    const trimmedItem = csvRecord.item.trim();
+
+    if (trimmedItem === partNumberKeywords) {
         csvRecord.PRODUCT_CODE = resultDisplay;
     }
 }
