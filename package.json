@@ -10,6 +10,8 @@
     "supabase:start": "bunx supabase start",
     "schema:push": "bunx drizzle-kit push",
     "db:seed": "bun run src/db/seeds/index.ts",
+    "schema:gen": "npx drizzle-kit generate",
+    "db:mg": "npx drizzle-kit migrate",
     "test:ws": "bun run test-websocket.js"
   },
   "devDependencies": {

@@ -1,181 +1,160 @@
-import type { CsvRecord, Document, DocumentItem } from "../../db/schema";
-import { supabase, db, drizzleDb } from "../../lib";
-import { randomUUIDv7 } from "bun";
-import { eq } from "drizzle-orm";
-import { csv_records } from "../../db/schema";
+import type { Document, DocumentItem } from "../../db/schema";
+import { supabase } from "../../lib";
 import { extractDigits, removeSlashes } from "./utils";
+import type { CsvRecord } from "./types";
+
+type DocumentWithItems = Document & { document_items: DocumentItem[] };
 
 export class CsvRecordService {
-    async createCsvRecords(document: Document) {
-        const importDocumentWithItems = await db.query(async () => {
-            const {data, error} = await supabase.from("documents")
-                .select("*, document_items(*)")
-                .eq("import_number", document.import_number)
-                .eq("document_type", "import_declaration")
-                .single();
+  convert2CsvRecords(
+    poDocumentWithItems: DocumentWithItems,
+    importDocumentWithItems: DocumentWithItems,
+    globalPartNumberSearchCounts?: Record<string, number>
+  ) {
+    // Track how many times each part number has been searched
+    const partNumberSearchCounts: Record<string, number> =
+      globalPartNumberSearchCounts || {};
 
-            if (error) throw error;
+    const findImportPriceAndLineByPartNumber = (partNumber: string | null) => {
+      if (!partNumber)
+        return {
+          import_price: null,
+          IMPORT_LINE: null,
+        };
 
-            return {
-                document: data as Document,
-                items: (data?.document_items || []) as DocumentItem[]
-            };
-        }).then(result => result.data || null);
+      const importItems = importDocumentWithItems?.document_items;
+      if (!importItems || importItems.length === 0)
+        return {
+          import_price: null,
+          IMPORT_LINE: null,
+        };
 
-        // Track how many times each part number has been searched
-        const partNumberSearchCounts: Record<string, number> = {};
+      // Filter all matching items for this part number
+      const matchingItemsWithIndices = importItems
+        .map((item, index) => ({ item, originalIndex: index }))
+        .filter(({ item }) => item.part_number === partNumber);
 
-        const findImportPriceAndLineByPartNumber = (partNumber: string | null) => {
-            if (!partNumber) return {
-                import_price: null,
-                IMPORT_LINE: null
-            };
-            
-            const importItems = importDocumentWithItems?.items;
-            if (!importItems || importItems.length === 0) return {
-                import_price: null,
-                IMPORT_LINE: null
-            };
-            
-            // Filter all matching items for this part number
-            const matchingItemsWithIndices = importItems
-                .map((item, index) => ({ item, originalIndex: index }))
-                .filter(({ item }) => item.part_number === partNumber);
-            
-            if (matchingItemsWithIndices.length === 0) return {
-                import_price: null,
-                IMPORT_LINE: null
-            };
-            
-            // Get current search count and increment for next search
-            partNumberSearchCounts[partNumber] = (partNumberSearchCounts[partNumber] || 0) + 1;
-            const currentSearchCount = partNumberSearchCounts[partNumber];
-            
-            // Get the index based on search count (1-indexed to 0-indexed)
-            const index = Math.min(currentSearchCount - 1, matchingItemsWithIndices.length - 1);
-            const selectedMatch = matchingItemsWithIndices[index];
-            const selectedMatchIndex = selectedMatch.originalIndex;
-            
-            // Return the import price of the selected item
-            return {
-                import_price: selectedMatch?.item.import_price || null,
-                IMPORT_LINE: `-${selectedMatchIndex + 1 < 10 ? `0${selectedMatchIndex + 1}` : selectedMatchIndex + 1}`
-            };
-        }
+      if (matchingItemsWithIndices.length === 0)
+        return {
+          import_price: null,
+          IMPORT_LINE: null,
+        };
 
-        // All of here are purchase order documents
-        const documentWithItems = await db.query(async () => {
-            // Fetch the document with its associated items in a single query
-            const { data, error } = await supabase
-                .from("documents")
-                .select(`
-                    *,
-                    document_items(*)
-                `)
-                .eq("id", document.id)
-                .single();
+      // Get current search count and increment for next search
+      partNumberSearchCounts[partNumber] =
+        (partNumberSearchCounts[partNumber] || 0) + 1;
+      const currentSearchCount = partNumberSearchCounts[partNumber];
 
-            if (error) throw error;
+      // Get the index based on search count (1-indexed to 0-indexed)
+      const index = Math.min(
+        currentSearchCount - 1,
+        matchingItemsWithIndices.length - 1
+      );
+      const selectedMatch = matchingItemsWithIndices[index];
+      const selectedMatchIndex = selectedMatch.originalIndex;
 
-            return {
-                document: data as Document,
-                items: (data?.document_items || []) as DocumentItem[]
-            };
-        }).then(result => result.data || { document: document, items: [] });
+      // Return the import price of the selected item
+      // Calculate IMPORT_LINE based on selectedMatchIndex + additional increment for duplicate part numbers across different poDocuments
+      const finalLineNumber = selectedMatchIndex + currentSearchCount;
+      return {
+        import_price: selectedMatch?.item.import_price || null,
+        IMPORT_LINE: `${
+          finalLineNumber < 10 ? `0${finalLineNumber}` : finalLineNumber
+        }`,
+      };
+    };
 
-        let records: Omit<CsvRecord, "id" | "created_at">[] = [];
+    let records: CsvRecord[] = [];
 
-        documentWithItems.items.forEach((item) => {
-            const { import_price, IMPORT_LINE } = findImportPriceAndLineByPartNumber(item.part_number);
+    poDocumentWithItems.document_items.forEach((item) => {
+      const { import_price, IMPORT_LINE } = findImportPriceAndLineByPartNumber(
+        item.part_number
+      );
 
-            const record: Omit<CsvRecord, "id" | "created_at"> = {
-                document_id: documentWithItems.document.id,
-                batch_number: null,
-                import_doc_num: removeSlashes(documentWithItems.document.import_number || "") || null,
-                IMPORT_LINE: IMPORT_LINE,
-                cust_po: documentWithItems.document.po_number,
-                CO_PREFIX: null,
-                PRODUCT_CODE: null,
-                CUST_CODE: documentWithItems.document.co_code,
-                CUST_NAME: importDocumentWithItems?.document.customer_name || null,
-                item: item.part_number,
-                ser_num: item.serial_number,
-                import_price: import_price,
-                qty_ordered: extractDigits(item.quantity_ordered || ""),
-                engine_model: item.engine_model,
-                engine_num: item.engine_number,
-                cust_num: documentWithItems.document.end_user_customer_number,
-                end_user_cust_name: documentWithItems.document.end_user_customer_name,
-                WORK_SCOPE: documentWithItems.document.work_scope,
-                cert_num: documentWithItems.document.arc_requirement,
-                order_date: new Date(importDocumentWithItems?.document.receive_date || "") || null,
-                part_rcvd_date: new Date(documentWithItems.document.receive_date || "") || null,
-                CSN_NUMBER: documentWithItems.document.csn,
-                TSN_NUMBER: documentWithItems.document.tsn,
-            }
+      const record: CsvRecord = {
+        import_doc_num:
+          removeSlashes(poDocumentWithItems.import_number || "") || null,
+        IMPORT_LINE: IMPORT_LINE,
+        cust_po: poDocumentWithItems.po_number,
+        CO_PREFIX: null,
+        PRODUCT_CODE: null,
+        CUST_CODE: poDocumentWithItems.co_code,
+        CUST_NAME: importDocumentWithItems?.customer_name || null,
+        item: item.part_number,
+        import_price: import_price,
+        qty_ordered: extractDigits(item.quantity_ordered || ""),
+        engine_model: item.engine_model,
+        engine_num: item.engine_number,
+        cust_num: poDocumentWithItems.end_user_customer_number,
+        end_user_cust_name: poDocumentWithItems.end_user_customer_name,
+        WORK_SCOPE: poDocumentWithItems.work_scope,
+        cert_num: poDocumentWithItems.arc_requirement,
+        ser_num: null,
+        order_date:
+          new Date(
+            importDocumentWithItems?.receive_date || ""
+          ).toDateString() || null,
+        part_rcvd_date:
+          new Date(poDocumentWithItems.receive_date || "").toDateString() ||
+          null,
+        CSN_NUMBER: poDocumentWithItems.csn,
+        TSN_NUMBER: poDocumentWithItems.tsn,
+      };
 
-            records.push(record);
-        })
-        // Use Drizzle transaction to handle both operations atomically
-        await db.query(async () => {
-            try {
-                // Execute both operations in a transaction using the centralized Drizzle instance
-                return await drizzleDb.transaction(async (tx) => {
-                    // Delete existing records
-                    await tx.delete(csv_records).where(eq(csv_records.document_id, documentWithItems.document.id));
-                    
-                    // Insert new records
-                    if (records.length > 0) {
-                        await tx.insert(csv_records).values(records);
-                    }
-                    
-                    return { success: true };
-                });
-            } catch (error) {
-                console.error("Transaction failed:", error);
-                throw error;
-            }
-        });
+      records.push(record);
+    });
+
+    return records;
+  }
+
+  async getCsvRecordsOfNoBatchNumber(documentIds?: string[]) {
+    if (!documentIds) {
+      return [];
     }
 
-    async getCsvRecordsOfNoBatchNumber(documentIds?: string[]) {
-        const query = supabase.from("csv_records")
-            .select(`
-                import_doc_num, IMPORT_LINE, cust_po, CO_PREFIX, 
-                PRODUCT_CODE, CUST_CODE, CUST_NAME, item, ser_num, 
-                import_price, qty_ordered, engine_model, engine_num, 
-                cust_num, end_user_cust_name, WORK_SCOPE, cert_num, 
-                order_date, part_rcvd_date, CSN_NUMBER, TSN_NUMBER
-            `)
-            .is("batch_number", null);            
-        // If document IDs are provided, filter by them
-        if (documentIds && documentIds.length > 0) {
-            query.in("document_id", documentIds);
-        }
-        
-        const {data, error} = await query;
+    const { data: poDocuments, error: poDocError } = await supabase
+      .from("documents")
+      .select("*, document_items(*)")
+      .in("id", documentIds);
 
-        if (error) throw error;
+    if (poDocError) throw poDocError;
 
-        return data as CsvRecord[];
+    if (!poDocuments) {
+      return [];
     }
 
-    async markAsExported(csvRecords: CsvRecord[]) {
-        if (csvRecords.length === 0) return;
-        
-        // Generate a single batch number for all records in this export
-        const batchNumber = randomUUIDv7();
-        
-        // Update all records with the new batch number
-        const recordIds = csvRecords.map(record => record.id);
-        
-        const { error } = await supabase
-            .from("csv_records")
-            .update({ batch_number: batchNumber })
-            .in("id", recordIds);
-            
-        if (error) throw error;
-        
-        return batchNumber;
-    }
+    const importNumbers = [
+      ...new Set((poDocuments as Document[]).map((doc) => doc.import_number)),
+    ];
+
+    const { data: importDocuments, error: importDocError } = await supabase
+      .from("documents")
+      .select("*, document_items(*)")
+      .eq("document_type", "import_declaration")
+      .in("import_number", importNumbers);
+
+    if (importDocError) throw importDocError;
+
+    const importNumber2Doc: Record<string, DocumentWithItems> = {};
+    importDocuments.forEach((doc) => {
+      importNumber2Doc[doc.import_number] = doc;
+    });
+
+    const records: CsvRecord[] = [];
+    // 全局的part_number搜索计数器，确保相同part_number在所有poDocuments中的IMPORT_LINE都是递增的
+    const globalPartNumberSearchCounts: Record<string, number> = {};
+
+    poDocuments.forEach((poDoc) => {
+      const importDoc = importNumber2Doc[poDoc.import_number];
+      const tempRecords = this.convert2CsvRecords(
+        poDoc,
+        importDoc,
+        globalPartNumberSearchCounts
+      );
+      // 等待Promise完成后再添加记录
+      records.push(...tempRecords);
+    });
+
+    return records;
+  }
 }
