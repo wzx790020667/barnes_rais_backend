@@ -9,14 +9,13 @@ export class CsvRecordService {
   convert2CsvRecords(
     poDocumentWithItems: DocumentWithItems,
     importDocumentWithItems: DocumentWithItems,
-    globalPartNumberSearchCounts?: Record<string, number>
+    globalSearchHistory: Record<string, boolean>
   ) {
-    // Track how many times each part number has been searched
-    const partNumberSearchCounts: Record<string, number> =
-      globalPartNumberSearchCounts || {};
-
-    const findImportPriceAndLineByPartNumber = (partNumber: string | null) => {
-      if (!partNumber)
+    const findByPartNumberAndQuantity = (
+      partNumber: string | null,
+      quantity: string | null
+    ) => {
+      if (!partNumber || !quantity)
         return {
           import_price: null,
           IMPORT_LINE: null,
@@ -30,45 +29,50 @@ export class CsvRecordService {
         };
 
       // Filter all matching items for this part number
-      const matchingItemsWithIndices = importItems
+      const matchingImportItemsWithIndices = importItems
         .map((item, index) => ({ item, originalIndex: index }))
-        .filter(({ item }) => item.part_number === partNumber);
+        .filter(
+          ({ item }) =>
+            item.part_number === partNumber &&
+            item.quantity_ordered === quantity
+        );
 
-      if (matchingItemsWithIndices.length === 0)
+      if (matchingImportItemsWithIndices.length === 0)
         return {
           import_price: null,
           IMPORT_LINE: null,
         };
 
-      // Get current search count and increment for next search
-      partNumberSearchCounts[partNumber] =
-        (partNumberSearchCounts[partNumber] || 0) + 1;
-      const currentSearchCount = partNumberSearchCounts[partNumber];
+      let selectedMatch = null;
+      selectedMatch = matchingImportItemsWithIndices.find((importItem) => {
+        const importItemKey = `${importItem.item.part_number}-${importItem.item.quantity_ordered}-${importItem.originalIndex}`;
+        const isSearched = globalSearchHistory[importItemKey];
+        return !isSearched;
+      });
 
-      // Get the index based on search count (1-indexed to 0-indexed)
-      const index = Math.min(
-        currentSearchCount - 1,
-        matchingItemsWithIndices.length - 1
-      );
-      const selectedMatch = matchingItemsWithIndices[index];
-      const selectedMatchIndex = selectedMatch.originalIndex;
+      if (!selectedMatch) {
+        return {
+          import_price: null,
+          IMPORT_LINE: null,
+        };
+      }
 
-      // Return the import price of the selected item
-      // Calculate IMPORT_LINE based on selectedMatchIndex + additional increment for duplicate part numbers across different poDocuments
-      const finalLineNumber = selectedMatchIndex + currentSearchCount;
+      const lineNum = selectedMatch.originalIndex + 1;
+      const selectedImportItemKey = `${selectedMatch.item.part_number}-${selectedMatch.item.quantity_ordered}-${selectedMatch.originalIndex}`;
+      globalSearchHistory[selectedImportItemKey] = true;
+
       return {
         import_price: selectedMatch?.item.import_price || null,
-        IMPORT_LINE: `${
-          finalLineNumber < 10 ? `0${finalLineNumber}` : finalLineNumber
-        }`,
+        IMPORT_LINE: `${lineNum < 10 ? `0${lineNum}` : lineNum}`,
       };
     };
 
     let records: CsvRecord[] = [];
 
     poDocumentWithItems.document_items.forEach((item) => {
-      const { import_price, IMPORT_LINE } = findImportPriceAndLineByPartNumber(
-        item.part_number
+      const { import_price, IMPORT_LINE } = findByPartNumberAndQuantity(
+        item.part_number,
+        item.quantity_ordered
       );
 
       const record: CsvRecord = {
@@ -89,7 +93,7 @@ export class CsvRecordService {
         end_user_cust_name: poDocumentWithItems.end_user_customer_name,
         WORK_SCOPE: poDocumentWithItems.work_scope,
         cert_num: poDocumentWithItems.arc_requirement,
-        ser_num: null,
+        ser_num: item.serial_number,
         order_date:
           new Date(
             importDocumentWithItems?.receive_date || ""
@@ -142,14 +146,14 @@ export class CsvRecordService {
 
     const records: CsvRecord[] = [];
     // 全局的part_number搜索计数器，确保相同part_number在所有poDocuments中的IMPORT_LINE都是递增的
-    const globalPartNumberSearchCounts: Record<string, number> = {};
+    const globalPartNumberSearchHistory: Record<string, boolean> = {};
 
     poDocuments.forEach((poDoc) => {
       const importDoc = importNumber2Doc[poDoc.import_number];
       const tempRecords = this.convert2CsvRecords(
         poDoc,
         importDoc,
-        globalPartNumberSearchCounts
+        globalPartNumberSearchHistory
       );
       // 等待Promise完成后再添加记录
       records.push(...tempRecords);
