@@ -20,6 +20,51 @@ export const replaceByArcRule = (arcRule: ArcRule, csvRecord: CsvRecord) => {
   }
 };
 
+export const replaceByMultipleArcRules = (
+  arcRules: ArcRule[],
+  originalText: string
+): string => {
+  if (!originalText || !arcRules || arcRules.length === 0) {
+    return originalText;
+  }
+
+  const trimmedText = originalText.trim();
+  const matchedResults: { result: string; position: number }[] = [];
+  const usedAppearances = new Set<string>();
+
+  // 遍历所有规则，查找匹配的arc_appearance
+  for (const rule of arcRules) {
+    const appearance = rule.arc_appearance;
+    const resultDisplay = rule.result_display;
+
+    if (!appearance || !resultDisplay) continue;
+
+    const trimmedAppearance = appearance.trim();
+    
+    // 检查该arc_appearance是否已经被使用过
+    if (usedAppearances.has(trimmedAppearance)) {
+      continue;
+    }
+
+    // 检查原字符串中是否包含当前规则的arc_appearance
+    const position = trimmedText.indexOf(trimmedAppearance);
+    if (position !== -1) {
+      matchedResults.push({ result: resultDisplay, position });
+      usedAppearances.add(trimmedAppearance);
+    }
+  }
+
+  // 如果有匹配结果，按位置排序后用/分隔符连接
+  if (matchedResults.length > 0) {
+    return matchedResults
+      .sort((a, b) => a.position - b.position)
+      .map(item => item.result)
+      .join('/');
+  }
+
+  return originalText;
+};
+
 export const replaceByEngineModelRule = (
   engineModelRule: EngineModelRule,
   csvRecord: CsvRecord

@@ -6,6 +6,7 @@ import { CsvRecordService } from "./services";
 import { DocumentService } from "../documents/services";
 import {
   replaceByArcRule,
+  replaceByMultipleArcRules,
   replaceByEngineModelRule,
   replaceByPartNumberRule,
   replaceByWorkScopeRule,
@@ -72,10 +73,10 @@ export class CsvRecordController {
 
       // Apply all rules to each record
       records.map((record) => {
-        // Apply each type of rule
-        for (const rule of arcRules) {
-          // console.log("rule", rule);
-          replaceByArcRule(rule, record);
+        // Apply arc rules using multiple matching
+        if (record.cert_num && arcRules.length > 0) {
+          const replacedCertNum = replaceByMultipleArcRules(arcRules, record.cert_num);
+          record.cert_num = replacedCertNum;
         }
 
         for (const rule of engineModelRules) {

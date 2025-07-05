@@ -89,7 +89,7 @@ export class CsvRecordService {
         qty_ordered: extractDigits(item.quantity_ordered || ""),
         engine_model: item.engine_model,
         engine_num: item.engine_number,
-        cust_num: poDocumentWithItems.end_user_customer_number,
+        cust_num: poDocumentWithItems.customer_number,
         end_user_cust_name: poDocumentWithItems.end_user_customer_name,
         WORK_SCOPE: poDocumentWithItems.work_scope,
         cert_num: poDocumentWithItems.arc_requirement,
