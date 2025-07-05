@@ -77,6 +77,41 @@ export class PartNumberRuleService {
       .then((result) => result.data || { partNumberRules: [], total: 0 });
   }
 
+  async searchPartNumberRules(
+    page: number,
+    pageSize: number,
+    query: string
+  ): Promise<{ partNumberRules: PartNumberRule[]; total: number }> {
+    return db
+      .query(async () => {
+        // Get total count for search results
+        const { count, error: countError } = await supabase
+          .from("part_number_rules")
+          .select("*", { count: "exact", head: true })
+          .or(`part_number.ilike.%${query}%,product_code.ilike.%${query}%`);
+
+        if (countError) throw countError;
+
+        // Calculate offset based on page and pageSize
+        const offset = (page - 1) * pageSize;
+        
+        // Get paginated search results
+        const { data, error } = await supabase
+          .from("part_number_rules")
+          .select("*")
+          .or(`part_number.ilike.%${query}%,product_code.ilike.%${query}%`)
+          .range(offset, offset + pageSize - 1);
+          
+        if (error) throw error;
+        
+        return { 
+          partNumberRules: data as PartNumberRule[], 
+          total: count || 0 
+        };
+      })
+      .then((result) => result.data || { partNumberRules: [], total: 0 });
+  }
+
   async createPartNumberRule(
     partNumberRule: { part_number: string; product_code: string }
   ): Promise<PartNumberRule | null> {
@@ -126,4 +161,4 @@ export class PartNumberRuleService {
       })
       .then((result) => result.error ? false : true);
   }
-} 
+}

@@ -49,9 +49,9 @@ export class WorkScopeRuleController {
         );
       }
       
-      if (isNaN(pageSize) || pageSize < 1 || pageSize > 100) {
+      if (isNaN(pageSize) || pageSize < 1 || pageSize > 200) {
         return Response.json(
-          { error: "Invalid pageSize parameter. Must be between 1 and 100" },
+          { error: "Invalid pageSize parameter. Must be between 1 and 200" },
           { status: 400 }
         );
       }
@@ -71,6 +71,55 @@ export class WorkScopeRuleController {
       console.error("Get work scope rules error:", error);
       return Response.json(
         { error: "Failed to get work scope rules" },
+        { status: 500 }
+      );
+    }
+  }
+
+  async searchWorkScopeRules(req: Request): Promise<Response> {
+    try {
+      const url = new URL(req.url);
+      const page = parseInt(url.searchParams.get("page") || "1");
+      const pageSize = parseInt(url.searchParams.get("pageSize") || "10");
+      const query = url.searchParams.get("query") || "";
+      
+      // Validate page and limit
+      if (isNaN(page) || page < 1) {
+        return Response.json(
+          { error: "Invalid page parameter" },
+          { status: 400 }
+        );
+      }
+      
+      if (isNaN(pageSize) || pageSize < 1 || pageSize > 200) {
+        return Response.json(
+          { error: "Invalid pageSize parameter. Must be between 1 and 200" },
+          { status: 400 }
+        );
+      }
+      
+      if (!query.trim()) {
+        return Response.json(
+          { error: "Search query is required" },
+          { status: 400 }
+        );
+      }
+      
+      const result = await this.workScopeRuleService.searchWorkScopeRules(page, pageSize, query.trim());
+      
+      return Response.json({
+        data: result.workScopeRules,
+        pagination: {
+          total: result.total,
+          page,
+          pageSize,
+          totalPages: Math.ceil(result.total / pageSize)
+        }
+      });
+    } catch (error) {
+      console.error("Search work scope rules error:", error);
+      return Response.json(
+        { error: "Failed to search work scope rules" },
         { status: 500 }
       );
     }
@@ -174,4 +223,4 @@ export class WorkScopeRuleController {
       );
     }
   }
-} 
+}

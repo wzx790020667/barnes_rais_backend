@@ -1,0 +1,1 @@
+ALTER TABLE "documents" RENAME COLUMN "end_user_customer_number" TO "customer_number";

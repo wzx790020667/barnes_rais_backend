@@ -6,11 +6,18 @@ import { eq } from "drizzle-orm";
 import { documents, document_items, csv_records } from "../../db/schema";
 import type { BucketDocument } from "./types";
 import { AI_SERVICE_CONFIG } from "../../config";
-import { toImportDocumentFromAnnotation, toPODocumentFromAnnotation } from "../ai_training/util";
-import type { ImportAnnotation, ImportTrainingData, POAnnotation, POTrainingData } from "../ai_training/types";
+import {
+  toImportDocumentFromAnnotation,
+  toPODocumentFromAnnotation,
+} from "../ai_training/util";
+import type {
+  ImportAnnotation,
+  ImportTrainingData,
+  POAnnotation,
+  POTrainingData,
+} from "../ai_training/types";
 import { DOCUMENT_BUCKET_NAME } from "./constants";
 import { AIInferenceService } from "../ai_inference/services";
-
 
 export class DocumentService {
   async getDocumentById(id: string): Promise<Document | null> {
@@ -18,10 +25,12 @@ export class DocumentService {
       .query(async () => {
         const { data, error } = await supabase
           .from("documents")
-          .select(`
+          .select(
+            `
             *,
             document_items(*)
-          `)
+          `
+          )
           .eq("id", id)
           .single();
 
@@ -31,41 +40,43 @@ export class DocumentService {
       .then((result) => result.data || null);
   }
 
-  async getDocumentsWithPagination(page: number = 1, pageSize: number = 10, status?: string): Promise<{ documents: Document[]; total: number }> {
+  async getDocumentsWithPagination(
+    page: number = 1,
+    pageSize: number = 10,
+    status?: string
+  ): Promise<{ documents: Document[]; total: number }> {
     return db
       .query(async () => {
         // Calculate offset based on page and pageSize
         const offset = (page - 1) * pageSize;
-        
+
         // Build query with potential status filter
         let query = supabase
           .from("documents")
           .select("count", { count: "exact" });
-          
+
         // Apply status filter if provided
         if (status) {
           query = query.eq("status", status);
         }
-        
+
         // Get total count first
         const { data: countData, error: countError } = await query;
-          
+
         if (countError) throw countError;
         const total = countData?.[0]?.count || 0;
-        
+
         // Then get paginated data with the same filter
-        let dataQuery = supabase
-          .from("documents")
-          .select(`
+        let dataQuery = supabase.from("documents").select(`
             *,
             document_items(*)
           `);
-          
+
         // Apply the same status filter to data query
         if (status) {
           dataQuery = dataQuery.eq("status", status);
         }
-        
+
         // Complete the query with ordering and pagination
         const { data, error } = await dataQuery
           .order("scanned_time", { ascending: false })
@@ -73,10 +84,10 @@ export class DocumentService {
           .range(offset, offset + pageSize - 1);
 
         if (error) throw error;
-        
+
         return {
           documents: data as Document[],
-          total
+          total,
         };
       })
       .then((result) => result.data || { documents: [], total: 0 });
@@ -86,68 +97,72 @@ export class DocumentService {
     return db
       .query(async () => {
         // Build query to get all documents
-        let query = supabase
-          .from("documents")
-          .select(`
+        let query = supabase.from("documents").select(`
             *,
             document_items(*)
           `);
-          
+
         // Apply status filter if provided
         if (status) {
           query = query.eq("status", status);
         }
-        
+
         // Get all documents with ordering
-        const { data, error } = await query
-          .order("created_at", { ascending: false });
-          
+        const { data, error } = await query.order("created_at", {
+          ascending: false,
+        });
+
         if (error) throw error;
-        
+
         return data as Document[];
       })
       .then((result) => result.data || []);
   }
 
-  async getUnpairedDocuments(page: number = 1, pageSize: number = 10): Promise<{ documents: Document[]; total: number }> {
+  async getUnpairedDocuments(
+    page: number = 1,
+    pageSize: number = 10
+  ): Promise<{ documents: Document[]; total: number }> {
     return db
       .query(async () => {
         // Calculate offset based on page and pageSize
         const offset = (page - 1) * pageSize;
-        
+
         // Build query for documents that are purchase orders without import numbers
         let query = supabase
           .from("documents")
           .select("count", { count: "exact" })
           .eq("document_type", "purchase_order")
           .is("import_number", null);
-          
+
         // Get total count first
         const { data: countData, error: countError } = await query;
-          
+
         if (countError) throw countError;
         const total = countData?.[0]?.count || 0;
-        
+
         // Then get paginated data with the same filter
         let dataQuery = supabase
           .from("documents")
-          .select(`
+          .select(
+            `
             *,
             document_items(*)
-          `)
+          `
+          )
           .eq("document_type", "purchase_order")
           .is("import_number", null);
-        
+
         // Complete the query with ordering and pagination
         const { data, error } = await dataQuery
           .order("created_at", { ascending: false })
           .range(offset, offset + pageSize - 1);
 
         if (error) throw error;
-        
+
         return {
           documents: data as Document[],
-          total
+          total,
         };
       })
       .then((result) => result.data || { documents: [], total: 0 });
@@ -159,114 +174,125 @@ export class DocumentService {
         // Build query for documents that are purchase orders without import numbers
         const { data, error } = await supabase
           .from("documents")
-          .select(`
+          .select(
+            `
             *,
             document_items(*)
-          `)
+          `
+          )
           .eq("document_type", "purchase_order")
           .is("import_number", null)
           .order("created_at", { ascending: false });
-          
+
         if (error) throw error;
-        
+
         return data as Document[];
       })
       .then((result) => result.data || []);
   }
 
-  async getFilteredDocuments(page: number = 1, pageSize: number = 10, filter: 'paired' | 'unpaired'): Promise<{ documents: Document[]; total: number }> {
+  async getFilteredDocuments(
+    page: number = 1,
+    pageSize: number = 10,
+    filter: "paired" | "unpaired"
+  ): Promise<{ documents: Document[]; total: number }> {
     return db
       .query(async () => {
         // Calculate offset based on page and pageSize
         const offset = (page - 1) * pageSize;
-        
+
         // Build query based on filter type
         let query = supabase
           .from("documents")
           .select("count", { count: "exact" });
-          
-        if (filter === 'paired') {
+
+        if (filter === "paired") {
           // Paired: document_type is 'import_declaration' or 'purchase_order' AND import_number is not null
           query = query
-            .or('document_type.eq.import_declaration,document_type.eq.purchase_order')
-            .not('import_number', 'is', null);
+            .or(
+              "document_type.eq.import_declaration,document_type.eq.purchase_order"
+            )
+            .not("import_number", "is", null);
         } else {
           // Unpaired: document_type is 'purchase_order' AND import_number is null
           query = query
             .eq("document_type", "purchase_order")
             .is("import_number", null);
         }
-          
+
         // Get total count first
         const { data: countData, error: countError } = await query;
-          
+
         if (countError) throw countError;
         const total = countData?.[0]?.count || 0;
-        
+
         // Then get paginated data with the same filter, including document_items
-        let dataQuery = supabase
-          .from("documents")
-          .select(`
+        let dataQuery = supabase.from("documents").select(`
             *,
             document_items(*)
           `);
-          
-        if (filter === 'paired') {
+
+        if (filter === "paired") {
           // Paired: document_type is 'import_declaration' or 'purchase_order' AND import_number is not null
           dataQuery = dataQuery
-            .or('document_type.eq.import_declaration,document_type.eq.purchase_order')
-            .not('import_number', 'is', null);
+            .or(
+              "document_type.eq.import_declaration,document_type.eq.purchase_order"
+            )
+            .not("import_number", "is", null);
         } else {
           // Unpaired: document_type is 'purchase_order' AND import_number is null
           dataQuery = dataQuery
             .eq("document_type", "purchase_order")
             .is("import_number", null);
         }
-        
+
         // Complete the query with ordering and pagination
         const { data, error } = await dataQuery
           .order("created_at", { ascending: false })
           .range(offset, offset + pageSize - 1);
 
         if (error) throw error;
-        
+
         return {
           documents: data as Document[],
-          total
+          total,
         };
       })
       .then((result) => result.data || { documents: [], total: 0 });
   }
 
-  async getAllFilteredDocuments(filter: 'paired' | 'unpaired'): Promise<Document[]> {
+  async getAllFilteredDocuments(
+    filter: "paired" | "unpaired"
+  ): Promise<Document[]> {
     return db
       .query(async () => {
         // Build base query
-        let query = supabase
-          .from("documents")
-          .select(`
+        let query = supabase.from("documents").select(`
             *,
             document_items(*)
           `);
-          
-        if (filter === 'paired') {
+
+        if (filter === "paired") {
           // Paired: document_type is 'import_declaration' or 'purchase_order' AND import_number is not null
           query = query
-            .or('document_type.eq.import_declaration,document_type.eq.purchase_order')
-            .not('import_number', 'is', null);
+            .or(
+              "document_type.eq.import_declaration,document_type.eq.purchase_order"
+            )
+            .not("import_number", "is", null);
         } else {
-          // Unpaired: document_type is 'purchase_order' AND import_number is null  
+          // Unpaired: document_type is 'purchase_order' AND import_number is null
           query = query
             .eq("document_type", "purchase_order")
             .is("import_number", null);
         }
-        
+
         // Get all filtered documents with ordering
         const { data, error } = await query
+          .eq("is_archived", false)
           .order("created_at", { ascending: false });
-          
+
         if (error) throw error;
-        
+
         return data as Document[];
       })
       .then((result) => result.data || []);
@@ -295,18 +321,19 @@ export class DocumentService {
       const { data: urlData } = await supabase.storage
         .from(bucketName)
         .createSignedUrl(id, 3600); // 1 hour expiry
-      
+
       if (!urlData?.signedUrl) return null;
-      
+
       // Create a Document with required fields
       const doc: BucketDocument = {
         id,
         file_path: fileMetadata.name,
         content: urlData.signedUrl,
-        contentType: fileMetadata.metadata?.mimetype || "application/octet-stream",
+        contentType:
+          fileMetadata.metadata?.mimetype || "application/octet-stream",
         binaryFile: true,
       };
-      
+
       return doc;
     });
 
@@ -336,7 +363,7 @@ export class DocumentService {
 
         // Find metadata for the requested files
         const matchingFiles = fileInfo.filter(
-          (file) => ids.includes(file.name) || ids.includes(file.id || '')
+          (file) => ids.includes(file.name) || ids.includes(file.id || "")
         );
 
         if (matchingFiles.length === 0) return [];
@@ -344,19 +371,20 @@ export class DocumentService {
         // Create signed URLs for each matching file
         const documentsPromises = matchingFiles.map(async (fileMetadata) => {
           const fileId = fileMetadata.name;
-          
+
           const { data: urlData } = await supabase.storage
             .from(bucketName)
             .createSignedUrl(fileId, 3600); // 1 hour expiry
-          
+
           if (!urlData?.signedUrl) return null;
-          
+
           // Create a Document with required fields
           return {
             id: fileId,
             file_path: fileMetadata.name,
             content: urlData.signedUrl,
-            contentType: fileMetadata.metadata?.mimetype || "application/octet-stream",
+            contentType:
+              fileMetadata.metadata?.mimetype || "application/octet-stream",
             binaryFile: true,
           };
         });
@@ -365,7 +393,7 @@ export class DocumentService {
         const documents = (await Promise.all(documentsPromises)).filter(
           (doc) => doc !== null
         );
-        
+
         return documents;
       })
       .then((result) => {
@@ -377,7 +405,11 @@ export class DocumentService {
       });
   }
 
-  async searchImportNumbers(searchQuery: string, page: number = 1, pageSize: number = 10): Promise<{ importNumbers: string[]; total: number }> {
+  async searchImportNumbers(
+    searchQuery: string,
+    page: number = 1,
+    pageSize: number = 10
+  ): Promise<{ importNumbers: string[]; total: number }> {
     return db
       .query(async () => {
         // Build base query for counting
@@ -386,17 +418,17 @@ export class DocumentService {
           .select("count", { count: "exact", head: true })
           .not("import_number", "is", null)
           .eq("document_type", "import_declaration");
-          
+
         // Only apply filter if query is not empty
-        const filteredCountQuery = searchQuery ? 
-          countQuery.ilike("import_number", `%${searchQuery}%`) : 
-          countQuery;
-        
+        const filteredCountQuery = searchQuery
+          ? countQuery.ilike("import_number", `%${searchQuery}%`)
+          : countQuery;
+
         // Get total count
         const { count: total, error: countError } = await filteredCountQuery;
-        
+
         if (countError) throw countError;
-        
+
         // Build base query for data
         let dataQuery = supabase
           .from("documents")
@@ -404,32 +436,35 @@ export class DocumentService {
           .not("import_number", "is", null)
           .eq("document_type", "import_declaration")
           .order("import_number", { ascending: true });
-          
+
         // If query is not empty, apply filter without pagination
         // If query is empty, apply pagination without filter
         let filteredDataQuery;
         if (searchQuery) {
-          filteredDataQuery = dataQuery.ilike("import_number", `%${searchQuery}%`);
+          filteredDataQuery = dataQuery.ilike(
+            "import_number",
+            `%${searchQuery}%`
+          );
         } else {
           // Calculate offset based on page and pageSize
           const offset = (page - 1) * pageSize;
           filteredDataQuery = dataQuery.range(offset, offset + pageSize - 1);
         }
-        
+
         // Get results
         const { data, error } = await filteredDataQuery;
 
         if (error) throw error;
-        
+
         // Extract unique import numbers
         const importNumbers = data
-          .map(doc => doc.import_number as string)
-          .filter((value, index, self) => 
-            // Remove duplicates
-            value && self.indexOf(value) === index
+          .map((doc) => doc.import_number as string)
+          .filter(
+            (value, index, self) =>
+              // Remove duplicates
+              value && self.indexOf(value) === index
           );
 
-        
         return { importNumbers, total: total || 0 };
       })
       .then((result) => {
@@ -445,7 +480,7 @@ export class DocumentService {
     id: string,
     documentData: Partial<Document>,
     documentItems: Omit<DocumentItem, "id">[] = []
-  ): Promise<{ document: Document, items: DocumentItem[] } | null> {
+  ): Promise<{ document: Document; items: DocumentItem[] } | null> {
     return db
       .query(async () => {
         try {
@@ -456,41 +491,41 @@ export class DocumentService {
               .update(documents)
               .set({
                 ...documentData,
-                updated_at: new Date()
+                updated_at: new Date(),
               })
               .where(eq(documents.id, id))
               .returning();
-              
+
             if (!updatedDocuments || updatedDocuments.length === 0) {
               throw new Error("Document update failed");
             }
-            
+
             const updatedDocument = updatedDocuments[0] as Document;
-            
+
             // Step 2: If we have document items, handle them
             let updatedItems: DocumentItem[] = [];
-            
+
             if (documentItems.length > 0) {
               // Delete existing items
               await tx
                 .delete(document_items)
                 .where(eq(document_items.document_id, id));
-                
+
               // Insert new items
-              const itemsWithDocId = documentItems.map(item => ({
+              const itemsWithDocId = documentItems.map((item) => ({
                 ...item,
-                document_id: id
+                document_id: id,
               }));
-              
-              updatedItems = await tx
+
+              updatedItems = (await tx
                 .insert(document_items)
                 .values(itemsWithDocId)
-                .returning() as DocumentItem[];
+                .returning()) as DocumentItem[];
             }
-            
+
             return {
               document: updatedDocument,
-              items: updatedItems
+              items: updatedItems,
             };
           });
         } catch (error) {
@@ -504,12 +539,38 @@ export class DocumentService {
   async deleteDocument(id: string): Promise<boolean> {
     return db
       .query(async () => {
-        const { error } = await supabase
+        // First get the document to retrieve file_path
+        const { data: document, error: getError } = await supabase
+          .from("documents")
+          .select("file_path, status")
+          .eq("id", id)
+          .single();
+
+        if (getError) throw getError;
+        if (!document) throw new Error("Document not found");
+
+        // Only allow deletion of not_approved documents
+        if (document.status !== "not_approved") {
+          throw new Error("Only documents with status 'not_approved' can be deleted");
+        }
+
+        // Delete from storage first
+        const { error: storageError } = await supabase.storage
+          .from(DOCUMENT_BUCKET_NAME)
+          .remove([document.file_path]);
+
+        if (storageError) {
+          console.warn("Failed to delete file from storage:", storageError);
+          // Continue with database deletion even if storage deletion fails
+        }
+
+        // Delete from database
+        const { error: deleteError } = await supabase
           .from("documents")
           .delete()
           .eq("id", id);
 
-        if (error) throw error;
+        if (deleteError) throw deleteError;
         return true;
       })
       .then((result) => (result.error ? false : true));
@@ -520,15 +581,14 @@ export class DocumentService {
       .query(async () => {
         try {
           // Get documents from bucket
-          const { data: bucketFiles, error: bucketError } = await supabase.storage
-            .from(DOCUMENT_BUCKET_NAME)
-            .list("", {
+          const { data: bucketFiles, error: bucketError } =
+            await supabase.storage.from(DOCUMENT_BUCKET_NAME).list("", {
               sortBy: { column: "created_at", order: "desc" },
             });
 
           if (bucketError) {
-              console.error("Error of refreshDocuments(), ", bucketError);
-              return null;
+            console.error("Error of refreshDocuments(), ", bucketError);
+            return null;
           }
           if (!bucketFiles || bucketFiles.length === 0) {
             return { added: 0 };
@@ -536,8 +596,10 @@ export class DocumentService {
 
           // Extract valid file names from bucket files
           const fileNames = bucketFiles
-            .filter(file => file.name && file.name !== ".emptyFolderPlaceholder")
-            .map(file => file.name);
+            .filter(
+              (file) => file.name && file.name !== ".emptyFolderPlaceholder"
+            )
+            .map((file) => file.name);
 
           if (fileNames.length === 0) {
             return { added: 0 };
@@ -550,60 +612,69 @@ export class DocumentService {
             .in("file_path", fileNames);
 
           if (listError) {
-              console.error("Error of refreshDocuments(), ", listError);
-              return null;
+            console.error("Error of refreshDocuments(), ", listError);
+            return null;
           }
-          
+
           // Find files that don't exist in the database
           const existingFilePaths = new Set(
-            existingDocs?.map(doc => doc.file_path) || []
+            existingDocs?.map((doc) => doc.file_path) || []
           );
-          
-          const missingFiles = fileNames.filter(name => !existingFilePaths.has(name));
-          
+
+          const missingFiles = fileNames.filter(
+            (name) => !existingFilePaths.has(name)
+          );
+
           if (missingFiles.length === 0) {
             return { added: 0 };
           }
-          
+
           // Create documents for missing files
-          const newDocuments = missingFiles.map(fileName => {
-            const bucketFile = bucketFiles.find(file => file.name === fileName);
+          const newDocuments = missingFiles.map((fileName) => {
+            const bucketFile = bucketFiles.find(
+              (file) => file.name === fileName
+            );
             return {
               file_path: fileName,
               status: "not_approved",
-              created_at: bucketFile?.created_at ? new Date(bucketFile.created_at) : new Date()
+              created_at: bucketFile?.created_at
+                ? new Date(bucketFile.created_at)
+                : new Date(),
             };
           });
-          
+
           // Insert the new documents
           const { error: insertError } = await supabase
             .from("documents")
             .insert(newDocuments)
             .select();
-            
+
           if (insertError) {
-              console.error("Error from ", insertError);
-              return null;
+            console.error("Error from ", insertError);
+            return null;
           }
-          
+
           return { added: newDocuments.length };
         } catch (error) {
           console.error("Error refreshing documents:", error);
           throw error;
         }
       })
-      .then(result => {
+      .then((result) => {
         if (result.error) {
-          return { 
-            added: 0, 
-            error: result.error.message
+          return {
+            added: 0,
+            error: result.error.message,
           };
         }
         return result.data || { added: 0 };
       });
   }
 
-  async updateDocumentImportNumber(id: string, importNumber: string): Promise<Document | null> {
+  async updateDocumentImportNumber(
+    id: string,
+    importNumber: string
+  ): Promise<Document | null> {
     return db
       .query(async () => {
         try {
@@ -614,23 +685,23 @@ export class DocumentService {
               .update(documents)
               .set({
                 import_number: importNumber,
-                updated_at: new Date()
+                updated_at: new Date(),
               })
               .where(eq(documents.id, id))
               .returning();
-              
+
             if (!updatedDocuments || updatedDocuments.length === 0) {
               throw new Error("Document update failed");
             }
-            
+
             // Step 2: Update any related csv_records with the new import number
             await tx
               .update(csv_records)
               .set({
-                import_doc_num: importNumber
+                import_doc_num: importNumber,
               })
               .where(eq(csv_records.document_id, id));
-            
+
             return updatedDocuments[0] as Document;
           });
         } catch (error) {
@@ -641,7 +712,91 @@ export class DocumentService {
       .then((result) => result.data || null);
   }
 
-  async uploadDocumentToBucket(file: File): Promise<{ path: string; error?: string } | null> {
+  async markDocumentsAsExported(documentIds: string[]): Promise<boolean> {
+    return db
+      .query(async () => {
+        try {
+          const { error } = await supabase
+            .from("documents")
+            .update({
+              is_exported: true,
+              updated_at: new Date().toISOString(),
+            })
+            .in("id", documentIds);
+
+          if (error) {
+            console.error("Error marking documents as exported:", error);
+            return false;
+          }
+
+          return true;
+        } catch (error) {
+          console.error("Failed to mark documents as exported:", error);
+          return false;
+        }
+      })
+      .then((result) => result.data || false);
+  }
+
+  async markDocumentsAsArchived(documentIds: string[]): Promise<boolean> {
+    return db
+      .query(async () => {
+        try {
+          // First, verify that all documents have is_exported = true
+          const { data: documents, error: queryError } = await supabase
+            .from("documents")
+            .select("id, is_exported, document_type")
+            .in("id", documentIds);
+
+          if (queryError) {
+            console.error(
+              "Error querying documents for export status:",
+              queryError
+            );
+            return false;
+          }
+
+          // Check if any document is not exported
+          const notExportedDocs =
+            documents?.filter(
+              (doc) =>
+                !doc.is_exported && doc.document_type === "purchase_order"
+            ) || [];
+          if (notExportedDocs.length > 0) {
+            console.error(
+              `Cannot archive documents. The following documents are not exported: ${notExportedDocs
+                .map((doc) => doc.id)
+                .join(", ")}`
+            );
+            return false;
+          }
+
+          // All documents are exported, proceed with archiving
+          const { error } = await supabase
+            .from("documents")
+            .update({
+              is_archived: true,
+              updated_at: new Date().toISOString(),
+            })
+            .in("id", documentIds);
+
+          if (error) {
+            console.error("Error marking documents as archived:", error);
+            return false;
+          }
+
+          return true;
+        } catch (error) {
+          console.error("Failed to mark documents as archived:", error);
+          return false;
+        }
+      })
+      .then((result) => result.data || false);
+  }
+
+  async uploadDocumentToBucket(
+    file: File
+  ): Promise<{ path: string; error?: string } | null> {
     return db
       .query(async () => {
         try {
@@ -651,16 +806,16 @@ export class DocumentService {
             .upload(file.name, file);
 
           if (error) {
-              console.error("Error from uploadDocumentToBucket", error)
-              return null;
+            console.error("Error from uploadDocumentToBucket", error);
+            return null;
           }
-          
+
           return { path: data.path };
         } catch (error) {
           console.error("Error uploading document:", error);
-          return { 
-            path: "", 
-            error: error instanceof Error ? error.message : String(error) 
+          return {
+            path: "",
+            error: error instanceof Error ? error.message : String(error),
           };
         }
       })
@@ -671,20 +826,20 @@ export class DocumentService {
     try {
       // Create a FormData object for the AI service request
       const formData = new FormData();
-      formData.append('image_file', imageFile);
-      
+      formData.append("image_file", imageFile);
+
       // Make the request to the external OCR endpoint
       const response = await fetch(`${AI_SERVICE_CONFIG.URL}/api/image_ocr`, {
-        method: 'POST',
+        method: "POST",
         body: formData,
       });
-      
+
       if (!response.ok) {
         const errorText = await response.text();
         console.error(`External API error: ${response.status} - ${errorText}`);
         return null;
       }
-      
+
       // Return the OCR result
       return await response.json();
     } catch (error) {
@@ -693,30 +848,37 @@ export class DocumentService {
     }
   }
 
-  async uploadPdfToExternal(pdfFile: File): Promise<{ body: ReadableStream<Uint8Array> | null; headers: Headers; status: number } | null> {
+  async uploadPdfToExternal(pdfFile: File): Promise<{
+    body: ReadableStream<Uint8Array> | null;
+    headers: Headers;
+    status: number;
+  } | null> {
     try {
       // Create a FormData object for the AI service request
       const formData = new FormData();
-      formData.append('pdf', pdfFile);
-      formData.append('get_ocr', 'true');
+      formData.append("pdf", pdfFile);
+      formData.append("get_ocr", "true");
 
       // Make the request to the external PDF to images endpoint
-      const response = await fetch(`${AI_SERVICE_CONFIG.URL}/api/pdf_to_images`, {
-        method: 'POST',
-        body: formData,
-      });
-      
+      const response = await fetch(
+        `${AI_SERVICE_CONFIG.URL}/api/pdf_to_images`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
       if (!response.ok) {
         const errorText = await response.text();
         console.error(`External API error: ${response.status} - ${errorText}`);
         return null;
       }
-      
+
       // Return the response data needed to construct the final response
       return {
         body: response.body,
         headers: response.headers,
-        status: response.status
+        status: response.status,
       };
     } catch (error) {
       console.error("PDF to images service error:", error);
@@ -724,17 +886,30 @@ export class DocumentService {
     }
   }
 
-  async pdfFullARD(pdfFile: File | null = null, documentType: string, prompt: string, raw: string | null = null): Promise<Partial<DocumentWithItems> | null> {
+  async pdfFullARD(
+    pdfFile: File | null = null,
+    documentType: string,
+    prompt: string,
+    raw: string | null = null
+  ): Promise<Partial<DocumentWithItems> | null> {
     try {
       const aiInferenceService = new AIInferenceService();
-      
+
       let responseDocument;
       if (pdfFile) {
         // Use the AIInferenceService to run the inference
-        responseDocument = await aiInferenceService.runInference(pdfFile, documentType, prompt);
+        responseDocument = await aiInferenceService.runInference(
+          pdfFile,
+          documentType,
+          prompt
+        );
       } else if (raw) {
         // Use the AIInferenceService to run inference on raw text
-        responseDocument = await aiInferenceService.runInferenceByRaw(raw, documentType, prompt);
+        responseDocument = await aiInferenceService.runInferenceByRaw(
+          raw,
+          documentType,
+          prompt
+        );
       } else {
         throw new Error("Either pdfFile or raw must be provided");
       }
@@ -744,9 +919,12 @@ export class DocumentService {
         const payload: POTrainingData = {
           Doc_type: documentType,
           content: responseDocument.t_page_texts,
-          annotations: responseDocument as POAnnotation[]
-        }
-        document = toPODocumentFromAnnotation(payload, responseDocument.t_page_texts);
+          annotations: responseDocument as POAnnotation[],
+        };
+        document = toPODocumentFromAnnotation(
+          payload,
+          responseDocument.t_page_texts
+        );
         if (document) {
           document.document_type = "purchase_order";
         }
@@ -754,9 +932,12 @@ export class DocumentService {
         const payload: ImportTrainingData = {
           Doc_type: documentType,
           content: responseDocument.t_page_texts,
-          annotations: responseDocument as ImportAnnotation[]
-        }
-        document = toImportDocumentFromAnnotation(payload, responseDocument.t_page_texts);
+          annotations: responseDocument as ImportAnnotation[],
+        };
+        document = toImportDocumentFromAnnotation(
+          payload,
+          responseDocument.t_page_texts
+        );
         if (document) {
           document.document_type = "import_declaration";
         }

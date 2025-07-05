@@ -22,6 +22,7 @@ export const users = pgTable("users", {
   updated_at: timestamp("updated_at", { withTimezone: true }).defaultNow(),
 });
 
+// For Full ARD only
 export const customers = pgTable("customers", {
   id: uuid("id")
     .primaryKey()
@@ -34,6 +35,17 @@ export const customers = pgTable("customers", {
   customer_info_hash: varchar({ length: 255 }).unique(),
   t_bind_path: varchar({ length: 255 }),
   t_model_name: varchar({ length: 255 }),
+  created_at: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  updated_at: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+});
+
+export const new_customers = pgTable("new_customers", {
+  id: uuid("id")
+    .primaryKey()
+    .default(sql`gen_random_uuid()`),
+  customer_name: varchar({ length: 255 }).notNull(),
+  customer_code: varchar({ length: 255 }).notNull(),
+  co_code: varchar({ length: 255 }).notNull(),
   created_at: timestamp("created_at", { withTimezone: true }).defaultNow(),
   updated_at: timestamp("updated_at", { withTimezone: true }).defaultNow(),
 });
@@ -52,7 +64,7 @@ export const documents = pgTable("documents", {
   status: varchar({ length: 255 }).$type<"approved" | "not_approved">(),
   scanned_time: timestamp("scanned_time", { withTimezone: true }),
   end_user_customer_name: varchar({ length: 255 }),
-  end_user_customer_number: varchar({ length: 255 }),
+  customer_number: varchar({ length: 255 }),
   work_scope: varchar({ length: 255 }),
   arc_requirement: varchar({ length: 255 }),
   receive_date: timestamp("receive_date", { withTimezone: true }),
@@ -218,6 +230,7 @@ export const ttv_results = pgTable("ttv_results", {
 
 export type User = typeof users.$inferSelect;
 export type Customer = typeof customers.$inferSelect;
+export type NewCustomer = typeof new_customers.$inferSelect;
 export type Document = typeof documents.$inferSelect;
 export type DocumentItem = typeof document_items.$inferSelect;
 export type ArcRule = typeof arc_rules.$inferSelect;

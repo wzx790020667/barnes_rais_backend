@@ -74,6 +74,37 @@ export class WorkScopeRuleService {
       .then((result) => result.data || { workScopeRules: [], total: 0 });
   }
 
+  async searchWorkScopeRules(page: number, pageSize: number, query: string): Promise<{ workScopeRules: WorkScopeRule[]; total: number }> {
+    return db
+      .query(async () => {
+        // Calculate offset based on page and pageSize
+        const offset = (page - 1) * pageSize;
+        
+        // Get total count first with search filter
+        const { data: countData, error: countError } = await supabase
+          .from("work_scope_rules")
+          .select("count", { count: "exact" })
+          .or(`overhaul_keywords.ilike.%${query}%,result_display.ilike.%${query}%`);
+          
+        if (countError) throw countError;
+        
+        // Get paginated results with search filter
+        const { data, error } = await supabase
+          .from("work_scope_rules")
+          .select("*")
+          .or(`overhaul_keywords.ilike.%${query}%,result_display.ilike.%${query}%`)
+          .range(offset, offset + pageSize - 1);
+          
+        if (error) throw error;
+        
+        return { 
+          workScopeRules: data as WorkScopeRule[], 
+          total: countData?.[0]?.count || 0 
+        };
+      })
+      .then((result) => result.data || { workScopeRules: [], total: 0 });
+  }
+
   async createWorkScopeRule(
     workScopeRule: Omit<WorkScopeRule, "id" | "created_at" | "updated_at">
   ): Promise<WorkScopeRule | null> {
@@ -123,4 +154,4 @@ export class WorkScopeRuleService {
       })
       .then((result) => result.error ? false : true);
   }
-} 
+}

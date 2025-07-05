@@ -19,10 +19,14 @@ export class PartNumberRuleController {
         );
       }
 
-      const partNumberRule = await this.partNumberRuleService.getPartNumberRuleById(id);
+      const partNumberRule =
+        await this.partNumberRuleService.getPartNumberRuleById(id);
 
       if (!partNumberRule) {
-        return Response.json({ error: "Part Number Rule not found" }, { status: 404 });
+        return Response.json(
+          { error: "Part Number Rule not found" },
+          { status: 404 }
+        );
       }
 
       return Response.json(partNumberRule);
@@ -40,7 +44,7 @@ export class PartNumberRuleController {
       const url = new URL(req.url);
       const page = parseInt(url.searchParams.get("page") || "1");
       const pageSize = parseInt(url.searchParams.get("pageSize") || "10");
-      
+
       // Validate page and limit
       if (isNaN(page) || page < 1) {
         return Response.json(
@@ -48,29 +52,77 @@ export class PartNumberRuleController {
           { status: 400 }
         );
       }
-      
-      if (isNaN(pageSize) || pageSize < 1 || pageSize > 100) {
+
+      if (isNaN(pageSize) || pageSize < 1 || pageSize > 200) {
         return Response.json(
-          { error: "Invalid pageSize parameter. Must be between 1 and 100" },
+          { error: "Invalid pageSize parameter. Must be between 1 and 200" },
           { status: 400 }
         );
       }
-      
-      const result = await this.partNumberRuleService.getPartNumberRules(page, pageSize);
-      
+
+      const result = await this.partNumberRuleService.getPartNumberRules(
+        page,
+        pageSize
+      );
+
       return Response.json({
         data: result.partNumberRules,
         pagination: {
           total: result.total,
           page,
           pageSize,
-          totalPages: Math.ceil(result.total / pageSize)
-        }
+          totalPages: Math.ceil(result.total / pageSize),
+        },
       });
     } catch (error) {
       console.error("Get part number rules error:", error);
       return Response.json(
         { error: "Failed to get part number rules" },
+        { status: 500 }
+      );
+    }
+  }
+
+  async searchPartNumberRules(req: Request): Promise<Response> {
+    try {
+      const url = new URL(req.url);
+      const page = parseInt(url.searchParams.get("page") || "1");
+      const pageSize = parseInt(url.searchParams.get("pageSize") || "10");
+      const query = url.searchParams.get("query") || "";
+
+      if (page < 1 || pageSize < 1 || pageSize > 200) {
+        return Response.json(
+          { error: "Invalid page or pageSize parameters" },
+          { status: 400 }
+        );
+      }
+
+      if (!query.trim()) {
+        return Response.json(
+          { error: "Search query is required" },
+          { status: 400 }
+        );
+      }
+
+      const result = await this.partNumberRuleService.searchPartNumberRules(
+        page,
+        pageSize,
+        query
+      );
+
+      return Response.json({
+        data: result.partNumberRules,
+        pagination: {
+          total: result.total,
+          page,
+          pageSize,
+          totalPages: Math.ceil(result.total / pageSize),
+        },
+      });
+    } catch (error) {
+      console.error("Search part number rules error:", error);
+      return Response.json(
+        { error: "Failed to search part number rules" },
         { status: 500 }
       );
     }
@@ -87,10 +139,11 @@ export class PartNumberRuleController {
         );
       }
 
-      const partNumberRule = await this.partNumberRuleService.createPartNumberRule({
-        part_number: partNumberRuleData.part_number,
-        product_code: partNumberRuleData.product_code
-      });
+      const partNumberRule =
+        await this.partNumberRuleService.createPartNumberRule({
+          part_number: partNumberRuleData.part_number,
+          product_code: partNumberRuleData.product_code,
+        });
 
       if (!partNumberRule) {
         return Response.json(
@@ -122,10 +175,11 @@ export class PartNumberRuleController {
       }
 
       const partNumberRuleData = await req.json();
-      const updatedPartNumberRule = await this.partNumberRuleService.updatePartNumberRule(
-        id,
-        partNumberRuleData
-      );
+      const updatedPartNumberRule =
+        await this.partNumberRuleService.updatePartNumberRule(
+          id,
+          partNumberRuleData
+        );
 
       if (!updatedPartNumberRule) {
         return Response.json(
@@ -174,4 +228,4 @@ export class PartNumberRuleController {
       );
     }
   }
-} 
+}

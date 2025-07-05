@@ -353,6 +353,8 @@ export class DocumentController {
         csn: validatedData.csn || null,
         status: "approved",
         from_full_ard: validatedData.from_full_ard || false,
+        is_exported: false,
+        is_archived: false,
         t_page_texts:
           validatedData.t_page_texts !== undefined
             ? validatedData.t_page_texts
@@ -489,6 +491,23 @@ export class DocumentController {
       return Response.json({ success: true });
     } catch (error) {
       console.error("Delete document error:", error);
+      
+      // Handle specific error messages
+      if (error instanceof Error) {
+        if (error.message.includes("not_approved")) {
+          return Response.json(
+            { error: "Only documents with status 'not_approved' can be deleted" },
+            { status: 403 }
+          );
+        }
+        if (error.message === "Document not found") {
+          return Response.json(
+            { error: "Document not found" },
+            { status: 404 }
+          );
+        }
+      }
+      
       return Response.json(
         { error: "Failed to delete document" },
         { status: 500 }
@@ -572,12 +591,20 @@ export class DocumentController {
 
       // Parse the request body
       const body = await req.json();
-      const { ids } = body;
+      const { ids, uuids } = body;
 
       // Validate IDs are provided and are in array format
       if (!ids || !Array.isArray(ids) || ids.length === 0) {
         return Response.json(
           { error: "Document IDs array is required" },
+          { status: 400 }
+        );
+      }
+
+      // Validate UUIDs are provided and are in array format
+      if (!uuids || !Array.isArray(uuids) || uuids.length === 0) {
+        return Response.json(
+          { error: "Document UUIDs array is required" },
           { status: 400 }
         );
       }
@@ -597,6 +624,12 @@ export class DocumentController {
           { documents: [], message: "No matching documents found in bucket" },
           { status: 200 }
         );
+      }
+
+      // Mark documents as archived after successful retrieval
+      const archiveSuccess = await this.documentService.markDocumentsAsArchived(uuids);
+      if (!archiveSuccess) {
+        console.warn("Failed to mark some documents as archived, but document retrieval was successful");
       }
 
       return Response.json(documents);

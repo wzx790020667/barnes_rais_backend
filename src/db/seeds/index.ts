@@ -7,6 +7,7 @@ import { seedEngineModelRules } from './engine-model-rules';
 import { seedWorkScopeRules } from './work-scope-rules';
 import { seedPartNumberRules } from './part-number-rules';
 import { seedCustomers } from './customers';
+import { seedNewCustomers } from './new-customers';
 
 /**
  * Main seeding function that orchestrates the database seeding process
@@ -32,6 +33,7 @@ async function main() {
     const seedFunctions = [
       { name: 'Users', fn: seedUsers },
       { name: 'Customers', fn: seedCustomers },
+      { name: 'New Customers', fn: seedNewCustomers },
       { name: 'ARC Rules', fn: seedArcRules },
       { name: 'Engine Model Rules', fn: seedEngineModelRules },
       { name: 'Work Scope Rules', fn: seedWorkScopeRules },

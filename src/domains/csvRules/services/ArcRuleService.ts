@@ -77,6 +77,37 @@ export class ArcRuleService {
       .then((result) => result.data || { arcRules: [], total: 0 });
   }
 
+  async searchArcRules(page: number, pageSize: number, query: string): Promise<{ arcRules: ArcRule[]; total: number }> {
+    return db
+      .query(async () => {
+        // Calculate offset based on page and pageSize
+        const offset = (page - 1) * pageSize;
+        
+        // Get total count first with search filter
+        const { data: countData, error: countError } = await supabase
+          .from("arc_rules")
+          .select("count", { count: "exact" })
+          .or(`arc_appearance.ilike.%${query}%,result_display.ilike.%${query}%`);
+          
+        if (countError) throw countError;
+        
+        // Get paginated results with search filter
+        const { data, error } = await supabase
+          .from("arc_rules")
+          .select("*")
+          .or(`arc_appearance.ilike.%${query}%,result_display.ilike.%${query}%`)
+          .range(offset, offset + pageSize - 1);
+          
+        if (error) throw error;
+        
+        return { 
+          arcRules: data as ArcRule[], 
+          total: countData?.[0]?.count || 0 
+        };
+      })
+      .then((result) => result.data || { arcRules: [], total: 0 });
+  }
+
   async createArcRule(
     arcRule: Omit<ArcRule, "id" | "created_at" | "updated_at">
   ): Promise<ArcRule | null> {
@@ -126,4 +157,4 @@ export class ArcRuleService {
       })
       .then((result) => result.error ? false : true);
   }
-} 
+}

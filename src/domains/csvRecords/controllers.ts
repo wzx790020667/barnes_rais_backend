@@ -3,6 +3,7 @@ import { EngineModelRuleService } from "../csvRules/services/EngineModelRuleServ
 import { PartNumberRuleService } from "../csvRules/services/PartNumberRuleService";
 import { WorkScopeRuleService } from "../csvRules/services/WorkScopeRuleService";
 import { CsvRecordService } from "./services";
+import { DocumentService } from "../documents/services";
 import {
   replaceByArcRule,
   replaceByEngineModelRule,
@@ -14,6 +15,7 @@ import moment from "moment-timezone";
 
 export class CsvRecordController {
   private csvRecordService: CsvRecordService;
+  private documentService: DocumentService;
   private arcRuleService: ArcRuleService;
   private engineModelRuleService: EngineModelRuleService;
   private workScopeRuleService: WorkScopeRuleService;
@@ -21,6 +23,7 @@ export class CsvRecordController {
 
   constructor() {
     this.csvRecordService = new CsvRecordService();
+    this.documentService = new DocumentService();
     this.arcRuleService = new ArcRuleService();
     this.engineModelRuleService = new EngineModelRuleService();
     this.workScopeRuleService = new WorkScopeRuleService();
@@ -99,6 +102,12 @@ export class CsvRecordController {
           .tz("Asia/Taipei")
           .format("MM/DD/YYYY");
       });
+
+      // Mark documents as exported after successful processing
+      const exportSuccess = await this.documentService.markDocumentsAsExported(documentIds);
+      if (!exportSuccess) {
+        console.warn("Failed to mark some documents as exported, but CSV export was successful");
+      }
 
       return Response.json(records);
     } catch (error) {
