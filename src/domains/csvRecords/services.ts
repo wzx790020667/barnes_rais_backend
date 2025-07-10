@@ -34,7 +34,7 @@ export class CsvRecordService {
         .filter(
           ({ item }) =>
             item.part_number === partNumber &&
-            item.quantity_ordered === quantity
+            Number(extractDigits(item.quantity_ordered || "")) === Number(extractDigits(quantity || ""))
         );
 
       if (matchingImportItemsWithIndices.length === 0)
