@@ -40,38 +40,38 @@ export class PartNumberRuleService {
         const { data: countData, error: countError } = await supabase
           .from("part_number_rules")
           .select("count", { count: "exact" });
-          
+
         if (countError) throw countError;
-        
+
         // If both page and pageSize are null, return all results without pagination
         if (page === null && pageSize === null) {
           const { data, error } = await supabase
             .from("part_number_rules")
             .select("*");
-            
+
           if (error) throw error;
-          
-          return { 
-            partNumberRules: data as PartNumberRule[], 
-            total: countData?.[0]?.count || 0 
+
+          return {
+            partNumberRules: data as PartNumberRule[],
+            total: countData?.[0]?.count || 0,
           };
         }
-        
+
         // Otherwise, apply pagination
         // Calculate offset based on page and pageSize
         const offset = (page! - 1) * pageSize!;
-        
+
         // Get paginated results
         const { data, error } = await supabase
           .from("part_number_rules")
           .select("*")
           .range(offset, offset + pageSize! - 1);
-          
+
         if (error) throw error;
-        
-        return { 
-          partNumberRules: data as PartNumberRule[], 
-          total: countData?.[0]?.count || 0 
+
+        return {
+          partNumberRules: data as PartNumberRule[],
+          total: countData?.[0]?.count || 0,
         };
       })
       .then((result) => result.data || { partNumberRules: [], total: 0 });
@@ -88,33 +88,34 @@ export class PartNumberRuleService {
         const { count, error: countError } = await supabase
           .from("part_number_rules")
           .select("*", { count: "exact", head: true })
-          .or(`part_number.ilike.%${query}%,product_code.ilike.%${query}%`);
+          .or(`part_number.ilike.%${query}%`);
 
         if (countError) throw countError;
 
         // Calculate offset based on page and pageSize
         const offset = (page - 1) * pageSize;
-        
+
         // Get paginated search results
         const { data, error } = await supabase
           .from("part_number_rules")
           .select("*")
-          .or(`part_number.ilike.%${query}%,product_code.ilike.%${query}%`)
+          .or(`part_number.ilike.%${query}%`)
           .range(offset, offset + pageSize - 1);
-          
+
         if (error) throw error;
-        
-        return { 
-          partNumberRules: data as PartNumberRule[], 
-          total: count || 0 
+
+        return {
+          partNumberRules: data as PartNumberRule[],
+          total: count || 0,
         };
       })
       .then((result) => result.data || { partNumberRules: [], total: 0 });
   }
 
-  async createPartNumberRule(
-    partNumberRule: { part_number: string; product_code: string }
-  ): Promise<PartNumberRule | null> {
+  async createPartNumberRule(partNumberRule: {
+    part_number: string;
+    product_code: string;
+  }): Promise<PartNumberRule | null> {
     return db
       .query(async () => {
         const { data, error } = await supabase
@@ -159,6 +160,6 @@ export class PartNumberRuleService {
         if (error) throw error;
         return true;
       })
-      .then((result) => result.error ? false : true);
+      .then((result) => (result.error ? false : true));
   }
 }

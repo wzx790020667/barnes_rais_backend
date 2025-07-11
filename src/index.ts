@@ -492,6 +492,14 @@ const apiRoutes = {
         )
       ),
   },
+  "/api/new-customers/all": {
+    GET: async (req) =>
+      addCorsHeaders(
+        await authMiddleware.requireAuth(req, (req) =>
+          newCustomerController.getAllNewCustomers(req)
+        )
+      ),
+  },
   "/api/new-customers/search": {
     GET: async (req) =>
       addCorsHeaders(
@@ -560,6 +568,14 @@ const apiRoutes = {
         )
       ),
   },
+  "/api/arc-rules/all": {
+    GET: async (req) =>
+      addCorsHeaders(
+        await authMiddleware.requireAuth(req, (req) =>
+          arcRuleController.getAllArcRules(req)
+        )
+      ),
+  },
   "/api/arc-rules/:id": {
     GET: async (req) =>
       addCorsHeaders(
@@ -601,6 +617,14 @@ const apiRoutes = {
       addCorsHeaders(
         await authMiddleware.requireAuth(req, (req) =>
           engineModelRuleController.searchEngineModelRules(req)
+        )
+      ),
+  },
+  "/api/engine-model-rules/all": {
+    GET: async (req) =>
+      addCorsHeaders(
+        await authMiddleware.requireAuth(req, (req) =>
+          engineModelRuleController.getAllEngineModelRules(req)
         )
       ),
   },
@@ -648,6 +672,14 @@ const apiRoutes = {
         )
       ),
   },
+  "/api/work-scope-rules/all": {
+    GET: async (req) =>
+      addCorsHeaders(
+        await authMiddleware.requireAuth(req, (req) =>
+          workScopeRuleController.getAllWorkScopeRules(req)
+        )
+      ),
+  },
   "/api/work-scope-rules/:id": {
     GET: async (req) =>
       addCorsHeaders(
@@ -689,6 +721,14 @@ const apiRoutes = {
       addCorsHeaders(
         await authMiddleware.requireAuth(req, (req) =>
           partNumberRuleController.searchPartNumberRules(req)
+        )
+      ),
+  },
+  "/api/part-number-rules/all": {
+    GET: async (req) =>
+      addCorsHeaders(
+        await authMiddleware.requireAuth(req, (req) =>
+          partNumberRuleController.getAllPartNumberRules(req)
         )
       ),
   },

@@ -40,7 +40,7 @@ const createDocumentSchema = z.object({
   import_number: z.string().optional().nullable(),
   po_number: z.string().optional().nullable(),
   end_user_customer_name: z.string().optional().nullable(),
-  end_user_customer_number: z.string().optional().nullable(),
+  customer_number: z.string().optional().nullable(),
   work_scope: z.string().optional().nullable(),
   arc_requirement: z.string().optional().nullable(),
   receive_date: z.string().optional().nullable(),
@@ -342,8 +342,7 @@ export class DocumentController {
         import_number: validatedData.import_number || null,
         po_number: validatedData.po_number || null,
         end_user_customer_name: validatedData.end_user_customer_name || null,
-        end_user_customer_number:
-          validatedData.end_user_customer_number || null,
+        customer_number: validatedData.customer_number || null,
         work_scope: validatedData.work_scope || null,
         arc_requirement: validatedData.arc_requirement || null,
         receive_date: validatedData.receive_date
@@ -491,12 +490,14 @@ export class DocumentController {
       return Response.json({ success: true });
     } catch (error) {
       console.error("Delete document error:", error);
-      
+
       // Handle specific error messages
       if (error instanceof Error) {
         if (error.message.includes("not_approved")) {
           return Response.json(
-            { error: "Only documents with status 'not_approved' can be deleted" },
+            {
+              error: "Only documents with status 'not_approved' can be deleted",
+            },
             { status: 403 }
           );
         }
@@ -507,7 +508,7 @@ export class DocumentController {
           );
         }
       }
-      
+
       return Response.json(
         { error: "Failed to delete document" },
         { status: 500 }
@@ -627,9 +628,13 @@ export class DocumentController {
       }
 
       // Mark documents as archived after successful retrieval
-      const archiveSuccess = await this.documentService.markDocumentsAsArchived(uuids);
+      const archiveSuccess = await this.documentService.markDocumentsAsArchived(
+        uuids
+      );
       if (!archiveSuccess) {
-        console.warn("Failed to mark some documents as archived, but document retrieval was successful");
+        console.warn(
+          "Failed to mark some documents as archived, but document retrieval was successful"
+        );
       }
 
       return Response.json(documents);

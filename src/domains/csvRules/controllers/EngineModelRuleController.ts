@@ -226,4 +226,14 @@ export class EngineModelRuleController {
       );
     }
   }
+
+  async getAllEngineModelRules(req: Request): Promise<Response> {
+    try {
+      const engineModelRules = await this.engineModelRuleService.getAllEngineModelRules();
+      return Response.json({ data: engineModelRules });
+    } catch (error) {
+      console.error("Error getting all engine model rules:", error);
+      return Response.json({ error: "Internal server error" }, { status: 500 });
+    }
+  }
 }

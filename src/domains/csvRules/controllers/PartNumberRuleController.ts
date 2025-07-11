@@ -228,4 +228,14 @@ export class PartNumberRuleController {
       );
     }
   }
+
+  async getAllPartNumberRules(req: Request): Promise<Response> {
+    try {
+      const partNumberRules = await this.partNumberRuleService.getAllPartNumberRules();
+      return Response.json({ data: partNumberRules });
+    } catch (error) {
+      console.error("Error getting all part number rules:", error);
+      return Response.json({ error: "Internal server error" }, { status: 500 });
+    }
+  }
 }

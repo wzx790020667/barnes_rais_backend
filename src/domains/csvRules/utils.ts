@@ -56,9 +56,17 @@ export const replaceByMultipleArcRules = (
 
   // 如果有匹配结果，按位置排序后用/分隔符连接
   if (matchedResults.length > 0) {
+    const uniqueResults = new Set<string>();
     return matchedResults
       .sort((a, b) => a.position - b.position)
       .map(item => item.result)
+      .filter(result => {
+        if (uniqueResults.has(result)) {
+          return false;
+        }
+        uniqueResults.add(result);
+        return true;
+      })
       .join('/');
   }
 

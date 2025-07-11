@@ -223,4 +223,14 @@ export class ArcRuleController {
       );
     }
   }
+
+  async getAllArcRules(req: Request): Promise<Response> {
+    try {
+      const arcRules = await this.arcRuleService.getAllArcRules();
+      return Response.json({ data: arcRules });
+    } catch (error) {
+      console.error("Error getting all arc rules:", error);
+      return Response.json({ error: "Internal server error" }, { status: 500 });
+    }
+  }
 }

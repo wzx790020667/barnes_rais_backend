@@ -79,8 +79,7 @@ export class DocumentService {
 
         // Complete the query with ordering and pagination
         const { data, error } = await dataQuery
-          .order("scanned_time", { ascending: false })
-          .order("id", { ascending: true })
+          .order("created_at", { ascending: false })
           .range(offset, offset + pageSize - 1);
 
         if (error) throw error;
@@ -551,7 +550,9 @@ export class DocumentService {
 
         // Only allow deletion of not_approved documents
         if (document.status !== "not_approved") {
-          throw new Error("Only documents with status 'not_approved' can be deleted");
+          throw new Error(
+            "Only documents with status 'not_approved' can be deleted"
+          );
         }
 
         // Delete from storage first

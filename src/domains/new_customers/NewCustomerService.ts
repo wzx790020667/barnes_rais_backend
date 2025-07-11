@@ -163,6 +163,17 @@ export class NewCustomerService {
     return (data || []).map((item) => item.customer_name);
   }
 
+  async getAllNewCustomers(): Promise<NewCustomer[]> {
+    const { data, error } = await supabase
+      .from("new_customers")
+      .select("*")
+      .order("co_code", { ascending: true });
+
+    if (error) throw error;
+
+    return (data || []) as NewCustomer[];
+  }
+
   async findCustomerNumbersByCoCode(
     coCode: string
   ): Promise<Array<{ customerNumber: string; customerName: string }>> {

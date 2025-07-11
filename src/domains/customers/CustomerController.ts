@@ -250,10 +250,13 @@ export class CustomerController {
       }
 
       const validatedData = result.data;
+      const coCode = await this.customerService.getCoCodeByCustomerName(
+        validatedData.customer_name || ""
+      );
 
       const customerInfoHash = generateCustomerInfoHash(
         validatedData.customer_name || "",
-        validatedData.co_code || null,
+        coCode || null,
         validatedData.file_format || "",
         validatedData.document_type || ""
       );
@@ -570,7 +573,9 @@ export class CustomerController {
       const { customer_name, document_type, file_format } = result.data;
 
       // Find the first matching customer to get co_code
-      const existingCustomer = await this.customerService.getCustomerByName(customer_name);
+      const existingCustomer = await this.customerService.getCustomerByName(
+        customer_name
+      );
 
       if (!existingCustomer) {
         return Response.json(
@@ -580,7 +585,9 @@ export class CustomerController {
       }
 
       // Generate a unique customer_code (you may need to implement this logic)
-      const customer_code = `${customer_name.replace(/\s+/g, '_').toUpperCase()}_${Date.now()}`;
+      const customer_code = `${customer_name
+        .replace(/\s+/g, "_")
+        .toUpperCase()}_${Date.now()}`;
 
       // Calculate customer_info_hash
       const customerInfoHash = generateCustomerInfoHash(
@@ -601,7 +608,9 @@ export class CustomerController {
       };
 
       // Create the new customer
-      const newCustomer = await this.customerService.createCustomer(customerData);
+      const newCustomer = await this.customerService.createCustomer(
+        customerData
+      );
 
       if (!newCustomer) {
         return Response.json(
@@ -613,10 +622,7 @@ export class CustomerController {
       return Response.json(newCustomer, { status: 201 });
     } catch (error) {
       console.error("Add format error:", error);
-      return Response.json(
-        { error: "Failed to add format" },
-        { status: 500 }
-      );
+      return Response.json({ error: "Failed to add format" }, { status: 500 });
     }
   }
 }

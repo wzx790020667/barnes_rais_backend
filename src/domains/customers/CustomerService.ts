@@ -611,4 +611,19 @@ export class CustomerService {
         return result.data || [];
       });
   }
+
+  async getCoCodeByCustomerName(customerName: string): Promise<string | null> {
+    return db
+      .query(async () => {
+        const { data, error } = await supabase
+          .from("customers")
+          .select("co_code")
+          .eq("customer_name", customerName)
+          .limit(1);
+
+        if (error) throw error;
+        return data[0]?.co_code || null;
+      })
+      .then((result) => result.data || null);
+  }
 }

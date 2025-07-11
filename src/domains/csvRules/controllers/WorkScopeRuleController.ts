@@ -223,4 +223,14 @@ export class WorkScopeRuleController {
       );
     }
   }
+
+  async getAllWorkScopeRules(req: Request): Promise<Response> {
+    try {
+      const workScopeRules = await this.workScopeRuleService.getAllWorkScopeRules();
+      return Response.json({ data: workScopeRules });
+    } catch (error) {
+      console.error("Error getting all work scope rules:", error);
+      return Response.json({ error: "Internal server error" }, { status: 500 });
+    }
+  }
 }

@@ -301,6 +301,16 @@ export class NewCustomerController {
     }
   }
 
+  async getAllNewCustomers(req: Request): Promise<Response> {
+    try {
+      const customers = await this.newCustomerService.getAllNewCustomers();
+      return Response.json({ data: customers });
+    } catch (error) {
+      console.error("Error getting all new customers:", error);
+      return Response.json({ error: "Internal server error" }, { status: 500 });
+    }
+  }
+
   async findCustomerNumbersByCoCode(req: Request): Promise<Response> {
     try {
       const customerData = await req.json();

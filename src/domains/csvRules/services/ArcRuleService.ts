@@ -20,9 +20,7 @@ export class ArcRuleService {
   async getAllArcRules(): Promise<ArcRule[]> {
     return db
       .query(async () => {
-        const { data, error } = await supabase
-          .from("arc_rules")
-          .select("*");
+        const { data, error } = await supabase.from("arc_rules").select("*");
 
         if (error) throw error;
         return data as ArcRule[];
@@ -30,79 +28,84 @@ export class ArcRuleService {
       .then((result) => result.data || []);
   }
 
-  async getArcRules(page: number | null = 1, pageSize: number | null = 10): Promise<{ arcRules: ArcRule[]; total: number }> {
+  async getArcRules(
+    page: number | null = 1,
+    pageSize: number | null = 10
+  ): Promise<{ arcRules: ArcRule[]; total: number }> {
     return db
       .query(async () => {
         // If both page and pageSize are null, return all results without pagination
         if (page === null && pageSize === null) {
-          const { data, error } = await supabase
-            .from("arc_rules")
-            .select("*");
-                        
+          const { data, error } = await supabase.from("arc_rules").select("*");
+
           if (error) throw error;
-          
-          return { 
-            arcRules: data as ArcRule[], 
-            total: data.length 
+
+          return {
+            arcRules: data as ArcRule[],
+            total: data.length,
           };
         }
-        
+
         // Use default values if null is passed for only one parameter
         const effectivePage = page ?? 1;
         const effectivePageSize = pageSize ?? 10;
-        
+
         // Calculate offset based on page and pageSize
         const offset = (effectivePage - 1) * effectivePageSize;
-        
+
         // Get total count first
         const { data: countData, error: countError } = await supabase
           .from("arc_rules")
           .select("count", { count: "exact" });
-          
+
         if (countError) throw countError;
-        
+
         // Get paginated results
         const { data, error } = await supabase
           .from("arc_rules")
           .select("*")
           .range(offset, offset + effectivePageSize - 1);
-          
+
         if (error) throw error;
-        
-        return { 
-          arcRules: data as ArcRule[], 
-          total: countData?.[0]?.count || 0 
+
+        return {
+          arcRules: data as ArcRule[],
+          total: countData?.[0]?.count || 0,
         };
       })
       .then((result) => result.data || { arcRules: [], total: 0 });
   }
 
-  async searchArcRules(page: number, pageSize: number, query: string): Promise<{ arcRules: ArcRule[]; total: number }> {
+  async searchArcRules(
+    page: number,
+    pageSize: number,
+    query: string
+  ): Promise<{ arcRules: ArcRule[]; total: number }> {
     return db
       .query(async () => {
         // Calculate offset based on page and pageSize
         const offset = (page - 1) * pageSize;
-        
+
         // Get total count first with search filter
         const { data: countData, error: countError } = await supabase
           .from("arc_rules")
           .select("count", { count: "exact" })
-          .or(`arc_appearance.ilike.%${query}%,result_display.ilike.%${query}%`);
-          
+          .or(`result_display.ilike.%${query}%`);
+
         if (countError) throw countError;
-        
+
         // Get paginated results with search filter
         const { data, error } = await supabase
           .from("arc_rules")
           .select("*")
-          .or(`arc_appearance.ilike.%${query}%,result_display.ilike.%${query}%`)
+          .or(`result_display.ilike.%${query}%`)
           .range(offset, offset + pageSize - 1);
-          
+
         if (error) throw error;
-        
-        return { 
-          arcRules: data as ArcRule[], 
-          total: countData?.[0]?.count || 0 
+
+        return {
+          arcRules: data as ArcRule[],
+          total: countData?.[0]?.count || 0,
         };
       })
       .then((result) => result.data || { arcRules: [], total: 0 });
@@ -155,6 +158,6 @@ export class ArcRuleService {
         if (error) throw error;
         return true;
       })
-      .then((result) => result.error ? false : true);
+      .then((result) => (result.error ? false : true));
   }
 }

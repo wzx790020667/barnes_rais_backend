@@ -30,76 +30,83 @@ export class WorkScopeRuleService {
       .then((result) => result.data || []);
   }
 
-  async getWorkScopeRules(page: number | null = 1, pageSize: number | null = 10): Promise<{ workScopeRules: WorkScopeRule[]; total: number }> {
+  async getWorkScopeRules(
+    page: number | null = 1,
+    pageSize: number | null = 10
+  ): Promise<{ workScopeRules: WorkScopeRule[]; total: number }> {
     return db
       .query(async () => {
         // Get total count first
         const { data: countData, error: countError } = await supabase
           .from("work_scope_rules")
           .select("count", { count: "exact" });
-          
+
         if (countError) throw countError;
-        
+
         // If both page and pageSize are null, return all results
         if (page === null && pageSize === null) {
           const { data, error } = await supabase
             .from("work_scope_rules")
             .select("*");
-            
+
           if (error) throw error;
-          
-          return { 
-            workScopeRules: data as WorkScopeRule[], 
-            total: countData?.[0]?.count || 0 
+
+          return {
+            workScopeRules: data as WorkScopeRule[],
+            total: countData?.[0]?.count || 0,
           };
         }
-        
+
         // Otherwise, use pagination
         // Calculate offset based on page and pageSize
         const offset = ((page || 1) - 1) * (pageSize || 10);
-        
+
         // Get paginated results
         const { data, error } = await supabase
           .from("work_scope_rules")
           .select("*")
           .range(offset, offset + (pageSize || 10) - 1);
-          
+
         if (error) throw error;
-        
-        return { 
-          workScopeRules: data as WorkScopeRule[], 
-          total: countData?.[0]?.count || 0 
+
+        return {
+          workScopeRules: data as WorkScopeRule[],
+          total: countData?.[0]?.count || 0,
         };
       })
       .then((result) => result.data || { workScopeRules: [], total: 0 });
   }
 
-  async searchWorkScopeRules(page: number, pageSize: number, query: string): Promise<{ workScopeRules: WorkScopeRule[]; total: number }> {
+  async searchWorkScopeRules(
+    page: number,
+    pageSize: number,
+    query: string
+  ): Promise<{ workScopeRules: WorkScopeRule[]; total: number }> {
     return db
       .query(async () => {
         // Calculate offset based on page and pageSize
         const offset = (page - 1) * pageSize;
-        
+
         // Get total count first with search filter
         const { data: countData, error: countError } = await supabase
           .from("work_scope_rules")
           .select("count", { count: "exact" })
-          .or(`overhaul_keywords.ilike.%${query}%,result_display.ilike.%${query}%`);
-          
+          .or(`overhaul_keywords.ilike.%${query}%`);
+
         if (countError) throw countError;
-        
+
         // Get paginated results with search filter
         const { data, error } = await supabase
           .from("work_scope_rules")
           .select("*")
-          .or(`overhaul_keywords.ilike.%${query}%,result_display.ilike.%${query}%`)
+          .or(`overhaul_keywords.ilike.%${query}%`)
           .range(offset, offset + pageSize - 1);
-          
+
         if (error) throw error;
-        
-        return { 
-          workScopeRules: data as WorkScopeRule[], 
-          total: countData?.[0]?.count || 0 
+
+        return {
+          workScopeRules: data as WorkScopeRule[],
+          total: countData?.[0]?.count || 0,
         };
       })
       .then((result) => result.data || { workScopeRules: [], total: 0 });
@@ -152,6 +159,6 @@ export class WorkScopeRuleService {
         if (error) throw error;
         return true;
       })
-      .then((result) => result.error ? false : true);
+      .then((result) => (result.error ? false : true));
   }
 }
