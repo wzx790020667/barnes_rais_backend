@@ -34,7 +34,8 @@ export class CsvRecordService {
         .filter(
           ({ item }) =>
             item.part_number === partNumber &&
-            Number(extractDigits(item.quantity_ordered || "")) === Number(extractDigits(quantity || ""))
+            Number(extractDigits(item.quantity_ordered || "")) ===
+              Number(extractDigits(quantity || ""))
         );
 
       if (matchingImportItemsWithIndices.length === 0)
@@ -140,20 +141,24 @@ export class CsvRecordService {
     if (importDocError) throw importDocError;
 
     const importNumber2Doc: Record<string, DocumentWithItems> = {};
+    const importNUmber2SearchHistory: Record<
+      string,
+      Record<string, boolean>
+    > = {};
+
     importDocuments.forEach((doc) => {
       importNumber2Doc[doc.import_number] = doc;
+      importNUmber2SearchHistory[doc.import_number] = {};
     });
 
     const records: CsvRecord[] = [];
-    // 全局的part_number搜索计数器，确保相同part_number在所有poDocuments中的IMPORT_LINE都是递增的
-    const globalPartNumberSearchHistory: Record<string, boolean> = {};
 
     poDocuments.forEach((poDoc) => {
       const importDoc = importNumber2Doc[poDoc.import_number];
       const tempRecords = this.convert2CsvRecords(
         poDoc,
         importDoc,
-        globalPartNumberSearchHistory
+        importNUmber2SearchHistory[poDoc.import_number]
       );
       // 等待Promise完成后再添加记录
       records.push(...tempRecords);

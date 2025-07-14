@@ -78,7 +78,9 @@ export class DocumentService {
         }
 
         // Complete the query with ordering and pagination
+        // First order by status (not_approved first, then approved), then by created_at
         const { data, error } = await dataQuery
+          .order("status", { ascending: false }) // not_approved comes before approved alphabetically
           .order("created_at", { ascending: false })
           .range(offset, offset + pageSize - 1);
 
