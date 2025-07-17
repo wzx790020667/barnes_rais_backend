@@ -418,7 +418,8 @@ export class DocumentService {
           .from("documents")
           .select("count", { count: "exact", head: true })
           .not("import_number", "is", null)
-          .eq("document_type", "import_declaration");
+          .eq("document_type", "import_declaration")
+          .eq("is_archived", false);
 
         // Only apply filter if query is not empty
         const filteredCountQuery = searchQuery
@@ -436,6 +437,7 @@ export class DocumentService {
           .select("import_number")
           .not("import_number", "is", null)
           .eq("document_type", "import_declaration")
+          .eq("is_archived", false)
           .order("import_number", { ascending: true });
 
         // If query is not empty, apply filter without pagination
