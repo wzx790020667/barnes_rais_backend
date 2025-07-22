@@ -188,9 +188,15 @@ cp .env.example .env
 nano .env
 ```
 
-### 5. Run Database Migration & Seeding (First-time Deployment)
+### 5. Run Database Push/Migration & Seeding (First-time Deployment)
 
-This command will setup the database schema, tables that uses by Supabase.
+If you deploy the barnes rais backend for the first time, you need to run the database push commands.
+
+```bash
+docker compose -f push.yml --env-file .env up --build
+```
+
+If you re-deploy the barnes rais backend, you need to run the database migration commands.
 
 ```bash
 docker compose -f migrate.yml --env-file .env up --build
