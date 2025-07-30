@@ -2,6 +2,7 @@ import type { BunRequest } from "bun";
 import { generateCustomerInfoHash } from "../../lib/utils";
 import { CustomerService } from "./CustomerService";
 import { z } from "zod";
+import { NewCustomerService } from "../new_customers/NewCustomerService";
 
 // Customer schema validation based on the actual database schema
 const createCustomerSchema = z.object({
@@ -46,9 +47,11 @@ const addFormatSchema = z.object({
 
 export class CustomerController {
   private customerService: CustomerService;
+  private newCustomerService: NewCustomerService;
 
   constructor() {
     this.customerService = new CustomerService();
+    this.newCustomerService = new NewCustomerService();
   }
 
   async getCustomerById(req: Request): Promise<Response> {
@@ -250,18 +253,27 @@ export class CustomerController {
       }
 
       const validatedData = result.data;
-      const coCode = await this.customerService.getCoCodeByCustomerName(
-        validatedData.customer_name || ""
-      );
+      const existingNewCustomer =
+        await this.newCustomerService.getNewCustomerByName(
+          validatedData.customer_name || ""
+        );
+
+      if (!existingNewCustomer || !existingNewCustomer.co_code) {
+        return Response.json(
+          { error: "Customer not found. Cannot determine co_code." },
+          { status: 404 }
+        );
+      }
 
       const customerInfoHash = generateCustomerInfoHash(
         validatedData.customer_name || "",
-        coCode || null,
+        existingNewCustomer.co_code,
         validatedData.file_format || "",
         validatedData.document_type || ""
       );
 
       validatedData.customer_info_hash = customerInfoHash;
+      validatedData.co_code = existingNewCustomer.co_code;
       const updatedCustomer = await this.customerService.updateCustomer(
         id,
         validatedData
@@ -573,11 +585,10 @@ export class CustomerController {
       const { customer_name, document_type, file_format } = result.data;
 
       // Find the first matching customer to get co_code
-      const existingCustomer = await this.customerService.getCustomerByName(
-        customer_name
-      );
+      const existingCustomer =
+        await this.newCustomerService.getNewCustomerByName(customer_name);
 
-      if (!existingCustomer) {
+      if (!existingCustomer || !existingCustomer.co_code) {
         return Response.json(
           { error: "Customer not found. Cannot determine co_code." },
           { status: 404 }

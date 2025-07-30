@@ -33,6 +33,7 @@ import { CustomerService } from "./domains/customers/CustomerService";
 import { EngineModelRuleService } from "./domains/csvRules/services/EngineModelRuleService";
 import { AIInferenceService } from "./domains/ai_inference/services";
 import { AiTrainingService } from "./domains/ai_training/services";
+import { NewCustomerService } from "./domains/new_customers/NewCustomerService";
 
 // Create a global singleton for websocket clients
 const wsClients = new Set();
@@ -50,6 +51,7 @@ const aiTrainingService = new AiTrainingService(
   documentService,
   aiInferenceService
 );
+const newCustomerService = new NewCustomerService();
 
 // Inject the websocket service after initializing all services
 aiTrainingService.setWebsocketService(websocketService);
@@ -63,8 +65,11 @@ const documentController = new DocumentController(
   aiInferenceService,
   engineModelRuleService
 );
-const customerController = new CustomerController();
 const newCustomerController = new NewCustomerController();
+const customerController = new CustomerController(
+  customerService,
+  newCustomerService
+);
 const arcRuleController = new ArcRuleController();
 const engineModelRuleController = new EngineModelRuleController();
 const workScopeRuleController = new WorkScopeRuleController();
